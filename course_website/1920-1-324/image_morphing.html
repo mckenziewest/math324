@@ -1,0 +1,519 @@
+<!DOCTYPE HTML>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="author" content="Craig S.">
+        <meta name="description" content="Provide an image morphing web app based on Java Script.">
+        <!-- bootstrap stuff -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+    </head>
+    <body>
+        <div class="container-fluid">
+            <div class="row">
+                <canvas id="tCanvas" width="1000" height="500" onmousedown="mouseDown(event)" onmousemove="mouseMove(event)" onmouseup="mouseUp(event)" onmouseleave="mouseUp(event)"></canvas>
+            </div>
+            <div class="row text-center">
+                <div class="col-md-4">
+                    <div class="card m-2">
+                        <div class="card-header">
+                            Animation Controls
+                        </div>
+                        <div class="card-body">
+                            <button type="button" class="btn btn-primary m-1" onclick="startAnimation();">Start</button>
+                            <button type="button" class="btn btn-warning m-1" onclick="stopAnimation();">Stop</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-8">
+                    <div class="card m-2">
+                        <div class="card-header">
+                            &alpha; Control
+                        </div>
+                        <div class="card-body">
+                            <input id="sliMorph" type="range" class="form-control-range" min="0" max="1" step="0.0078125" oninput="draw(parseFloat(this.value));"/>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row text-center">
+                <div class="col-sm-12 my-2">
+                    <div class="card">
+                        <div class="card-header">
+                            Image Sources
+                        </div>
+                        <div class="card-body">
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text">Image A:</span>
+                                </div>
+                                <input id="txtImgA" type="text" class="form-control" placeholder="Enter a URL to an image" value="http://www.photos-public-domain.com/wp-content/uploads/2011/01/orange-and-white-cat-closeup-190x190.jpg">
+                                <button type="button" class="btn btn-primary" onclick="updateImage('txtImgA', imageA);">Update</button>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text">Image B:</span>
+                                </div>
+                                <input id="txtImgB" type="text" class="form-control" placeholder="Enter a URL to an image" value="http://www.photos-public-domain.com/wp-content/uploads/2010/12/brown_dog_with_pointy_ears-190x190.jpg">
+                                <button type="button" class="btn btn-primary" onclick="updateImage('txtImgB', imageB);">Update</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row text-center">
+                <div class="col-sm-12 my-2">
+                    <ul class="list-group">
+                        <li class="list-group-item active">More Public Domain Photo URLs (copy and paste)</li>
+                        <li class="list-group-item">https://publicdomainpictures.net/pictures/20000/t2/dog-lying-871290171642HzS.jpg</li>
+                        <li class="list-group-item">https://cdn.pixabay.com/photo/2016/11/01/23/41/puppy-1790064__180.jpg</li>
+                        <li class="list-group-item">https://www.publicdomainpictures.net/pictures/140000/t2/-1448706366QwN.jpg</li>
+                        <li class="list-group-item">https://people.uwec.edu/westmr/teaching/POA_logo.png</li>
+                        <li class="list-group-item">https://wiki.neogeodev.org/images/thumb/1/18/Aes_g0.jpg/189px-Aes_g0.jpg</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </body>
+    <footer>
+        <kbd>&copy 2019 Craig S. All Rights Reserved.</kbd>
+    </footer>
+</html>
+
+<script language="javascript">
+    /* stores a backup of alpha that us updated when a new value is passed into draw */
+    var alpha_backup = 0.5;
+
+    var can = document.getElementById("tCanvas");
+    var ctx = can.getContext("2d");
+
+    var canWidth = can.clientWidth;
+    var canHeight = can.clientHeight;
+
+    /* relative to src and dst images */
+    var initialPoints = [new Point(10, 20), new Point(10, 160), new Point(150, 40)];
+    var finalPoints = [new Point(50, 70), new Point(120, 175), new Point(175, 100)]
+
+    var imageA = document.createElement("img");
+    var imgSizeA;
+    var imgPosA;
+    imageA.src = 'http://www.photos-public-domain.com/wp-content/uploads/2011/01/orange-and-white-cat-closeup-190x190.jpg';
+
+    var imageB = document.createElement("img");
+    var imgSizeB;
+    var imgPosB;
+    imageB.src = 'http://www.photos-public-domain.com/wp-content/uploads/2010/12/brown_dog_with_pointy_ears-190x190.jpg'
+
+    var blankImage = document.createElement("img");
+    //can.parentNode.appendChild(imageA);
+
+    var textureA;
+    var textureB;
+
+    /* point width in pixels */
+    var POINT_WIDTH = 10;
+    var POINT_WIDTH_HALF = POINT_WIDTH / 2;
+
+    /* stores the point that is currently clicked (null if nothing is clicked) and the offset of that point */
+    var clickedPoint = null;
+    var clickedPointOffset = null;
+
+    /* can't use DOMMatrix, since it is not supported in FireFox yet - SVGMatrix is supported, however.
+       Pattern.setTransform() requires an SVGMatrix or DOMMatrix, so we use this matrix to pass in. */
+    var patternMatrix = document.createElementNS("http://www.w3.org/2000/svg", "svg").createSVGMatrix();
+
+    /* animation variables */
+    var increasingAnimation = false;
+    var animationID = null;
+
+    var slider = document.getElementById('sliMorph');
+
+
+    window.onload = function(){
+                        sizeChanged();
+
+                        /* do initial draw */
+                        draw(alpha_backup);
+
+                        /* set the slider to the correct value */
+                        slider.value = alpha_backup;
+                    }
+
+    window.onresize = function(){
+                                    /* resize the canvas to fit onto the screen */
+                                    sizeChanged();
+
+                                    draw(alpha_backup);
+                                }
+
+    imageA.onload = function(){
+                                /* when an image loads, create the textures and draw the image */
+                                    textureA = ctx.createPattern(imageA, "no-repeat");
+                                    sizeChanged();
+                                    if(textureB != null){
+                                        draw(alpha_backup);
+                                    }
+                               }
+
+    imageB.onload = function(){
+                                    textureB = ctx.createPattern(imageB, "no-repeat");
+                                    sizeChanged();
+                                    if(textureA != null){
+                                        draw(alpha_backup);
+                                    }
+                               }
+
+    /* updates the specified image ref's src to be the inputId's value */
+    function updateImage(inputId, imageRef){
+        var txtImgSrc = document.getElementById(inputId);
+        var srcURL = txtImgSrc.value;
+
+        imageRef.src = srcURL;
+    }
+
+    /* window size changed, updates size/pos variables. */
+    function sizeChanged(){
+        var winWidth = window.innerWidth - 20;
+        canWidth = winWidth;
+        can.width = winWidth;
+
+        imgSizeA = new imgPoint(imageA);
+        imgPosA = new Point(canWidth / 4 - imgSizeA.x / 2, 50);
+
+        imgSizeB = new imgPoint(imageB);
+        imgPosB = new Point(canWidth * 3 / 4 - imgSizeB.x / 2, 50);
+    }
+
+    /* handle mouse down */
+    function mouseDown(e){
+		var clickPos = new Point(e.layerX, e.layerY);
+		//console.log(e.clientX + " " + e.clientY);
+        /* determine which point was clicked - if nothing was clicked yet. */
+		if(clickedPoint == null){
+			clickedPoint = getClickedPointInArray(initialPoints, imgPosA, clickPos);
+			if(clickedPoint != null){
+			    /* this point was selected from this offset, so store this offset */
+			    clickedPointOffset = imgPosA;
+			}
+		}
+		if(clickedPoint == null){
+			clickedPoint = getClickedPointInArray(finalPoints, imgPosB, clickPos);
+            if(clickedPoint != null){
+			    /* this point was selected from this offset, so store this offset */
+			    clickedPointOffset = imgPosB;
+			}
+		}
+    }
+
+    /* handle mouse move */
+    function mouseMove(e){
+        /* if a point was clicked, move the point */
+		if(clickedPoint != null){
+			clickedPoint.x = e.layerX - clickedPointOffset.x;
+			clickedPoint.y = e.layerY - clickedPointOffset.y;
+
+			/* redraw the morph */
+			draw(alpha_backup);
+		}
+    }
+
+    /* handle mouse up */
+    function mouseUp(){
+        /* stop dragging */
+        clickedPoint = null;
+    }
+
+    function startAnimation(){
+        /* only start animation if no animation is playing now */
+        if(animationID == null){
+            animationID = setInterval(animate, 16);
+        }
+    }
+
+    function stopAnimation(){
+        clearInterval(animationID);
+        animationID = null;
+
+        /* update slider position */
+        slider.value = alpha_backup;
+    }
+
+    /* counts up to n before displaying the new alpha on the slider */
+    var animTickCount = 0;
+    /* ticks the animation of alpha by delta */
+    function animate(){
+        if(alpha_backup >= 1){
+            increasingAnimation = false;
+            alpha_backup = 1.0;
+        } else if(alpha_backup <= 0) {
+            increasingAnimation = true;
+            alpha_backup = 0.0;
+        }
+
+        /* inc/dec amount must be result of 2^x (where x is an integer), to avoid rounding errors */
+        if(increasingAnimation){
+            alpha_backup += 0.0078125;
+        } else {
+            alpha_backup -= 0.0078125;
+        }
+
+        ++animTickCount;
+        if(animTickCount > 5){
+            animTickCount = 0;
+            slider.value = alpha_backup;
+        }
+
+        //console.log(alpha_backup);
+        draw(alpha_backup);
+    }
+
+    /* 0 <= alpha <= 1. Alpha is the linear interpolation factor from image A to B. */
+    function draw(alpha){
+        alpha_backup = alpha;
+        /* find alpha - morphing percent */
+        //var alpha = 0.75;
+
+        /* reset canvas */
+        ctx.clearRect(0, 0, canWidth, canHeight);
+        ctx.fillStyle = "black";
+        ctx.strokeStyle = "gray";
+        ctx.lineWidth = 1;
+
+        //ctx.fillRect(10, 10, 20, 20);
+
+        //var textureB = ctx.createPattern(imageB, "no-repeat");
+
+        drawImage(imageA, imgPosA, imgSizeA, "Image A");
+
+        drawImage(imageB, imgPosB, imgSizeB, "Image B");
+
+        var imgSizeC = interpolatePoints(imgSizeA, imgSizeB, alpha);
+        var imgPosC = new Point(canWidth / 2 - imgSizeC.x / 2, 300);
+        drawImage(blankImage, imgPosC, imgSizeC, "Morphed Image");
+
+        /* draw triangle for image A */
+        drawTriangle(initialPoints, imgPosA, "red", "#00000055");
+
+        /* draw triangle for image B */
+        drawTriangle(finalPoints, imgPosB, "blue", "#00000055");
+
+        /* draw morphed triangle */
+        morphedPoints = interpolatePointsArray(initialPoints, finalPoints, alpha);
+        //drawTriangle(morphedPoints, imgPosC);
+        /* draw both triangles morphed to this position with their given transparencies */
+        ctx.globalAlpha = 1 - alpha;
+        drawTexturedTriangle(morphedPoints, imgPosC, initialPoints, "red", textureA);
+        ctx.globalAlpha = alpha;
+        drawTexturedTriangle(morphedPoints, imgPosC, finalPoints, "blue", textureB);
+        ctx.globalAlpha = 1; /* reset alpha */
+
+        /* draw the triangle points that can be clicked */
+        drawPointsArray(initialPoints, imgPosA, "black");
+        drawPointsArray(finalPoints, imgPosB, "black");
+    }
+    
+	/* returns the point that was clicked in the array or null if nothing was clicked.
+	   Points offset shifts the points by the specified offset before checking if clicked. */
+	function getClickedPointInArray(points, pointsOffset, clickPoint){
+		for(var i = 0; i < points.length; ++i){
+			if(isPointClicked(points[i], pointsOffset, clickPoint)){
+				return points[i];
+			}
+		}
+		
+		return null;
+	}
+	
+    /* determines if the point passed in was clicked (within POINT_WIDTH_HALF of the click point) 
+	   returns true if it is and false otherwide. Pass in pointOffset to make the point relative to an image or other element. */
+	function isPointClicked(point, pointOffset, clickPoint){
+	    var x = point.x + pointOffset.x;
+	    var y = point.y + pointOffset.y;
+		return (clickPoint.x > x - POINT_WIDTH_HALF)
+			&& (clickPoint.x < x + POINT_WIDTH_HALF)
+			&& (clickPoint.y > y - POINT_WIDTH_HALF)
+			&& (clickPoint.y < y + POINT_WIDTH_HALF);
+	}
+	
+	
+	/* draws all points in the array of points for the given offset and texture (color name) */
+    function drawPointsArray(points, offset, texture){
+        for(var i = 0; i < points.length; ++i){
+            drawPoint(points[i], offset, texture);
+        }
+    }
+    
+    /* draws the the point centered at the specified location plus the offset (also a point) with the given texture (color name) */
+    /* note that this function actually draws a rect */
+    function drawPoint(point, offset, texture){
+        var left = point.x + offset.x - POINT_WIDTH_HALF;
+        var top = point.y + offset.y - POINT_WIDTH_HALF;
+        ctx.fillStyle = texture;
+        ctx.fillRect(left, top, POINT_WIDTH, POINT_WIDTH);
+    }
+    
+    /* Translate all points in the array by the specified translate amount (point) (subtracts translate from each point). */
+    function subtractPointsArray(points, translate){
+        var outPoints = new Array(points.length);
+        for(var i = 0; i < points.length; ++i){
+            outPoints[i] = subtractPoints(points[i], translate);
+        }
+        return outPoints;
+    }
+
+    /* linearly interpolates pA with pB given by ratio (when ratio == 0, pA is returned).
+       0 <= ratio <= 1
+       pA and pB are arrays of points of the SAME length. */
+    function interpolatePointsArray(pA, pB, ratio){
+        var outPoints = new Array(pA.length);
+        for(var i = 0; i < pA.length; ++i){
+            outPoints[i] = interpolatePoints(pA[i], pB[i], ratio);
+        }
+
+        return outPoints;
+    }
+
+    /* linearly interpolates pA with pB given by ratio (when ratio == 0, pA is returned).
+       0 <= ratio <= 1 */
+    function interpolatePoints(pA, pB, ratio){
+        return new Point(pA.x * (1 - ratio) + pB.x * ratio, pA.y * (1 - ratio) + pB.y * ratio);
+    }
+
+    function Point(x, y){
+        this.x = x;
+        this.y = y;
+    }
+
+    /* constructs a point for the size of the image */
+    function imgPoint(img){
+        this.x = img.width;
+        this.y = img.height;
+    }
+
+    /* returns p2 - p1 as a new point. */
+    function subtractPoints(p1, p2){
+        return new Point(p1.x - p2.x, p1.y - p2.y);
+    }
+
+    /* creates a 2 by 2 matrix in the format
+        a  b
+        c  d
+     */
+    function Mat2x2(a, b, c, d){
+        this.a = a;
+        this.b = b;
+        this.c = c;
+        this.d = d;
+
+        /* returns an inverted version of this matrix */
+        this.invert = function(){
+            /* f is the factor multiplied through each term */
+            var f = 1/(a * d - c * b);
+            return new Mat2x2(d * f, -b * f, -c * f, a * f);
+        }
+
+        /* multiplies this matrix by mat on the right and returns that */
+        this.multiplyRight = function(mat){
+            return new Mat2x2(a * mat.a + b * mat.c, a * mat.b + b * mat.d, c * mat.a + d * mat.c, c * mat.b + d * mat.d);
+        }
+    }
+
+    /* returns a new matrix (2 by 2) defined by the two column vectors vecA and vecB where vecB is on the right. */
+    function newMat2x2Vec(vecA, vecB){
+        return new Mat2x2(vecA.x, vecB.x, vecA.y, vecB.y);
+    }
+
+    /* draws the given image at the given position (Point) and size (Point - size point that is) */
+    function drawImage(image, position, size, title){
+        /* draw image */
+        ctx.drawImage(image, position.x, position.y, size.x, size.y);
+
+        /* draw border */
+        ctx.strokeRect(position.x, position.y, size.x, size.y);
+
+        /* get text width */
+        ctx.font = "20px Arial"
+        var titleSize = ctx.measureText(title);
+        ctx.fillText(title, position.x + size.x / 2 - titleSize.width / 2, position.y - 20);
+
+        //ctx.fillStyle = texture;
+        //ctx.fill();
+    }
+
+    /* draws a triangle (array of 3 Points) shifted by offset (Point) */
+    function drawTriangle(points, offset, stroke, fill){
+        ctx.beginPath();
+        var p = points[0];
+        ctx.moveTo(p.x + offset.x, p.y + offset.y);
+        p = points[1];
+        ctx.lineTo(p.x + offset.x, p.y + offset.y);
+        p = points[2];
+        ctx.lineTo(p.x + offset.x, p.y + offset.y);
+        ctx.closePath();
+
+        ctx.lineWidth = 2;
+        ctx.strokeStyle = stroke;
+        ctx.stroke();
+
+        ctx.fillStyle = fill;
+        ctx.fill();
+    }
+
+    /* draws a triangle to the canvas at the screenPoints (array of 3 points) shifted by the point offset.
+       texturePoints store the points where the triangle exists on the texture. */
+    function drawTexturedTriangle(screenPoints, offset, texturePoints, stroke, texturePattern){
+        /* move a point on the triangle (here the first point) to the origin, so we can apply the transformation */
+        /* triangle will be drawn to texture point and transformed, so we shift the texture points */
+        /* the matrix looks like:
+            a c e
+            b d f
+            0 0 1
+         Transform function takes in (a, b, c, d, e, f)
+        */
+        /* move to origin to do rotation */
+        //ctx.setTransform(1, 0, 0, 1, -texturePoints[0].x, -texturePoints[0].y);
+        //ctx.translate(-texturePoints[0].x, -texturePoints[0].y);
+        /* compute the vectors that form the sides of the triangle where it will be displayed */
+        var u = subtractPoints(screenPoints[1], screenPoints[0]);
+        var v = subtractPoints(screenPoints[2], screenPoints[0]);
+
+        /* create a matrix D where the column vectors are the screen vectors */
+        var D = newMat2x2Vec(u, v);
+
+        u = subtractPoints(texturePoints[1], texturePoints[0]);
+        v = subtractPoints(texturePoints[2], texturePoints[0]);
+
+        /* create matrix E where the column vectors are the texture vectors - we will invert this matrix to create a transformation from a vector space with these vectors as the basis to a vector space with the screen vectors as the basis */
+        var E = newMat2x2Vec(u, v);
+
+        /* here, we overwrite E, since we don't need E anymore */
+        E = D.multiplyRight(E.invert());
+
+        /* c and b swapped due to matrix function order - place transformation function in and shift base point to where it should be */
+        ctx.transform(E.a, E.c, E.b, E.d, screenPoints[0].x + offset.x, screenPoints[0].y + offset.y);
+        /* transform triangle by inverse matrix of points in texture  */
+
+        /* move all texture points down by the base of the triangle texture */
+        var normTexturePoints = subtractPointsArray(texturePoints, texturePoints[0]);
+
+        /* translate the pattern to be drawn correctly on the triangle must use DOMMatrix to translate patterns */
+        //var patternMat =  new DOMMatrix(); /* using SVGMatrix for FireFox compatibility */
+        var patternMat = patternMatrix; /* defined earlier */
+        patternMat.e = -texturePoints[0].x;
+        patternMat.f = -texturePoints[0].y;
+        texturePattern.setTransform(patternMat);
+
+        /* now draw on texture */
+        drawTriangle(normTexturePoints, new Point(0, 0), stroke, texturePattern);
+
+        /* reset the transformation */
+        ctx.setTransform(1, 0, 0, 1, 0, 0);
+    }
+</script>
+

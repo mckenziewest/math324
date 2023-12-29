@@ -1,0 +1,100 @@
+####
+# An Introduction to Sage for Linear Algebra
+# by Mckenzie West
+# Last Updated: 9/23/2019
+####
+
+# A few notes before starting:
+# 1. The pound/sharp/hashtag represent comments that will not be read by Sage
+# 2. The code below can be copied and pasted into any instance of Sage to be run. 
+#    Some options for this are:
+#       - CoCalc.com ~ an online platform where you can create an account and save documents
+#       - https://sagecell.sagemath.org/ ~ a simple online calculator that will not save anything.
+# 3. If you have computer science experience, Sage is written using Python and all code you write will be in that language.
+# 4. If you're stuck on anything, feel free to stop by my office.
+#    When Googling for help, use "Sage math" instead of "Sage".
+
+#####
+# Section 2.4: Elementary Matrices
+#####
+
+print("Section 2.4 of Elementary Linear Algebra by Larson")
+
+print("\n------------------\n")
+
+###
+# Example 2a
+###
+print("Section 2.4 Example 2a")
+A = matrix([[0,2,1],[1,-3,6],[3,2,-1]])
+print("\nThe starting matrix")
+print(A)
+# The elementary matrix is defined by indication QQ (rational number entries), the size 3, and the two rows being swapped
+# Note that row counts start at 0, so what we call the first row, Sage sees as the 0th row
+E = elementary_matrix(QQ, 3, row1=0, row2=1)
+print("\nThe elementary matrix")
+print(E)
+print("\nThe product is EA:")
+print(E*A)
+
+print("\n------------------\n")
+
+###
+# Example 2b
+###
+print("Section 2.4 Example 2b")
+A = matrix([[1,0,-4,1],[0,2,6,-4],[0,1,3,1]])
+print("\nThe starting matrix")
+print(A)
+# The elementary matrix is defined by indication QQ (rational number entries), the size 3, the row being scaled row1, and the scaling factor, scale
+# Note that row counts start at 0, so what we call the first row, Sage sees as the 0th row
+E = elementary_matrix(QQ, 3, row1=1, scale=1/2)
+print("\nThe elementary matrix")
+print(E)
+print("\nThe product is EA:")
+print(E*A)
+
+print("\n------------------\n")
+
+###
+# Example 2c
+###
+print("Section 2.4 Example 2c")
+A = matrix([[1,0,-1],[-2,-2,3],[0,4,5]])
+print("\nThe starting matrix")
+print(A)
+# The elementary matrix is defined by indication QQ (rational number entries), the size 3, row1 + (scale)row2 -> row1
+# Note that row counts start at 0, so what we call the first row, Sage sees as the 0th row
+E = elementary_matrix(QQ, 3, row1=1, row2=0, scale=2)
+print("\nThe elementary matrix")
+print(E)
+print("\nThe product is EA:")
+print(E*A)
+
+print("\n------------------\n")
+
+###
+# Example 4
+###
+print("Section 2.4 Example 4")
+A = matrix([[-1,-2],[3,8]])
+print("\nThe starting matrix")
+print(A)
+
+E1 = elementary_matrix(QQ, 2, row1=0, scale=-1)
+E2 = elementary_matrix(QQ, 2, row1=1, row2=0, scale=-3)
+E3 = elementary_matrix(QQ, 2, row1=1, scale=1/2)
+E4 = elementary_matrix(QQ, 2, row1=0, row2=1, scale=-2)
+print("E1:")
+print(E1)
+print("E2:")
+print(E2)
+print("E3:")
+print(E3)
+print("E4:")
+print(E4)
+
+print("\nThe product E4 E3 E2 E1 A:")
+print(E4*E3*E2*E1*A)
+print("\nThe product E1^-1 * E2^-1 * E3^-1 * E4^-1:")
+print(E1^-1 * E2^-1 * E3^-1 * E4^-1)

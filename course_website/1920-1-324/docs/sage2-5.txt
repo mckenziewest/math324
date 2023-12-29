@@ -1,0 +1,120 @@
+####
+# An Introduction to Sage for Linear Algebra
+# by Mckenzie West
+# Last Updated: 9/23/2019
+####
+
+# A few notes before starting:
+# 1. The pound/sharp/hashtag represent comments that will not be read by Sage
+# 2. The code below can be copied and pasted into any instance of Sage to be run. 
+#    Some options for this are:
+#       - CoCalc.com ~ an online platform where you can create an account and save documents
+#       - https://sagecell.sagemath.org/ ~ a simple online calculator that will not save anything.
+# 3. If you have computer science experience, Sage is written using Python and all code you write will be in that language.
+# 4. If you're stuck on anything, feel free to stop by my office.
+#    When Googling for help, use "Sage math" instead of "Sage".
+
+#####
+# Section 2.5: Applications of Matrix Operations
+#####
+
+print("Section 2.5 of Elementary Linear Algebra by Larson")
+
+print("\n------------------\n")
+
+###
+# Example 3
+###
+print("Section 2.5 Example 3")
+P = matrix([[0.70,0.15,0.15],[0.20,0.80,0.15],[0.10,0.05,0.70]])
+X = matrix([[15000,20000,65000]]).transpose()
+print('\nPX')
+print(P*X)
+print('\nP^3X')
+print(P^3*X)
+print('\nP^5*X')
+print(P^5*X)
+print('\nP^10*X')
+print(P^10 * X)
+
+Xbar = matrix([[33333,47619,19048]]).transpose()
+print('\nThe steady-state vector')
+print(Xbar)
+print('\nCheck that P*Xbar = Xbar')
+print(P*Xbar)
+
+
+print("\n------------------\n")
+
+###
+# Examples 4, 5, and 6
+###
+print("Section 2.5 Example 4, 5 and 6")
+#store the message
+message = "MEET ME MONDAY"
+#store the matrix length
+n = 3
+#if the length of the message is not divisible by n add spaces until it is
+while len(message) % n != 0:
+    message += " "
+    
+#Create a list of the letters where the index in the list is the assignment _=0, A=1, B=2,...
+letters=[' ','A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z']
+
+#Rewrite the message as list of numbers of length n
+numerical_message = [[letters.index(message[n*i+k]) for k in range(n)] for i in range((len(message)/n))]
+
+print('\nThe numerical message')
+print(numerical_message)
+
+A = matrix([[1,-2,2],[-1,1,3],[1,-1,-4]])
+print('\nThe matrix we will use for encoding')
+print(A)
+
+#Encode all of the lists from the numerical message
+encoded = [(matrix(x)*A).list() for x in numerical_message]
+print('\nThe encoded message')
+print(encoded)
+
+#We can decode by multipling encoded*A^-1:
+decoded = matrix(encoded)*A^-1
+print('\nThe decoded message')
+print(decoded)
+
+#Then to get the original message, we look up the corresponding letters using the list from earlier:
+print('\nThe original message')
+print("".join([letters[e] for e in decoded.list()]))
+
+print("\n------------------\n")
+
+###
+# Example 8
+###
+print("Section 2.5 Example 8")
+D = matrix([[0.10,0.43,0],[0.15,0,0.37],[0.23,0.03,0.02]])
+E = matrix([[20000],[30000],[25000]])
+
+I = identity_matrix(3)
+
+#Solving for X in the equation X=DX+E -> X-DX=E -> (I-D)X=E -> X=(I-D)^-1 * E
+X = (I-D)^-1 * E
+print('\nThe ouput matrix is:')
+print(X)
+
+print("\n------------------\n")
+
+###
+# Example 10
+###
+print("Section 2.5 Example 10")
+X = matrix([[1,1],[1,2],[1,3],[1,4],[1,5]])
+Y = matrix([[1,2,4,4,6]]).transpose()
+
+print('\nX^T * X')
+print(X.transpose()*X)
+print('\nX^T * Y')
+print(X.transpose() * Y)
+
+A = (X.transpose()*X)^-1 * X.transpose() * Y
+print('\nA')
+print(A)

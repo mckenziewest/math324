@@ -1,0 +1,63 @@
+####
+# An Introduction to Sage for Linear Algebra
+# by Mckenzie West
+# Last Updated: 9/15/2019
+####
+
+# A few notes before starting:
+# 1. The pound/sharp/hashtag represent comments that will not be read by Sage
+# 2. The code below can be copied and pasted into any instance of Sage to be run. 
+#    Some options for this are:
+#       - CoCalc.com ~ an online platform where you can create an account and save documents
+#       - https://sagecell.sagemath.org/ ~ a simple online calculator that will not save anything.
+# 3. If you have computer science experience, Sage is written using Python and all code you write will be in that language.
+# 4. If you're stuck on anything, feel free to stop by my office.
+#    When Googling for help, use "Sage math" instead of "Sage".
+
+#####
+# Section 2.3: The Inverse of a Matrix
+#####
+
+print("Section 2.3 of Elementary Linear Algebra by Larson")
+
+print("\n------------------\n")
+
+###
+# Testing if a Matrix is Singular
+###
+print("Testing if a Matrix is Singular or Inveritble")
+A = matrix([[1,-1],[1,0]])
+print("\nThe matrix:")
+print(A)
+print("\nIs it singular?")
+print(A.is_singular())
+print("\nIs it invertible?")
+print(A.is_invertible())
+
+print("\n------------------\n")
+
+###
+# Inverses in Sage
+###
+print("Finding Inverses in Sage")
+A = matrix([[1,2,4],[-3,0,-1],[2,1,2]])
+print("\nThe original matrix A")
+print(A)
+print("\nThe inverse of A")
+print(A.inverse())
+#Alternatively, we could have used A^-1 to get the inverse
+
+print("\n------------------\n")
+
+###
+# Example 3
+###
+print("Section 2.3 Example 3")
+A = matrix([[1,-1,0],[1,0,-1],[-6,2,3]])
+# Augment A by the identity matrix
+B = A.augment(identity_matrix(3))
+# print the RREF of B
+print("\nThe RREF of A augmented by I:")
+print(B.rref())
+print("\nThe inverse of A computed another way:")
+print(A.inverse())

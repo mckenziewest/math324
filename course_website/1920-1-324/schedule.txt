@@ -1,0 +1,112 @@
+<h3>Week 1</h3>
+    <ul>
+    <li><b> Monday 09/02</b></li>
+    <li><b> Wednesday 09/04</b></li>
+    <li><b> Thursday 09/05</b></li>
+    <li><b> Friday 09/06</b></li>
+    </ul>
+<h3>Week 2</h3>
+    <ul>
+    <li><b> Monday 09/09</b></li>
+    <li><b> Wednesday 09/11</b></li>
+    <li><b> Thursday 09/12</b></li>
+    <li><b> Friday 09/13</b></li>
+    </ul>
+<h3>Week 3</h3>
+    <ul>
+    <li><b> Monday 09/16</b></li>
+    <li><b> Wednesday 09/18</b></li>
+    <li><b> Thursday 09/19</b></li>
+    <li><b> Friday 09/20</b></li>
+    </ul>
+<h3>Week 4</h3>
+    <ul>
+    <li><b> Monday 09/23</b></li>
+    <li><b> Wednesday 09/25</b></li>
+    <li><b> Thursday 09/26</b></li>
+    <li><b> Friday 09/27</b></li>
+    </ul>
+<h3>Week 5</h3>
+    <ul>
+    <li><b> Monday 09/30</b></li>
+    <li><b> Wednesday 10/02</b></li>
+    <li><b> Thursday 10/03</b></li>
+    <li><b> Friday 10/04</b></li>
+    </ul>
+<h3>Week 6</h3>
+    <ul>
+    <li><b> Monday 10/07</b></li>
+    <li><b> Wednesday 10/09</b></li>
+    <li><b> Thursday 10/10</b></li>
+    <li><b> Friday 10/11</b></li>
+    </ul>
+<h3>Week 7</h3>
+    <ul>
+    <li><b> Monday 10/14</b></li>
+    <li><b> Wednesday 10/16</b></li>
+    <li><b> Thursday 10/17</b></li>
+    <li><b> Friday 10/18</b></li>
+    </ul>
+<h3>Week 8</h3>
+    <ul>
+    <li><b> Monday 10/21</b></li>
+    <li><b> Wednesday 10/23</b></li>
+    <li><b> Thursday 10/24</b></li>
+    <li><b> Friday 10/25</b></li>
+    </ul>
+<h3>Week 9</h3>
+    <ul>
+    <li><b> Monday 10/28</b></li>
+    <li><b> Wednesday 10/30</b></li>
+    <li><b> Thursday 10/31</b></li>
+    <li><b> Friday 11/01</b></li>
+    </ul>
+<h3>Week 10</h3>
+    <ul>
+    <li><b> Monday 11/04</b></li>
+    <li><b> Wednesday 11/06</b></li>
+    <li><b> Thursday 11/07</b></li>
+    <li><b> Friday 11/08</b></li>
+    </ul>
+<h3>Week 11</h3>
+    <ul>
+    <li><b> Monday 11/11</b></li>
+    <li><b> Wednesday 11/13</b></li>
+    <li><b> Thursday 11/14</b></li>
+    <li><b> Friday 11/15</b></li>
+    </ul>
+<h3>Week 12</h3>
+    <ul>
+    <li><b> Monday 11/18</b></li>
+    <li><b> Wednesday 11/20</b></li>
+    <li><b> Thursday 11/21</b></li>
+    <li><b> Friday 11/22</b></li>
+    </ul>
+<h3>Week 13</h3>
+    <ul>
+    <li><b> Monday 11/25</b></li>
+    <li><b> Wednesday 11/27</b></li>
+    <li><b> Thursday 11/28</b></li>
+    <li><b> Friday 11/29</b></li>
+    </ul>
+<h3>Week 14</h3>
+    <ul>
+    <li><b> Monday 12/02</b></li>
+    <li><b> Wednesday 12/04</b></li>
+    <li><b> Thursday 12/05</b></li>
+    <li><b> Friday 12/06</b></li>
+    </ul>
+<h3>Week 15</h3>
+    <ul>
+    <li><b> Monday 12/09</b></li>
+    <li><b> Wednesday 12/11</b></li>
+    <li><b> Thursday 12/12</b></li>
+    <li><b> Friday 12/13</b></li>
+    </ul>
+<h3>Week 16</h3>
+    <ul>
+    <li><b> Monday 12/16</b></li>
+    <li><b> Wednesday 12/18</b></li>
+    <li><b> Thursday 12/19</b></li>
+    <li><b> Friday 12/20</b></li>
+    </ul>

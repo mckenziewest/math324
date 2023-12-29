@@ -1,0 +1,43 @@
+\documentclass[12pt]{article}
+
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage[margin=1in]{geometry}
+\begin{document}
+\begin{center}
+    Bi-conditional Statement Pre-class assignment\\
+    *INSERT YOUR NAME HERE*
+\end{center}
+
+Complete the following proof. (Note you mostly just need to copy and the fist half of the proof.)  Print you compiled document and bring it to class.
+
+\noindent \textbf{Defintion:} If $a$ and $b$ are integers, we say $a$ {\color{blue} divides} $b$ if there is another integer $k$ such that $ak=b$. Denote this by $a|b$.
+\begin{enumerate}
+    \item Let $a,b$ and $m$ be integers such that $m\neq 0$.
+        Prove that $a|b$ if and only if $ma|mb$.
+        
+        \begin{proof}
+        Let $a,b$ and $m$ be integers such that $m\neq0$
+        
+        ($\Rightarrow$)  Assume that $a|b$.  This means that there is some integer $k$ such that $ak=b$.  Multiply both sides of this equation by $m$ to get:
+            $$m(ak)=mb.$$ 
+        We rearrange via associativity to get $$(ma)k=mb.$$
+            Therefore $ma|mb$
+            
+        ($\Leftarrow$) Assume that $ma|mb$.  This means that ...............
+            
+        \end{proof}
+\end{enumerate}
+
+\vskip 1in
+Some information about using \LaTeX\ (pronounced ``Lah-Tech'' or ``Lay-Tech'').
+    \begin{itemize}
+		\item Any mathematical symbols will go between \verb|$ ... $|.
+		\item To display an equation on its own line use \verb|$$ ... $$|.
+		\item To get a newline, use either $\backslash\backslash$ or skip two lines in the editor.  The first option will simply skip to the next line, the second option will create a new paragraph.
+		\item To get superscripts, use a carrot: \verb|$A^{123}$|, and for subscripts, an underscore: \verb|$x_{ij}$|.
+		\item Many standard functions and characters exist as commands, for example $\cos(2\pi)$ is produced using \verb|$\cos(2\pi)$|.
+		\item To make a matrix, such as $A=\begin{bmatrix}1&2&3\\4&5&6\end{bmatrix}$, use\\ \verb|$A=\begin{bmatrix} 1 & 2 & 3 \\ 4 & 5 & 6 \end{bmatrix}$|.\\ Here the \verb|&| indicates an alignment and \verb|\\| gives a new line.
+		\item I highly recommend you learn how to use this text editor.  It will make proof-writing much easier and your future-selves much happier.
+		\item Don't hesitate to ask if you have any questions.
+	\end{itemize}
+\end{document}

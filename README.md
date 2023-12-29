@@ -17,3 +17,7 @@ The content for the course is here:
 * [Chapter 7](slide_worksheets/chapter7) - Eigenvalues and Eigenvectors
 
 The project instructions and rubrics are [here](Projects/).
+
+Course websites are also included in this repo.
+* [Fall 2019](course_website/1920-1-324)
+* [Spring 2020](course_website/1920-2-324)
