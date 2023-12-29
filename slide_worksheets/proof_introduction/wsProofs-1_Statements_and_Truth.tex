@@ -1,0 +1,333 @@
+\documentclass[handout]{beamer}
+%\usepackage[margin=1in]{geometry}
+\usepackage{amsthm,amsmath,amsfonts,hyperref,graphicx,color,multicol}
+\usepackage{enumitem,tikz}
+
+%%%%%%%%%%
+%Beamer Template Customization
+%%%%%%%%%%
+\setbeamertemplate{navigation symbols}{}
+\setbeamertemplate{theorems}[ams style]
+\setbeamertemplate{blocks}[rounded]
+
+\definecolor{Blu}{RGB}{43,62,133} % UWEC Blue
+\setbeamercolor{structure}{fg=Blu} % Titles
+
+%Unnumbered footnotes:
+\newcommand{\blfootnote}[1]{%
+	\begingroup
+	\renewcommand\thefootnote{}\footnote{#1}%
+	\addtocounter{footnote}{-1}%
+	\endgroup
+}
+
+
+%%%%%%%%%%
+%Custom Commands
+%%%%%%%%%%
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\veca}{\vec{a}}
+\newcommand{\vecb}{\vec{b}}
+\newcommand{\vece}{\vec{e}}
+\newcommand{\vecu}{\vec{u}}
+\newcommand{\vecv}{\vec{v}}
+\newcommand{\vecw}{\vec{w}}
+\newcommand{\vecx}{\vec{x}}
+\newcommand{\zerovector}{\vec{0}}
+
+\newcommand{\ds}{\displaystyle}
+
+\newcommand{\fn}{\insertframenumber}
+
+\newcommand{\rank}{\operatorname{rank}}
+\newcommand{\adj}{\operatorname{adj}}
+
+\newcommand{\blank}[1]{\underline{\hspace*{#1}}}
+
+
+%%%%%%%%%%
+%Custom Theorem Environments
+%%%%%%%%%%
+\theoremstyle{definition}
+\newtheorem{exercise}{Exercise}
+\newtheorem{question}[exercise]{Question}
+\newtheorem*{defn}{Definition}
+\newtheorem*{exa}{Example}
+\newtheorem*{disc}{Group Discussion}
+\newtheorem*{nb}{Note}
+\newtheorem*{recall}{Recall}
+\renewcommand{\emph}[1]{{\color{blue}\texttt{#1}}}
+
+\definecolor{Gold}{RGB}{237, 172, 26}
+%Statement block
+\newenvironment{statementblock}[1]{%
+	\setbeamercolor{block body}{bg=Gold!20}
+	\setbeamercolor{block title}{bg=Gold}
+	\begin{block}{\textbf{#1.}}}{\end{block}}
+
+\begin{document}
+	\title{Math 324: Linear Algebra}
+	\subtitle{Mathematical Statements\\A Definition of True}
+	\author{Mckenzie West}
+	\date{Last Updated: \today}
+\begin{frame}
+\maketitle
+\end{frame}
+
+\begin{frame}{\insertframenumber}
+	\begin{block}{\textbf{Last Time.}}
+	\begin{itemize}[label=--]
+		\item Consumer Preference Models
+		\item Cryptography-Encoding and Decoding using Matrices
+		\item Leontief Input-Output Models
+		\item Least Squares Approximation
+	\end{itemize}
+	\end{block}
+\begin{block}{\textbf{Today.}}
+	\begin{itemize}[label=--]
+		\item Statements
+		\item Exploration and Counterexamples
+		\item Quantifiers
+		\item Conditional Statements
+		\item Compound Statements
+		\item Negation
+	\end{itemize}
+\end{block}
+\end{frame}
+
+
+\begin{frame}{\fn}
+	\begin{defn}
+		A \emph{mathematical statement} is a declarative sentence that is either true or false but not both.
+	\end{defn}
+	\begin{exa}
+		\begin{itemize}[label=--]
+			\item There is a matrix $A$ such that $2A=3A-2I_2$.
+			\item For all $m\times n$ matrices $A+B=B+A$.
+			\item All systems of linear equations have a solution.
+			
+			\textit{While this statement is not correct---there are examples of systems without solutions---it is a statement.}
+		\end{itemize}
+	\end{exa}
+\end{frame}
+\begin{frame}{\fn}
+	\begin{block}{\textbf{Non-Examples.}}
+		\begin{itemize}[label=--]
+			\item $AB=7I$ 
+			
+			\textit{We do not know what $A$ and $B$ are. Really we also don't know what $I$ is. are we even working with matrices here?}
+			\item Find a least squares approximation for the data $(2,1),\ (3,2),\ (1,1),\ (5,7)$.
+			
+			\textit{This is a directive.}
+			\item Linear algebra is awesome.  
+			
+			\textit{While in general I believe this is true, I recognize it is my opinion.}
+		\end{itemize}
+	\end{block}
+	\begin{exercise}
+		Can you add any context or change the three sentences above to each be statements?
+	\end{exercise}
+\end{frame}
+\begin{frame}{\fn}
+	\begin{exercise}
+		Share the statements you wrote down for your pre-class homework.  
+		Decide as a group if they are indeed statements.
+	\end{exercise}
+\end{frame}
+\begin{frame}{\fn}
+	\begin{statementblock}{Determining if a Statement is True or False - Exploration}
+		\begin{itemize}[label=--]
+			\item Make a preliminary guess, ask some questions.
+			\item Examples!  Write down some examples test the statement.  If you find one that shows the statement is false, this is called a \emph{counterexample}.
+			\item Use prior knowledge. Are there any theorems or things you have learned that relate to the statement?
+			\item Brainstorm together.  Collaborate.
+		\end{itemize}
+	\end{statementblock}
+\end{frame}
+\begin{frame}{\fn}
+	\begin{exercise}\label{square_sum}
+		Use methods of exploration to test the statement:
+		
+		For all $n\times n$ matrices $A$ and $B$,
+			\[(A+B)^2=A^2+2AB+B^2.\]
+			
+		\begin{enumerate}[label=(\alph*)]
+			\item Before testing or anything, think about this statement.  Would you guess it is true or false?
+			\item Does is look like something you have seen before?
+			\item Test several examples of $A$ and $B$. Remember that matrices are weird and don't always function like normal, especially when multiplying.
+		\end{enumerate}
+	\end{exercise}
+\end{frame}
+\begin{frame}{\fn}
+	\begin{exercise}\label{true_square_sum}
+		Consider a variation on the statement from exercise \ref{square_sum}.
+		
+		There exist $n\times n$ matrices $A$ and $B$ such that
+		\[(A+B)^2=A^2+2AB+B^2.\]
+		Is this statement true?
+	\end{exercise}
+\end{frame}
+\begin{frame}{\fn}
+	\begin{nb}
+		Notice that the statement in exercise \ref{square_sum} refers to all $n\times n$ matrices.  Since it is so broad, the statement is false.  On the other hand exercise \ref{true_square_sum} is incredibly more specific and has much more likely of a chance to be true.
+	\end{nb}
+	\begin{defn}
+		We call the phrases \textit{for all $n\times n$ matrices} or \textit{for some $n\times n$ matrices} quantifiers.  Formally, a \emph{quantifier} is an expression that indicates the scope of a statement.
+		
+		Informally, we may denote ``for all'' using $\forall$ and ``for some'' or ``there exists'' by $\exists$.
+	\end{defn}
+\end{frame}
+\begin{frame}{\fn}
+	\begin{exercise}
+		Add a quantifier that makes each of the following into statements.
+		\begin{enumerate}[label=(\alph*)]
+			\item $3A-2B=O$
+			\item $(A+B)^{T}=A^T+B^T$
+			\item $[A|I]$ row reduces to $[I|A^{-1}]$
+		\end{enumerate}
+	\end{exercise}
+	\begin{nb}
+		To disprove a ``for all'' statement, you just have to find one example where the statement is false.
+		
+		To prove a ``there exists'' statement, you just have to find one example where the statement holds.
+		
+		However, proving a ``for all'' or disproving a ``there exists'' almost always requires a more detailed write-up as examples will not suffice.
+	\end{nb}
+\end{frame}
+\begin{frame}{\fn}
+\begin{block}{\textbf{Brain Break.}}
+	Which season of the year is your favorite?
+	\begin{center}
+		\includegraphics[width=3in]{images/seasons}
+	\end{center}
+\end{block}
+\end{frame}
+\begin{frame}{\fn}
+	\begin{defn}
+		A \emph{conditional statement} (or \emph{implication}) is a statement that can be written in the form ``If $P$ then $Q$,'' where $P$ and $Q$ are sentences. 
+		
+		We call $P$ the \emph{hypothesis} and $Q$ the \emph{conclusion}.
+		
+		We can denote such a statement by $P\Rightarrow Q$, which we often read as ``$P$ implies $Q$.''
+	\end{defn}
+	\begin{nb}
+		Such a statement means that $Q$ is true whenever $P$ is true.  
+		Notice though if $P$ is false, the truth value of $Q$ does not matter.
+	\end{nb}
+\end{frame}
+\begin{frame}{\fn}
+	\begin{exercise}
+		\begin{minipage}{1in}
+			\includegraphics[width=1in]{images/uni_pepper}
+		\end{minipage}
+		\begin{minipage}{.75\textwidth}
+			Consider the statement.
+			
+		\begin{center}
+			If  Pepper sits, then they get a treat.
+		\end{center}
+		\begin{enumerate}[label=(\alph*)]
+			\item What are the hypothesis and conclusion?
+			\item There are four possible cases for this statement relating to whether each of the hypothesis and conclusion are true or false.  What are they, both generally speaking and in the case of this statement?
+		\end{enumerate}
+		\end{minipage}
+	\end{exercise}
+\end{frame}
+\begin{frame}{\fn}
+	\begin{exercise}\label{idem}
+		Consider the conditional statement: 
+		
+		If $A$ is a $2\times 2$ matrix satisfying $A^2=A$, then $A=I_2$.
+		\begin{enumerate}[label=(\alph*)]
+			\item What are the hypothesis and conclusion?
+			\item Give an example satisfying each of the possible true/false conditions (if possible):
+				\begin{center}
+					\begin{tabular}{c|c}
+					$P$&$Q$\\
+					\hline
+					$T$&$T$\\
+					$T$&$F$\\
+					$F$&$T$\\
+					$F$&$F$
+				\end{tabular}
+				\end{center}
+		\end{enumerate}
+	\end{exercise}
+	\begin{nb}
+		The statement in Exercise \ref{idem} is false because we can come up with an example where the hypothesis is true and the conclusion is false.  
+	\end{nb}
+\end{frame}
+\begin{frame}{\fn}
+	\begin{defn}
+		Suppose $P$ and $Q$ are statements.
+		
+		\emph{conjunction}: We call the statement \textit{$P$ and $Q$} true exactly when both $P$ and $Q$ are true. Denote this by $P\wedge Q$.
+		
+		\emph{disjunction}: We call the statement \textit{$P$ or $Q$} true exactly when at least one of $P$ or $Q$ is true. Denote this by $P\vee Q$.
+	\end{defn}
+	\begin{exercise}
+		Let $P$ be the statement \textit{the matrix $A$ is singular} and $Q$ the statement \textit{the matrix $A$ is $2\times 2$}.
+		\begin{enumerate}[label=(\alph*)]
+			\item Write down a matrix $A$ that satisfies both $P$ and $Q$.
+			\item Write down a matrix $A$ that satisfies $P$ but not $Q$.
+			\item Write down a matrix $A$ that satisfies $Q$ but not $P$.
+			\item Write down a matrix $A$ that satisfies neither $P$ nor $Q$.
+			\item Which or your matrices satisfy $P\wedge Q$? $P\vee Q$?
+		\end{enumerate}
+	\end{exercise}
+\end{frame}
+\begin{frame}{\fn}
+	\begin{defn}
+		The \emph{negation} of the statement $P$ is the statement ``not $P$'' and is denoted by $\neg P$.
+		
+		We say $\neg P$ is true whenever $P$ is false and $\neg P$ is false whenever $P$ is true.
+	\end{defn}
+	\begin{exa}
+		The negation of the statement \textit{Pepper is sitting} is the statement \textit{Pepper is not sitting}.
+	\end{exa}
+	\begin{exercise}
+		Write the negation of each of the following.
+			\begin{enumerate}[label=(\alph*)]
+				\item $4\leq 5$
+				\item $7$ is an even number
+				\item $3+4=2+5$
+				\item $I_5$ is singular
+			\end{enumerate}
+	\end{exercise}
+\end{frame}
+\begin{frame}{\fn}
+	\begin{exercise}
+		For the statements
+			\[P\colon\ \begin{bmatrix}3&1\\3&1\end{bmatrix}\text{ is square}
+			\hskip .5in 
+			Q\colon\ \begin{bmatrix}3&1\\3&1\end{bmatrix}\text{ is invertible},\]
+		write each of the following statements as English sentences and determine whether they are true or false.  Notice that $P$ is true and $Q$ is false.
+			\begin{enumerate}[label=(\alph*)]
+				\item $P\wedge Q$.
+				\item $P\vee Q$.
+				\item $P\wedge \neg Q$.
+				\item $\neg P\vee\neg Q$.
+			\end{enumerate}
+	\end{exercise}
+\end{frame}
+\begin{frame}{\fn}
+	\begin{statementblock}{Negating Compound Statements}
+		\begin{itemize}[label=$\circ$]
+			\item $\neg(P\wedge Q)=\neg P\vee\neg Q$
+			\item $\neg(P\vee Q)=\neg P\wedge\neg Q$
+		\end{itemize}
+	\end{statementblock}
+	\begin{exercise}
+		Explore the compound statements and their negations in the context of the statements
+			\[P\colon\ \text{Dr.~Pepper is delicious.}\hskip .5in Q\colon\ \text{The clock is wrong.}\]
+		\begin{enumerate}[label=(\alph*)]
+			\item $P\wedge Q$ 
+			\item $\neg P\vee Q$
+			\item $\neg (P\wedge Q)$
+			\item $\neg (P\vee\neg Q)$
+		\end{enumerate}
+	\end{exercise}
+\end{frame}
+\end{document}
+
+ 

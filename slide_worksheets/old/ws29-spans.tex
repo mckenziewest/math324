@@ -1,0 +1,259 @@
+\documentclass{beamer}
+%\usepackage[margin=1in]{geometry}
+\usepackage{amsthm,amsmath,amsfonts,hyperref,graphicx,color,multicol}
+\usepackage{enumitem,tikz}
+
+%%%%%%%%%%
+%Beamer Template Customization
+%%%%%%%%%%
+\setbeamertemplate{navigation symbols}{}
+\setbeamertemplate{theorems}[ams style]
+\setbeamertemplate{blocks}[rounded]
+
+\definecolor{Blu}{RGB}{43,62,133} % UWEC Blue
+\setbeamercolor{structure}{fg=Blu} % Titles
+
+%Unnumbered footnotes:
+\newcommand{\blfootnote}[1]{%
+	\begingroup
+	\renewcommand\thefootnote{}\footnote{#1}%
+	\addtocounter{footnote}{-1}%
+	\endgroup
+}
+
+
+%%%%%%%%%%
+%Custom Commands
+%%%%%%%%%%
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\veca}{\vec{a}}
+\newcommand{\vecb}{\vec{b}}
+\newcommand{\vece}{\vec{e}}
+\newcommand{\vecu}{\vec{u}}
+\newcommand{\vecv}{\vec{v}}
+\newcommand{\vecw}{\vec{w}}
+\newcommand{\vecx}{\vec{x}}
+\newcommand{\zerovector}{\vec{0}}
+
+\newcommand{\ds}{\displaystyle}
+
+\newcommand{\fn}{\insertframenumber}
+
+\newcommand{\rank}{\operatorname{rank}}
+\newcommand{\adj}{\operatorname{adj}}
+
+\newcommand{\blank}[1]{\underline{\hspace*{#1}}}
+
+
+%%%%%%%%%%
+%Custom Theorem Environments
+%%%%%%%%%%
+\theoremstyle{definition}
+\newtheorem{exercise}{Exercise}
+\newtheorem{question}[exercise]{Question}
+\newtheorem*{defn}{Definition}
+\newtheorem*{exa}{Example}
+\newtheorem*{disc}{Group Discussion}
+\newtheorem*{nb}{Note}
+\newtheorem*{recall}{Recall}
+\renewcommand{\emph}[1]{{\color{blue}\texttt{#1}}}
+
+\definecolor{Gold}{RGB}{237, 172, 26}
+%Statement block
+\newenvironment{statementblock}[1]{%
+	\setbeamercolor{block body}{bg=Gold!20}
+	\setbeamercolor{block title}{bg=Gold}
+	\begin{block}{\textbf{#1.}}}{\end{block}}
+
+
+
+
+
+\begin{document}
+	\title{Math 324: Linear Algebra}
+	\subtitle{Section 4.4: Spanning Sets}
+	\author{Mckenzie West}
+	\date{Last Updated: \today}
+\begin{frame}
+\maketitle
+\end{frame}
+
+\begin{frame}{\insertframenumber}
+	\begin{block}{\textbf{Last Time.}}
+	\begin{itemize}[label=--]
+		\item Subspaces of $\R^2$
+		\item Subspaces of $\R^3$
+		\item Intersections of Subspaces
+	\end{itemize}
+	\end{block}
+	\begin{block}{\textbf{Today.}}
+		\begin{itemize}[label=--]
+			\item Linear Combinations
+			\item Spanning Sets
+			\item Spans
+		\end{itemize}
+	\end{block}
+\end{frame}
+\begin{frame}{\fn}
+	Just like in the case of $\R^n$ we can consider linear combinations for general vector spaces.
+	\begin{defn}
+		A vector $\vec v$ in a vector space $V$ is a \emph{linear combination} of $\vec u_1,\vec u_2,\dots,\vec u_n\in V$ if there exist scalars $c_1,c_2,\dots,c_n$ such that
+			\[\vec v=c_1\vec u_1+c_2\vec u_2+\cdots+c_n\vec u_n.\]
+	\end{defn}
+	\begin{exa}
+		The polynomial $p(x)=3+x-2x^2$ is a linear combination of $q_1(x)=1+x$, $q_2(x)=1+x^2$, $q_3(x)=1+x+x^2$, and $q_4(x)=x^2$ because \begin{eqnarray*}p(x)&=&3+x-2x^2\\ &=&5(1+x)+2(1+x^2)-4(1+x+x^2)+0x^2\\&=&5q_1(x)+2q_2(x)+(-4)q_3(x)+0q_4(x)\end{eqnarray*}
+	\end{exa}
+\end{frame}
+\begin{frame}{\fn}
+	\begin{exercise}
+		Can the polynomial $p(x)=2+x+x^2$ be written as a linear combination of $q_1(x)=1+x$ and $q_2(x)=1+x^2$?
+	\end{exercise}
+	\begin{exercise}
+		Can the polynomial $p(x)=1-4x+x^2$ be written as a linear combination of $q_1(x)=1+x$ and $q_2(x)=1+x^2$?
+	\end{exercise}
+%	\begin{exercise}
+%		Describe all of the polynomials can be written as a linear combination of $q_1(x)=1+x$ and $q_2(x)=1+x^2$.
+%	\end{exercise}
+\end{frame}
+\begin{frame}{\fn}
+	\begin{exercise}
+		Can $A = \begin{bmatrix}1&2\\3&4\end{bmatrix}$ be written as a linear combination of $M_1=\begin{bmatrix}1&1\\0&0\end{bmatrix}$, $M_2=\begin{bmatrix}1&0\\0&1\end{bmatrix}$, and $M_3=\begin{bmatrix}0&0\\1&1\end{bmatrix}$?
+	\end{exercise}
+	\begin{exercise}
+		Can $A = \begin{bmatrix}1&1\\1&1\end{bmatrix}$ be written as a linear combination of $M_1=\begin{bmatrix}1&1\\0&0\end{bmatrix}$, $M_2=\begin{bmatrix}1&0\\0&1\end{bmatrix}$, and $M_3=\begin{bmatrix}0&0\\1&1\end{bmatrix}$?
+	\end{exercise}
+\end{frame}
+\begin{frame}{\fn}
+	\begin{defn}
+		If every vector a vector space $V$ can be written as a linear combination of the vectors in some set $S=\{\vec v_1,\vec v_2,\dots,\vec v_n\}$ then we call $S$ a \emph{spanning set} of $V$.
+		In this case, we say $S$ \emph{spans} $V$.
+	\end{defn}
+	\begin{exa}
+		The set $S=\{\vec e_1,\vec e_2,\vec e_3\}$, where $\vec e_1=(1,0,0)$, $\vec e_2=(0,1,0)$, and $\vec e_3=(0,0,1)$, is a spanning set of $\R^3$.  That is, any vector $\vec v\in \R^3$ has the form $\vec v=(v_1,v_2,v_3)=v_1(1,0,0)+v_2(0,1,0)+v_3(0,0,1)$.
+	\end{exa}\begin{exa} 	
+		Similarly, $S=\{1,x,x^2\}$ is a spanning set of $P_2$ because any polynomial function $p(x)$ in $P_2$ can be written as $p(x)=a+bx+cx^2 =a(1)+b(x)+c(x^2).$
+	\end{exa}
+		These are the \emph{standard spanning sets} of $\R^3$ and $P_2$.
+\end{frame}
+\begin{frame}{\fn}
+	\begin{exa}
+		Other things can be spanning sets.  For example, I claim that $\{(1,0,1),(1,1,0),(0,1,1)\}$ is a spanning set of $\R^3$.  To verify, consider a generic $(x,y,z)\in\R^3$.  Write the desired equation:
+			\[(x,y,z)=a(1,0,1)+b(1,1,0)+c(0,1,1)\]
+		Then solve for $a,b,c$:
+			$$\begin{array}{rcl}\left.\begin{array}{rcrcrcl}
+				1a&+&1b&&&=&x\\
+				&&1b&+&1c&=&y\\
+				1a&&&+&1c&=&z
+			\end{array}\right\}&\rightarrow&
+			\begin{bmatrix}1&1&0&x\\0&1&1&y\\1&0&1&z\end{bmatrix}
+			\\&\rightarrow&
+			\begin{bmatrix}
+				2 & 0 & 0 & x - y + z \\
+				0 & 2 & 0 & x + y - z \\
+				0 & 0 & 2 & -x + y + z
+			\end{bmatrix}
+			\end{array}$$
+		Therefore, $(x,y,z)=\frac{1}{2}\left[(x-y+z)(1,0,1)+(x+y-z)(1,1,0)+(-x+y+z)(0,1,1)\right]$
+	\end{exa}
+\end{frame}
+\begin{frame}{\fn}
+	\begin{exercise}
+		Using the formula (repeated below) from the previous example, write $(1,2,3)$ as a linear combination of $(1,0,1),(1,1,0)$ and $(0,1,1)$:
+		
+		 {\footnotesize $ (x,y,z)~=~\frac{1}{2}\left[(x-y+z)(1,0,1)+(x+y-z)(1,1,0)+(-x+y+z)(0,1,1)\right]$}
+	\end{exercise}
+	\begin{nb}
+		If we are only checking whether or not a set spans $S$, we simply have to make sure there is always a solution.  That is, check that the rref of the coefficient matrix has no zero rows.
+	\end{nb}
+\end{frame}
+\begin{frame}{\fn}
+	\begin{exercise}
+		Does the set $S=\{(2,0),(-1,1),(3,1)\}$ span $\R^2$?  If not, describe all vectors that can be written as a combination of the vectors in $S$.
+	\end{exercise}
+	\begin{exercise}
+		Does the set $S=\{(2,0),(-1,1)\}$ span $\R^2$? If not, describe all vectors that can be written as a combination of the vectors in $S$.
+	\end{exercise}
+	\begin{exercise}
+	Does the set $S=\{(1,-1,0),(-1,1,0),(0,1,1)\}$ span $\R^3$? If not, describe all vectors that can be written as a combination of the vectors in $S$.
+	\end{exercise}
+\end{frame}
+\begin{frame}{\fn}
+	\begin{exercise}
+		Does the set $S=\{1+x,1+x^2\}$ span $P_2$?  If not, describe all polynomials that can be written as a combination of the vectors in $S$.
+	\end{exercise}
+	\begin{exercise}
+		Does the set $S=\left\{\begin{bmatrix}1&1\\0&0\end{bmatrix},\begin{bmatrix}1&0\\0&1\end{bmatrix},\begin{bmatrix}0&0\\1&1\end{bmatrix},\begin{bmatrix}0&1\\1&0\end{bmatrix}\right\}$ span $M_2$?  If not, describe all matrices that can be written as a combination of the vectors in $S$.
+	\end{exercise}
+\end{frame}
+\begin{frame}{\fn}
+	\begin{defn}
+		If $S=\{\vec v_1,\vec v_2,\dots,\vecv_k\}$ is a set of vectors in a vector space $V$, then the \emph{span of $S$}, denoted $\operatorname{span}(S)$, is the set of all linear combinations of the vectors in $S$,
+			\[\operatorname{span}(S)=\{c_1\vec v_1+c_2\vec v_2+\cdots+c_k\vec v_k\ :\ c_1,c_2,\dots,c_k\in\R\}.\]
+	\end{defn}
+	\begin{nb}
+		In fact, $S$ spans $V$ exactly when $\operatorname{span}(S)=V$.
+	\end{nb}
+\end{frame}
+\begin{frame}{\fn}
+	\begin{exercise}
+		Compute $\operatorname{span}(S)$ for $S=\{(1,2,3),(4,5,6)\}$ as a subset of $\R^3$. That is, describe all vectors in the span.
+	\end{exercise}
+	\begin{exercise}
+		Compute $\operatorname{span}(S)$ for $S=\{1+x,1-x\}$ as a subset of $P_1$.
+	\end{exercise}
+\end{frame}
+\begin{frame}{\fn}
+	\begin{statementblock}{Theorem 4.7}
+		If $S=\{\vec v_1,\vec v_2,\dots,\vec v_k\}$ is a set of vectors in a vector space $V$, then $\operatorname{span}(S)$ is a subspace of $V$.
+		
+		Moreover, $\operatorname{span}(S)$ is the \emph{smallest} subspace of $V$ that contains~$S$.  This means that if $W$ is any other subspace of $V$ that contains $S$, then $W$ also contains $\operatorname{span}(S)$.
+	\end{statementblock}
+\end{frame}
+\begin{frame}{\fn}	
+	\begin{exercise}
+		Prove that $\operatorname{span}(S)$ is a subspace of $V$. - Write your scratch work on a whiteboard so I can see it as I walk around.
+		\begin{proof}
+			Let $S=\{\vec v_1,\vec v_2,\dots,\vec v_n\}$ be a subset of a vector space $V$. To show that $\operatorname{span}(S)$ is a subspace of $V$, we must verify the subspace properties:
+			\begin{enumerate}[label=(\alph*)]
+				\item Write $\vec 0$ as a linear combination of the vectors in $S$. *Be sure to reference any previous Theorems.*
+				\item Let $\vec u$ and $\vec w$ be elements of $\operatorname{span}(S)$.  Then we can write $\vec u=c_1\vec v_1+c_2\vec v_2+\cdots+c_k\vec v_k$ and $\vec w=d_1\vec v_1+d_2\vec v_2+\cdots +c_k\vec v_k$.  Show that $\vec u+\vec w$ can be written as a linear combination of the vectors in $S$.
+				\item Let $c$ be a scalar.  Show that $c\vec u$ can be written as a linear combination of the scalars in $S$.
+			\end{enumerate}
+		\end{proof}
+	\end{exercise}
+\end{frame}
+\begin{frame}{\fn}
+	\begin{exercise}
+		Let $S=\{(1,2,3),(4,5,6)\}$ we now know that $\operatorname{span}(S)$ is a subspace of $\R^3$ but is not equal to all of $\R^3$, what could it be, geometrically?
+	\end{exercise}
+\end{frame}
+\begin{frame}{\fn}
+	One thing we want to avoid in a spanning set is redundancies. A very easy redundancy check is for non-trivial solutions to
+		\[c_1\vec v_1+c_2\vec v_2+\cdots + c_k\vec v_k=\vec 0.\]
+	\begin{defn}
+		A subset $S=\{\vec v_1,\vec v_2,\dots,\vec v_k\}$ of a vector space $V$ is called \emph{linearly independent} if the vector equation
+			\[c_1\vec v_1+c_2\vec v_2+\cdots+c_k\vec v_k=\vec 0\]
+		has only the trivial solution,
+			\[c_1=0,c_2=0,\dots,c_k=0.\]
+		If there are non-trivial solutions, then we call $S$ \emph{linear dependent}.
+	\end{defn}
+\end{frame}
+\begin{frame}{\fn}
+	\begin{exercise}
+		Is the set $S=\{(1,2),(3,4)\}$ linear independent?
+	\end{exercise}
+	\begin{exercise}
+		Is the set $S=\{(1,2),(3,4), (5,6)\}$ linearly independent?
+	\end{exercise}
+	\begin{exercise}
+		Is the set $S=\{(1,2,0),(3,0,4), (0,5,6)\}$ linearly independent?
+	\end{exercise}
+	\begin{exercise}
+		Is the set $S=\{1,1+x,1+x+x^2\}$ linearly independent?
+	\end{exercise}
+	\begin{exercise}
+		Is the set $S=\left\{\begin{bmatrix}1&2&0\\0&1&1\end{bmatrix},\begin{bmatrix}0&0&1\\1&1&1\end{bmatrix}\right\}$ linearly independent?
+	\end{exercise}
+\end{frame}
+\end{document}
+

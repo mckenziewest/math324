@@ -1,0 +1,379 @@
+\documentclass[handout]{beamer}
+%\usepackage[margin=1in]{geometry}
+\usepackage{amsthm,amsmath,amsfonts,hyperref,graphicx,color,multicol}
+\usepackage{enumitem,tikz}
+
+%%%%%%%%%%
+%Beamer Template Customization
+%%%%%%%%%%
+\setbeamertemplate{navigation symbols}{}
+\setbeamertemplate{theorems}[ams style]
+\setbeamertemplate{blocks}[rounded]
+
+\definecolor{Blu}{RGB}{43,62,133} % UWEC Blue
+\setbeamercolor{structure}{fg=Blu} % Titles
+
+%Unnumbered footnotes:
+\newcommand{\blfootnote}[1]{%
+	\begingroup
+	\renewcommand\thefootnote{}\footnote{#1}%
+	\addtocounter{footnote}{-1}%
+	\endgroup
+}
+
+
+%%%%%%%%%%
+%Custom Commands
+%%%%%%%%%%
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\veca}{\vec{a}}
+\newcommand{\vecb}{\vec{b}}
+\newcommand{\vece}{\vec{e}}
+\newcommand{\vecu}{\vec{u}}
+\newcommand{\vecv}{\vec{v}}
+\newcommand{\vecw}{\vec{w}}
+\newcommand{\vecx}{\vec{x}}
+\newcommand{\zerovector}{\vec{0}}
+
+\newcommand{\ds}{\displaystyle}
+
+\newcommand{\fn}{\insertframenumber}
+
+\newcommand{\rank}{\operatorname{rank}}
+\newcommand{\adj}{\operatorname{adj}}
+
+\newcommand{\blank}[1]{\underline{\hspace*{#1}}}
+
+
+%%%%%%%%%%
+%Custom Theorem Environments
+%%%%%%%%%%
+\theoremstyle{definition}
+\newtheorem{exercise}{Exercise}
+\newtheorem{question}[exercise]{Question}
+\newtheorem*{defn}{Definition}
+\newtheorem*{exa}{Example}
+\newtheorem*{disc}{Group Discussion}
+\newtheorem*{nb}{Note}
+\newtheorem*{recall}{Recall}
+\renewcommand{\emph}[1]{{\color{blue}\texttt{#1}}}
+
+\definecolor{Gold}{RGB}{237, 172, 26}
+%Statement block
+\newenvironment{statementblock}[1]{%
+	\setbeamercolor{block body}{bg=Gold!20}
+	\setbeamercolor{block title}{bg=Gold}
+	\begin{block}{\textbf{#1.}}}{\end{block}}
+
+\begin{document}
+	\title{Math 324: Linear Algebra}
+	\subtitle{2.2: Properties of Matrix Operations}
+	\author{Mckenzie West}
+	\date{Last Updated: \today}
+\begin{frame}
+\maketitle
+\end{frame}
+
+\begin{frame}{\insertframenumber}
+	\begin{block}{\textbf{Last Time.}}
+	\begin{itemize}[label=--]
+		\item Row and Column Matrices
+		\item Linear Combinations
+		\item Linear Systems as Matrix Products
+	\end{itemize}
+	\end{block}
+\begin{block}{\textbf{Today.}}
+	\begin{itemize}[label=--]
+		\item Properties of Matrix Addition
+		\item Additive and Multiplicative Identities
+		\item Properties of Matrix Multiplication
+		\item Transposes and Properties of
+	\end{itemize}
+\end{block}
+\end{frame}
+
+\begin{frame}{\fn}
+	\begin{statementblock}{Theorem 2.1}
+		If $A$, $B$, and $C$ are $m\times n$ matrices, and $c$ and $d$ are scalars, then the following properties are true:
+			\begin{enumerate}[label=\arabic*.]
+				\item $A+B=B+A$\hfill \emph{Commutativity (of addition)}
+				\item $A+(B+C)=(A+B)+C$ \hfill\emph{Associativity (of addition)}
+				\item $(cd)A=c(dA)$\hfill\emph{Associativity (of scalar multiplication)}
+				\item $1A=A$\hfill\emph{Scalar multiplication identity}
+				\item $c(A+B)=cA+cB$\hfill\emph{Distributivity}
+				\item $(c+d)A=cA+dA$\hfill\emph{Distributivity}
+			\end{enumerate}
+	\end{statementblock}
+\end{frame}
+
+\begin{frame}{\fn}
+	\begin{exercise}
+		Let $A=\begin{bmatrix}
+		3&-2&4\\0&1&5
+		\end{bmatrix}$
+		$c=2$ and $d=-1$.
+		
+		Carefully work through the left-hand side and right-hand side of property (6) of Theorem 2.1. 
+		
+		What is the significance of this part of the Theorem?
+	\end{exercise}\pause
+	\begin{nb}
+		Theorem 2.1 feels intuitive but it is absolutely necessary that we write it down and verify it.
+	\end{nb}
+\end{frame}
+
+\begin{frame}{\fn}
+	When adding, we want to have the option to add ``zero'' though what we mean by zero depends on how addition is performed.
+	
+	\begin{defn}
+		A \emph{zero matrix}, or \emph{additive identity} for the set of $m\times n$ matrices is the $m\times n$ matrix that consists entirely of zeros, denoted by $O_{mn}$.
+	\end{defn}
+\end{frame}
+
+\begin{frame}{\fn}
+	\begin{statementblock}{Theorem 2.2}
+		If $A$ is an $m\times n$ matrix and $c$ is a scalar, then the following are true.
+		\begin{enumerate}[label=\arabic*.]
+			\item $A+O_{mn}=A$
+			\item $A+(-A)=O_{mn}$
+			\item If $cA=O_{mn}$ then $c=0$ or $A=O_{mn}$.
+		\end{enumerate}
+	\end{statementblock}
+	\begin{exercise}
+		Use Theorems 2.1 and 2.2 to solve for the matrix $X$ in terms of the matrices $A$ and $B$ if $3A-2X=B$.
+		
+		Carefully list what properties of Theorems 2.1 and 2.2 you are using when you use them.
+		\pause
+		
+		(Hint: You might use properties (1) and (2) of Thm 2.2, and properties (3), (4), and (5) of Thm 2.1).
+	\end{exercise}
+\end{frame}
+
+\begin{frame}{\fn}
+	\begin{statementblock}{Theorem 2.3}
+		If $A$, $B$, and $C$ are matrices of appropriate size and $c$ is a scalar then the following are true
+		\begin{enumerate}[label=\arabic*.]
+			\item $A(BC)=(AB)C$\hfill \emph{Associativity (of multiplication)}
+			\item $A(B+C)=AB+AC$\hfill \emph{Distributivity}
+			\item $(A+B)C=AC+BC$\hfill \emph{Distributivity}
+			\item $c(AB)=(cA)B=A(cB)$
+		\end{enumerate}
+	\end{statementblock}
+	\begin{exercise}
+		Let $A=\begin{bmatrix}
+			1&2\\0&1
+		\end{bmatrix}$, 
+		$B=\begin{bmatrix}
+		1&2&3\\-1&0&1
+		\end{bmatrix}$, and 
+		$C=\begin{bmatrix}
+		0\\1\\4
+		\end{bmatrix}$.
+		
+		Have some people at the table compute $A(BC)$ with the others compute $(AB)C$.
+	\end{exercise}
+\end{frame}
+
+\begin{frame}{\fn}
+	\begin{block}{\textbf{Warnings.}}
+		\begin{itemize}[label=--]
+			\item 		Commutativity does not apply for matrices.  In general \[AB\neq BA.\]
+			\item	We can't divide by matrices.  It is possible for 
+				\[AB=AC \textup{ but } B\neq C.\]
+		\end{itemize}
+	\end{block}
+\end{frame}
+
+\begin{frame}{\fn}
+	\begin{defn}
+		The \emph{identity matrix of order $n$} is the $n\times n$ matrix with 1's on the diagonal and zeros everywhere else.  Denote it by $I_n$.
+	\end{defn}
+	\begin{exa}
+		\[I_4=\begin{bmatrix}
+			1&0&0&0\\
+			0&1&0&0\\
+			0&0&1&0\\
+			0&0&0&1
+		\end{bmatrix}\]
+	\end{exa}
+	\begin{statementblock}{Theorem 2.4}
+		If $A$ is a matrix of size $m\times n$ then 
+			\begin{enumerate}[label=\arabic*.]
+				\item $AI_n=A$
+				\item $I_m A=A$
+			\end{enumerate}
+	\end{statementblock}
+\end{frame}
+
+\begin{frame}{\fn}
+	\begin{exercise}
+		Compute\[I_3\begin{bmatrix}
+			3&4\\7&9\\-5&2
+		\end{bmatrix}\]
+	\end{exercise}
+	\pause
+	\begin{exercise}
+		Compute
+		$\begin{bmatrix}
+		6&2\\13&1
+		\end{bmatrix}
+		\begin{bmatrix}
+		2&0\\0&-1
+		\end{bmatrix}$, and find a pattern.
+		
+		Without going through the steps of multiplication, determine
+		$$\begin{bmatrix}
+		-2&3\\6&5
+		\end{bmatrix}
+		\begin{bmatrix}
+		2&0\\0&-1
+		\end{bmatrix}.$$
+	\end{exercise}
+\end{frame}
+
+\begin{frame}{\fn}
+	\begin{block}{\textbf{Brain Break}}
+		What book/movie/TV show would you change the ending to if you could?
+		\begin{center}
+		\includegraphics[width=2in]{images/end}
+		\end{center}
+	\end{block}
+\end{frame}
+\begin{frame}{\fn}
+	\begin{defn}
+		If $k$ is a positive integer and $A$ is a square matrix, define the \emph{$k$th power of $A$} by
+		\[A^k=AA\cdots A\]
+		multiplying $A$ by itself $k$ times.
+		
+		Define $A^0=I$.
+		
+	\end{defn}
+	\begin{question}
+		For positive integers $j$ and $k$, is $$A^{j+k}=(A^j)(A^k)?$$ 
+		
+		Is $$A^{jk}=(A^j)^k=(A^k)^j?$$
+	\end{question}
+\end{frame}
+
+\begin{frame}{\fn}
+	\begin{defn}
+		The \emph{transpose} of an $m\times n$ matrix $A$ is the $n\times m$ matrix $A^T$ whose rows are the columns of $A$ in the same order.
+	\end{defn}
+	\begin{exercise}
+		Find the transpose of each matrix
+		\begin{center}
+			$\begin{bmatrix}
+		-1&13
+		\end{bmatrix}$\hskip .5in
+		$\begin{bmatrix}
+		2&3\\
+		9&7\\
+		-3&8
+		\end{bmatrix}$\hskip .5in
+		$\begin{bmatrix}
+		1&3&-1\\
+		3&2&-5\\
+		-1&-5&1
+		\end{bmatrix}
+		$
+		\end{center}
+	\end{exercise}
+	\begin{defn}
+		If $A^T=A$, we call $A$ \emph{symmetric}.
+	\end{defn}
+\end{frame}
+\begin{frame}{\fn}
+	\begin{statementblock}{Theorem 2.5}
+		If $A$ and $B$ are matrices of appropriate size and $c$ is a scalar, then the following are true
+		\begin{enumerate}[label=\arabic*.]
+			\item $(A^T)^T=A$
+			\item $(A+B)^T=A^T+B^T$
+			\item $(cA)^T=cA^T$
+			\item $(AB)^T=B^TA^T$
+		\end{enumerate}
+	\end{statementblock}
+	\begin{exercise}
+		Verify that $(AB)^T=B^TA^T$ for
+			\[
+			A=\begin{bmatrix}
+			-1&1&-2\\2&0&1
+			\end{bmatrix}\textup{ and }
+			B=\begin{bmatrix}
+			-3&0\\1&2\\1&-1
+			\end{bmatrix}
+			\]
+	\end{exercise}
+\end{frame}
+\begin{frame}{\fn}
+	\begin{exercise}
+		Compute $AA^T$, what do you notice?
+	\[A=\begin{bmatrix}
+		4&2&1\\0&2&-1
+	\end{bmatrix}\]
+	\end{exercise}
+	\begin{exercise}
+		Compute $B+B^T$, what do you notice?
+			\[B=\begin{bmatrix}
+			3&-2\\4&1
+			\end{bmatrix}\]
+	\end{exercise}
+\end{frame}
+
+\begin{frame}{\fn}
+	\begin{exercise}
+		Use Theorem 2.5 (and commutativity of addition) to verify that $A+A^T$ is symmetric for all $n\times n$ matrices $A$. Also verify that $cA$ is symmetric if $A$ is symmetric.
+	\end{exercise}
+	\begin{defn}
+		A $n\times n$ matrix $B$ is called \emph{skew symmetric} if $B^T=-B$.
+	\end{defn}
+	\begin{exercise}
+		Use Theorem 2.5 (and 2.1) to verify that $A-A^T$ is skew symmetric for all $n\times n$ matrices $A$.
+	\end{exercise}
+\end{frame}
+\begin{frame}{\fn}
+	\begin{exercise}
+		Use the previous two exercises to write the following matrix as the sum of a symmetric matrix and a skew symmetric matrix: \[A=\begin{bmatrix}
+		1&3&-2\\4&0&13\\-1&2&3
+		\end{bmatrix}\]
+	\end{exercise}
+\end{frame}
+
+\begin{frame}{\fn}
+	\begin{defn}
+		The \emph{trace} of an $n\times n$ matrix $A$ is the sum:	\[\operatorname{Tr}(A)=a_{11}+a_{22}+\cdots+a_{nn}.\]
+	\end{defn}
+	\begin{exercise}
+		Compute $\operatorname{Tr}(I_7)$ and  $\operatorname{Tr}\left(\begin{bmatrix}
+		3&-2&4\\0&2&1\\-3&15&3\end{bmatrix}\right)$
+	\end{exercise}
+
+	\begin{exercise}
+		Suppose $A$ and $B$ are $n\times n$ matrices and $c$ a scalar.
+		\begin{enumerate}[label=(\alph*)]
+			\item How does $\operatorname{Tr}(cA)$ compare to $\operatorname{Tr}(A)$?
+			\item Is it true that $\operatorname{Tr}(A+B)=\operatorname{Tr}(A)+\operatorname{Tr}(B)$?
+			\item Is it true that $\operatorname{Tr}(AB)=\operatorname{Tr}(A)\operatorname{Tr}(B)$?
+		\end{enumerate}
+	\end{exercise}
+\end{frame}
+
+\begin{frame}{\fn}
+\begin{exercise}
+	Consider square matrices of the form
+	\[A=\begin{bmatrix}
+	0&a_{12}&a_{13}&\dots&a_{1n}\\
+	0&0&a_{23}&\dots &a_{2n}\\
+	\vdots&\vdots&\vdots&&\vdots\\
+	0&0&0&\dots &a_{(n-1)n}\\
+	0&0&0&\dots&0
+	\end{bmatrix}\]
+	\begin{enumerate}[label=(\alph*)]
+		\item Write a $2\times 2$ and a $3\times 3$ matrix in the form of $A$.
+		\item Use Sage or a calculator to square, cube, fourth power,... each of the matrices. Describe the result.
+		\item Make a guess at what will happen for a $4\times 4$ matrix of this form as you raise it to powers.  Test your guess using technology.
+		\item Make a conjecture about the powers of $A$ when $A$ is an $n\times n$ matrix.
+	\end{enumerate}
+\end{exercise}
+\end{frame}
+\end{document}
+

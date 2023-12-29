@@ -1,0 +1,294 @@
+\documentclass{beamer}
+%\usepackage[margin=1in]{geometry}
+\usepackage{amsthm,amsmath,amsfonts,hyperref,graphicx,color,multicol}
+\usepackage{enumitem,tikz}
+
+%%%%%%%%%%
+%Beamer Template Customization
+%%%%%%%%%%
+\setbeamertemplate{navigation symbols}{}
+\setbeamertemplate{theorems}[ams style]
+\setbeamertemplate{blocks}[rounded]
+
+\definecolor{Blu}{RGB}{43,62,133} % UWEC Blue
+\setbeamercolor{structure}{fg=Blu} % Titles
+
+%Unnumbered footnotes:
+\newcommand{\blfootnote}[1]{%
+	\begingroup
+	\renewcommand\thefootnote{}\footnote{#1}%
+	\addtocounter{footnote}{-1}%
+	\endgroup
+}
+
+
+%%%%%%%%%%
+%Custom Commands
+%%%%%%%%%%
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\veca}{\vec{a}}
+\newcommand{\vecb}{\vec{b}}
+\newcommand{\vece}{\vec{e}}
+\newcommand{\vecu}{\vec{u}}
+\newcommand{\vecv}{\vec{v}}
+\newcommand{\vecw}{\vec{w}}
+\newcommand{\vecx}{\vec{x}}
+\newcommand{\zerovector}{\vec{0}}
+
+\newcommand{\ds}{\displaystyle}
+
+\newcommand{\fn}{\insertframenumber}
+
+\newcommand{\col}{\operatorname{col}}
+\newcommand{\row}{\operatorname{row}}
+\newcommand{\rank}{\operatorname{rank}}
+\newcommand{\nullity}{\operatorname{nullity}}
+\newcommand{\adj}{\operatorname{adj}}
+
+\newcommand{\blank}[1]{\underline{\hspace*{#1}}}
+
+
+%%%%%%%%%%
+%Custom Theorem Environments
+%%%%%%%%%%
+\theoremstyle{definition}
+\newtheorem{exercise}{Exercise}
+\newtheorem{question}[exercise]{Question}
+\newtheorem*{defn}{Definition}
+\newtheorem*{exa}{Example}
+\newtheorem*{disc}{Group Discussion}
+\newtheorem*{nb}{Note}
+\newtheorem*{recall}{Recall}
+\renewcommand{\emph}[1]{{\color{blue}\texttt{#1}}}
+
+\definecolor{Gold}{RGB}{237, 172, 26}
+%Statement block
+\newenvironment{statementblock}[1]{%
+	\setbeamercolor{block body}{bg=Gold!20}
+	\setbeamercolor{block title}{bg=Gold}
+	\begin{block}{\textbf{#1.}}}{\end{block}}
+
+
+
+
+
+\begin{document}
+	\title{Math 324: Linear Algebra}
+	\subtitle{Section 5.1: Length and Dot Product in $\R^n$}
+	\author{Mckenzie West}
+	\date{Last Updated: \today}
+\begin{frame}
+\maketitle
+\end{frame}
+
+\begin{frame}{\insertframenumber}
+	\begin{block}{\textbf{Last Time.}}
+	\begin{itemize}[label=--]
+		\item Nullspace of a matrix
+		\item Dimension of solution spaces
+		\item Solutions of systems of equations
+	\end{itemize}
+	\end{block}
+	\begin{block}{\textbf{Today.}}
+		\begin{itemize}[label=--]
+			\item Dot Product
+			\item Length
+			\item Cauchy-Schwarz Inequality
+			\item Orthogonality
+			\item Triangle Inequality
+			\item Pythagorean Theorem
+		\end{itemize}
+	\end{block}
+\end{frame}
+\begin{frame}{\fn}
+	\begin{defn}
+		Let $\vec u=(u_1,u_2,\dots,u_n)$ and $\vec v=(v_1,v_2,\dots,v_n)$ be two vectors in $\R^n$.  Define the \emph{dot product} of $\vec u$ and $\vec v$ to be the \textbf{scalar}
+			\[\vec u\cdot\vec v=u_1v_1+u_2v_2+\cdots+u_nv_n.\]
+	\end{defn}
+	\begin{exercise}[Warmup]
+		Let $\vec u=(1,2)$ and $\vec v=(3,-1)$, compute $\vec u\cdot \vec v$.  
+		
+		What is $(2\vecu)\cdot\vec v$?
+	\end{exercise}
+\end{frame}
+\begin{frame}{\fn}
+	\begin{statementblock}{Theorem 5.3}
+		If $\vec u$, $\vec v$, and $\vec w$ are vectors in $\R^n$ and $c$ is a scalar, then the following are true:
+			\begin{enumerate}[label=\textbf{\arabic*.}]
+				\item $\vec u\cdot\vec v=\vec v\cdot \vec u$
+				\item $\vec u\cdot(\vec v+\vec w)=\vec u\cdot \vec v+\vec u\cdot\vec w$
+				\item $c(\vec u\cdot \vec v)=(c\vec u)\cdot \vec v=\vec u\cdot(c\vec v)$
+			\end{enumerate}
+	\end{statementblock}
+	\begin{exercise}
+		Prove property \textbf{1.} of Theorem 5.3 using $\vec u=(u_1,u_2,\dots,u_n)$ and $\vec v=(v_1,v_2,\dots,v_n)$.  Make sure to be precise about what $\vec u\cdot \vec v$ and $\vec v\cdot\vec u$ are.
+	\end{exercise}
+\end{frame}
+\begin{frame}{\fn}
+	\begin{defn}
+		The \emph{length} of a vector $\vec v =(v_1,v_2,\dots,v_n)$ in $\R^n$ is the scalar
+			\[\|\vec v\|=\sqrt{v_1^2+v_2^2+\cdots+v_n^2}.\]
+	\end{defn}
+	\begin{statementblock}{Theorem 5.3}
+		If $\vec v$ is a vector in $\R^n$, then the following are true:
+		\begin{enumerate}[label=.]
+			\item[\textbf{4.}] $\vec v\cdot\vec v=\|\vec v\|^2$
+			\item[\textbf{5.}] $\vec v\cdot \vec v\geq 0$ and $\vec v\cdot\vec v=0$ if and only if $\vec v=\vec 0$
+		\end{enumerate}
+	\end{statementblock}
+\end{frame}
+\begin{frame}{\fn}
+	\begin{statementblock}{\textbf{Theorem 5.1}}
+		Let $\vec v$ be a vector in $\R^n$ and let $c$ be a scalar.  Then
+			\[\|c\vec v\|=|c|\|\vec v\|,\]
+		where $|c|$ is the absolute value of the scalar $c$.
+	\end{statementblock}
+	\begin{proof}[Alternate Proof Using Dot Products]
+		Let $\vec v$ be a vector in $\R^n$ and $c$ a scalar.  Then
+			\begin{eqnarray*}
+				\|c\vec v\|&=&\sqrt{(c\vec v)\cdot(c\vec v)}\\
+				&=&\sqrt{c^2(\vec v\cdot\vec v)}\\
+				&=&|c|\sqrt{\vec v\cdot\vec v}\\
+				&=&|c|\|\vec v\|.
+			\end{eqnarray*}
+		Therefore, $\|c\vec v\|=|c|\|\vec v\|$, as desired.
+	\end{proof}
+\end{frame}
+\begin{frame}{\fn}
+	\begin{exercise}
+		Let $\vec u=(1,0,3)$ and $\vec v=(-2,-1,2)$.
+		
+		Compute each of the following:
+		\begin{enumerate}[label=(\alph*)]
+			\item $\vec u\cdot\vec v$
+			\item $\|\vec u\|$
+			\item $\|\vec u-\vec v\|$
+			\item\label{unitvector} $\vec w=\frac{\vec u}{\|\vec u\|}$ and $\|\vec w\|$
+			\item $\vec w\cdot\vec u$ (same $\vec w$ as part \ref{unitvector})
+		\end{enumerate}
+	\end{exercise}
+\end{frame}
+\begin{frame}{\fn}
+	\begin{defn}
+		A vector $\vec v$ in $\R^n$ is called a \emph{unit vector} if $\|\vec v\|=1$.
+	\end{defn}
+	\begin{statementblock}{Theorem 5.2}
+		If $\vec v$ is a nonzero vector in $\R^n$, then the vector
+			\[\vec u=\frac{\vec v}{\|\vec v\|}\]
+		has length 1 and has the same direction as $\vec v$.  The vector $\vec u$ is called the \emph{unit vector in the direction of $\vec v$}.
+	\end{statementblock}
+\end{frame}
+\begin{frame}{\fn}
+	\begin{exercise}
+		Let $\vec u=(1,2)$ and $\vec v=(3,1)$.  What is the distance between the endpoints of these vectors?
+		
+		Repeat the process for generic $\vec u=(x_1,y_1)$ and $\vec v=(x_2,y_2)$.
+	\end{exercise}
+\end{frame}
+\begin{frame}{\fn}
+	\begin{defn}
+		The \emph{distance} between two vectors $\vec u$ and $\vec v$ in $\R^n$ is defined to be
+			\[d(\vec u,\vec v)=\|\vec u-\vec v\|.\]
+	\end{defn}
+	\begin{exercise}
+	Let $\vec u=(1,3,-2)$ and $\vec v=(-1,0,-1)$.  Compute $d(\vec u,\vec v)$.
+	\end{exercise}
+\end{frame}
+\begin{frame}{\fn}
+	\begin{exercise}
+		Verify that for all vectors $\vec u$ and $\vec v$ in $\R^n$, 
+		\begin{enumerate}[label=\textbf{\arabic*}]
+			\item $d(\vec u,\vec v)\geq 0$
+			\item $d(\vec u,\vec v)=0$ if and only if $\vec u=\vec v$
+			\item $d(\vec u,\vec v)=d(\vec v,\vec u)$.
+		\end{enumerate}
+		Explain they this makes sense.
+	\end{exercise}
+\end{frame}
+\begin{frame}{\fn}
+	\begin{exercise}
+		Use the dot product version of length to verify that 
+			\[\|\vec v-\vec u\|^2=\|\vec u\|^2+\|\vec v\|^2-2(\vec u\cdot\vec v).\]
+	\end{exercise}
+	\begin{defn}
+		The \emph{angle between the vectors $\vec u$ and $\vec v$} is the angle $0\leq\theta\leq \pi$ satisfying 
+			\[\cos(\theta)=\frac{\vec u\cdot\vec v}{\|\vec u\|\|\vec v\|}.\]
+	\end{defn}
+	\begin{exercise}
+		Find the angle between $\vec u=(3,-1,0,2)$ and $\vec v=(-6,2,0,-4)$.
+	\end{exercise}
+\end{frame}
+\begin{frame}{\fn}
+	Warning, for our definition of the angle between the curves to work, we need to know that 
+		\[\left|\frac{\vec u\cdot\vec v}{\|\vec u\|\|\vec v\|}\right|=\frac{|\vec u\cdot\vec v|}{\|\vec u\|\|\vec v\|}\leq 1.\]
+	\begin{statementblock}{Theorem 5.4: The Cauchy--Schwarz Inequality}
+		If $\vec u$ and $\vec v$ are vectors in $\R^n$, then 
+			\[|\vec u\cdot\vec v|\leq\|\vec u\|\|\vec v\|.\]
+	\end{statementblock}
+	\begin{nb}
+		The proof of this is a neat application of the quadratic formula and is in the book.
+	\end{nb}
+	\begin{exercise}
+		Verify the Cauchy--Schwarz inequality using $\vec u=(1,1,3)$ and $\vec v=(3,-2,1)$.
+	\end{exercise}
+\end{frame}
+\begin{frame}{\fn}
+	\begin{block}{\textbf{Brain Break.}}
+		What is your favorite word?
+		
+		\begin{center}
+			\includegraphics[width=2in]{images/word}
+		\end{center}
+	\end{block}
+\end{frame}
+\begin{frame}{\fn}
+	\begin{defn}
+		Two vectors $\vec u$ and $\vec v$ in $\R^n$ are \emph{orthogonal} if $\vec u\cdot\vec v=0$.
+	\end{defn}
+	\begin{exercise}
+		Verify that $\vec u=(1,0,0)$ and $\vec v=(0,2,3)$ are orthogonal.
+	\end{exercise}
+	\begin{exercise}
+		Verify that $\vec u=(1,2,3,4)$ and $\vec v=(1,0,1,-1)$ are orthogonal.
+	\end{exercise}
+\end{frame}
+%\begin{frame}{\fn}
+%	\begin{exercise}
+%		Consider the vector $\vec u=(3,-2)$.  Find all vectors orthogonal to $\vec u$:
+%		\begin{enumerate}[label=(\alph*)]
+%			\item Let $\vec v=(v_1,v_2)$ be a vector orthogonal to $\vec u$.  This means that
+%				\[\vec u\cdot\vec v=\underline{\hspace*{1in}}=0.\]
+%			\item Thus $3\vec v_1=2\vec v_2$, so every vector orthogonal to $\vec u$ is of the form:
+%				\[\vec v=(t,\underline{\hspace*{.5in}})=t(1,\underline{\hspace*{.5in}}).\]
+%		\end{enumerate}
+%	\end{exercise}
+%\end{frame}
+\begin{frame}{\fn}
+	\begin{statementblock}{Theorem 5.5: The Triangle Inequality}
+		If $\vec u$ and $\vec v$ are vectors in $\R^n$, then
+			\[\|\vec u+\vec v\|\leq\|\vec u\|+\|\vec v\|.\]
+	\end{statementblock}
+	\begin{exercise}
+		Let $\vec u=(-2,3)$ and $\vec v=(1,1)$.  Draw a picture of these vectors as well as $\vec u+\vec v$.
+		
+		Explain why the Triangle Inequality is true in this case. 
+		
+		Geometrically speaking, what does the Triangle Inequality say?
+	\end{exercise}
+\end{frame}
+\begin{frame}{\fn}
+	\begin{statementblock}{Theorem 5.6: The Pythagorean Theorem}
+		If $\vec u$ and $\vec v$ are vectors in $\R^n$, then $\vec u$ and $\vec v$ are orthogonal if and only if
+			\[\|\vec u+\vec v\|^2=\|\vec u\|^2+\|\vec v\|^2.\]
+	\end{statementblock}
+\end{frame}
+\begin{frame}{\fn}
+	If we consider each vector $\vec u$ and $\vec v$ in $\R^n$ as $n\times 1$ column vectors, then
+	
+		\[\vec u\cdot\vec v=\vec u^T\vec v=\begin{bmatrix}u_1&u_2&\cdots&u_n\end{bmatrix}\begin{bmatrix}v_1\\v_2\\\vdots\\v_n\end{bmatrix}=\begin{bmatrix}u_1v_1+u_2v_2+\cdots+u_nv_n\end{bmatrix}.\]
+	\begin{exercise}
+		Use this method to compute the dot product of \[\vec u=\begin{bmatrix}3\\-5\end{bmatrix}\text{ and }\vec v=\begin{bmatrix}6\\1\end{bmatrix}.\]
+	\end{exercise}
+\end{frame}
+\end{document}
+

@@ -1,0 +1,274 @@
+\documentclass{beamer}
+%\usepackage[margin=1in]{geometry}
+\usepackage{amsthm,amsmath,amsfonts,hyperref,graphicx,color,multicol}
+\usepackage{enumitem,tikz}
+\usepackage{booktabs}
+%%%%%%%%%%
+%Beamer Template Customization
+%%%%%%%%%%
+\setbeamertemplate{navigation symbols}{}
+\setbeamertemplate{theorems}[ams style]
+\setbeamertemplate{blocks}[rounded]
+
+\definecolor{Blu}{RGB}{43,62,133} % UWEC Blue
+\setbeamercolor{structure}{fg=Blu} % Titles
+
+%Unnumbered footnotes:
+\newcommand{\blfootnote}[1]{%
+	\begingroup
+	\renewcommand\thefootnote{}\footnote{#1}%
+	\addtocounter{footnote}{-1}%
+	\endgroup
+}
+
+
+%%%%%%%%%%
+%Custom Commands
+%%%%%%%%%%
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\veca}{\vec{a}}
+\newcommand{\vecb}{\vec{b}}
+\newcommand{\vece}{\vec{e}}
+\newcommand{\vecu}{\vec{u}}
+\newcommand{\vecv}{\vec{v}}
+\newcommand{\vecw}{\vec{w}}
+\newcommand{\vecx}{\vec{x}}
+\newcommand{\zerovector}{\vec{0}}
+
+\newcommand{\ds}{\displaystyle}
+
+\newcommand{\fn}{\insertframenumber}
+
+\newcommand{\col}{\operatorname{col}}
+\newcommand{\row}{\operatorname{row}}
+\newcommand{\rank}{\operatorname{rank}}
+\newcommand{\nullity}{\operatorname{nullity}}
+\newcommand{\adj}{\operatorname{adj}}
+\newcommand{\proj}{\operatorname{proj}}
+\newcommand{\ip}[2]{\left\langle #1,#2\right\rangle}
+
+\newcommand{\blank}[1]{\underline{\hspace*{#1}}}
+
+\newcommand{\dotp}{\,{\boldsymbol{\cdot}\hspace*{.01in}}}
+
+%%%%%%%%%%
+%Custom Theorem Environments
+%%%%%%%%%%
+\theoremstyle{definition}
+\newtheorem{exercise}{Exercise}
+\newtheorem{question}[exercise]{Question}
+\newtheorem*{defn}{Definition}
+\newtheorem*{exa}{Example}
+\newtheorem*{disc}{Group Discussion}
+\newtheorem*{nb}{Note}
+\newtheorem*{recall}{Recall}
+\renewcommand{\emph}[1]{{\color{blue}\texttt{#1}}}
+
+\definecolor{Gold}{RGB}{237, 172, 26}
+%Statement block
+\newenvironment{statementblock}[1]{%
+	\setbeamercolor{block body}{bg=Gold!20}
+	\setbeamercolor{block title}{bg=Gold}
+	\begin{block}{\textbf{#1.}}}{\end{block}}
+
+
+
+
+
+\begin{document}
+	\title{Math 324: Linear Algebra}
+	\subtitle{Section 7.1: Eigenvalues and Eigenvectors}
+	\author{Mckenzie West}
+	\date{Last Updated: \today}
+\begin{frame}[fragile]
+\maketitle	
+\end{frame}
+
+\begin{frame}{\insertframenumber}
+	\begin{block}{\textbf{Last Time.}}
+	\begin{itemize}[label=--]
+		\item The matrix of a transformation.
+		\item Compositions
+	\end{itemize}
+	\end{block}
+	\begin{block}{\textbf{Today.}}
+		\begin{itemize}[label=--]
+			\item Eigenvalues and Eigenvectors
+		\end{itemize}
+	\end{block}
+\end{frame}
+\begin{frame}{\fn}
+	\begin{block}{\textbf{Remark.}}
+		We can think of a $2\times 2$ matrix $A$ as a transformation of $2d$ space.
+		
+		We might be curious about what vectors are fixed by $A$:
+			\[A\vec x=\vec x.\]
+		More generally, we ask what lines are fixed by $A$:
+			\[A\vec x=\lambda\vec x,\]
+		where $\lambda$, the Greek letter ``lambda'', is a fixed scalar.
+	\end{block}
+	\begin{defn}
+		Let $A$ be an $n\times n$ matrix.  The scalar $\lambda$ is called an \emph{eigenvalue} of $A$ if there is a nonzero vectors $\vec x$ such that $A\vec x=\lambda \vec x$.  
+		
+		In this case, we call $\vec x$ an \emph{eigenvector} of $A$ corresponding to $\lambda$.
+	\end{defn}
+\end{frame}
+\begin{frame}{\fn}
+	\begin{exercise}
+		Verify that $\vec x_1=(1,0,1)$, $\vec x_2=(3,0,-2)$, and $\vec x_3=(0,3,1)$ are all eigenvectors of 
+			\[A=\begin{bmatrix}
+			0 & -1 & 3 \\
+			0 & -2 & 0 \\
+			2 & -1 & 1
+			\end{bmatrix}\]
+		What are the corresponding eigenvalues? %3 and -2
+	\end{exercise}
+	\begin{exercise}
+		\begin{enumerate}[label=(\alph*)]
+			\item Is $-2\vec x_1=(-2,0,-2)$ an eigenvector of $A$?
+			\item Is $\vec x_1+\vec x_2$  an eigenvector of $A$?
+			\item Is $\vec x_2+\vec x_3$  an eigenvector of $A$?
+		\end{enumerate}
+	\end{exercise}
+\end{frame}
+\begin{frame}{\fn}
+	\begin{exercise}
+		Let $\vec x$ be an eigenvector of $A$ corresponding to some fixed eigenvalue $\lambda$.  
+		
+		Prove that $c\vec x$ is also an eigenvector of $A$ corresponding to $\lambda$ for all scalars $c\neq 0$.
+	\end{exercise}
+	\begin{exercise}
+		Let $\vec x_1$ and $\vec x_2$ be eigenvectors of $A$ corresponding to some fixed eigenvalue $\lambda$.  
+		
+		Prove that $\vec x_1+\vec x_2$ is also an eigenvector of $A$ corresponding to $\lambda$.
+	\end{exercise}
+\end{frame}
+\begin{frame}{\fn}
+	\begin{statementblock}{Theorem 7.1}
+		If $A$ is an $n\times n$ matrix with an eigenvalue $\lambda$, then the set of all eigenvectors of $\lambda$, together with the zero vector:
+			\[V=\{\vec x: A\vec x=\lambda\vec x\}\]
+		is a subspace of $\R^n$ called the \emph{eigenspace} of $A$ corresponding to~$\lambda$.
+	\end{statementblock}
+	\begin{nb}
+		Certainly $A\vec 0=\vec 0=\lambda\vec 0$ is always true, so $\vec 0$ is included in the set $V$ as in Theorem 7.1.  But it would be silly to call $\vec 0$ an eigenvector because it is always fixed.
+	\end{nb}
+\end{frame}
+\begin{frame}{\fn}
+	\begin{exercise}\label{first}
+		Consider the matrix $A=\begin{bmatrix}
+		2&2&1\\0&3&0\\0&0&2
+		\end{bmatrix}$.
+		
+		Find the eigenspace of $A$ corresponding to $\lambda =3$.
+		\begin{enumerate}[label=(\alph*)]
+			\item Let $\vec x$ be a generic vector in $\R^3$ such that $A\vec x=3\vec x$.
+			\item Subtract $A\vec x$ so that all variables are on the same side, $3\vec x-A\vec x=\vec 0$.
+			\item Factor the $\vec x$ out to the right.  Be careful when you do this, what is the constant 3 in the land of matrices?%
+			\only<1>{\begin{center}(Go to the next page to see what you should get.)\end{center}}\pause
+			\item Did you get $(3I-A)\vec x=\vec 0$?  Look, a homogeneous system!  Compute $3I-A$ and solve the system.
+		\end{enumerate}
+	\end{exercise}
+\end{frame}
+\begin{frame}{\fn}
+	\begin{block}{\textbf{Brain Break.}}
+		Where are you from?  (Yes also remind your table-mates of your name.)
+		\begin{center}
+			\includegraphics[width=.7\textwidth]{images/world}
+		\end{center}
+	\end{block}
+\end{frame}
+\begin{frame}{\fn}
+	\begin{question}[Finding Eigenvalues]
+		Let $A$ be an $n\times n$ matrix with eigenvalue $\lambda$.
+		
+		This means there is some nonzero $\vec x$ such that $A\vec x=\lambda \vec x$.
+		\begin{enumerate}[label=(\alph*)]
+			\item Proceed as in the last exercise, subtract that $A\vec x$ over and factor out the $\vec x$.
+			\item What does it mean for the matrix $\lambda I-A$ to have a non-zero solution to the homogeneous system $(\lambda I-A)\vec x=\vec 0$?\pause
+			\item It means that $\lambda I-A$ is singular (non-invertible).  What is a quick way to determine whether a matrix is singular?\pause
+			\item A matrix is singular exactly when its determinant is zero!  Compute $\det(\lambda I-A)$, set it equal to zero and solve for $\lambda$.
+		\end{enumerate}
+	\end{question}
+\end{frame}
+\begin{frame}{\fn}
+	\begin{statementblock}{Theorem 7.2}
+		Let $A$ be an $n\times n$ matrix.
+			\begin{enumerate}[label=\textbf{\arabic*.}]
+				\item An eigenvalue of $A$ is a scalar $\lambda$ such that $\det(\lambda I-A)=0$.
+				\item The eigenvectors of $A$ corresponding to $\lambda$ are the nonzero solutions of $(\lambda I-A)\vec x=\vec0$.
+				\item The eigenspace of $A$ corresponding to $\lambda$ is the nullspace of the matrix $\lambda I-A$.
+			\end{enumerate}
+	\end{statementblock}
+	\begin{defn}
+		The equation $\det(\lambda I-A)=0$ is called the \emph{characteristic equation} of $A$.
+		
+		The polynomial $\det(\lambda I-A)$ is called the \emph{characteristic polynomial} of $A$.
+	\end{defn}
+\end{frame}
+\begin{frame}{\fn}
+	\begin{exercise}
+		Find the eigenvalues and corresponding eigenspaces of \[A=\begin{bmatrix}-3&4\\-3&5\end{bmatrix}.\]
+		\begin{enumerate}[label=(\alph*)]
+			\item Compute $\lambda I-A$.
+			\item Compute the characteristic polynomial, $\det(\lambda I-A)$.
+			\item Solve the characteristic equation, $\det(\lambda I-A)=0$.
+			\item For each eigenvalue, $\lambda$, explicitly compute the nullspace of the matrix $\lambda I-A$.
+		\end{enumerate}
+	\end{exercise}
+\end{frame}
+\begin{frame}{\fn}
+	\begin{exercise}
+		Find all of the eigenvalues and corresponding eigenspaces of the matrix in Exercise \ref{first},
+			\[A=\begin{bmatrix}
+			2&2&1\\0&3&0\\0&0&2
+			\end{bmatrix}.\]
+	\end{exercise}
+\end{frame}
+\begin{frame}{\fn}\vskip -.25in
+	\begin{exercise}[Using your calculator]
+		Type the following matrix into your calculator, \[A=\begin{bmatrix}1&4&0\\-2&-1&4\\-2&1&0\end{bmatrix}.\]
+		
+		To get $I_3$, you can either type it in manually, or under the matrix section of commands there is one called \texttt{identity}.
+		
+		TI-83 or TI-84: in the calculator plotter, type the following
+			\begin{center}
+				\texttt{Y=det(X*identity(3)-[A])}
+			\end{center}
+		Find the $x$-intercepts of this polynomial.
+	\end{exercise}
+	\begin{nb}
+		Yes, the characteristic polynomial here has one real root and two imaginary roots.  We will consider this to mean that $A$ only has one eigenvalue.
+	\end{nb}
+\end{frame}
+\begin{frame}[fragile]
+	\frametitle{\fn}
+	\begin{exercise}
+		Sage can produce eigenvalues and eigenspaces. Use the following at \url{https://sagecell.sagemath.org/} to repeat the previous exercise.
+		\begin{verbatim}
+		A = matrix([[1,4,0],[-2,-1,4],[-2,1,0]]);
+		print A.right_eigenspaces()
+		\end{verbatim}
+	\end{exercise}
+\end{frame}
+\begin{frame}
+	\begin{exercise}
+		The Cayley-Hamilton Theorem states that a matrix satisfies its characteristic equation.  For example, the characterstic equation of $A=\begin{bmatrix}1&2\\3&4\end{bmatrix}$ is $\lambda ^2-5\lambda-2=0$, so $A^2-5A-2=O$.
+		
+		Verify the Cayley-Hamilton Theorem for 
+			\[A=\begin{bmatrix}
+			0 & -3 & 4 \\
+			-1 & 0 & 0 \\
+			0 & -1 & -2
+			\end{bmatrix}\!.\]
+	\end{exercise}
+\end{frame}
+\begin{frame}{\fn}
+	\begin{question}
+		How do the eigenvalues of $A$ relate to the eigenvalues of $A^T$?
+	\end{question}
+	\begin{question}
+		How do the eigenvalues of $A$ relate to the eigenvalues of $A^{-1}$?
+	\end{question}
+\end{frame}
+\end{document}
+

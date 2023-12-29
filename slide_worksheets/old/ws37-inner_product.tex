@@ -1,0 +1,283 @@
+\documentclass{beamer}
+%\usepackage[margin=1in]{geometry}
+\usepackage{amsthm,amsmath,amsfonts,hyperref,graphicx,color,multicol}
+\usepackage{enumitem,tikz}
+
+%%%%%%%%%%
+%Beamer Template Customization
+%%%%%%%%%%
+\setbeamertemplate{navigation symbols}{}
+\setbeamertemplate{theorems}[ams style]
+\setbeamertemplate{blocks}[rounded]
+
+\definecolor{Blu}{RGB}{43,62,133} % UWEC Blue
+\setbeamercolor{structure}{fg=Blu} % Titles
+
+%Unnumbered footnotes:
+\newcommand{\blfootnote}[1]{%
+	\begingroup
+	\renewcommand\thefootnote{}\footnote{#1}%
+	\addtocounter{footnote}{-1}%
+	\endgroup
+}
+
+
+%%%%%%%%%%
+%Custom Commands
+%%%%%%%%%%
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\veca}{\vec{a}}
+\newcommand{\vecb}{\vec{b}}
+\newcommand{\vece}{\vec{e}}
+\newcommand{\vecu}{\vec{u}}
+\newcommand{\vecv}{\vec{v}}
+\newcommand{\vecw}{\vec{w}}
+\newcommand{\vecx}{\vec{x}}
+\newcommand{\zerovector}{\vec{0}}
+
+\newcommand{\ds}{\displaystyle}
+
+\newcommand{\fn}{\insertframenumber}
+
+\newcommand{\col}{\operatorname{col}}
+\newcommand{\row}{\operatorname{row}}
+\newcommand{\rank}{\operatorname{rank}}
+\newcommand{\nullity}{\operatorname{nullity}}
+\newcommand{\adj}{\operatorname{adj}}
+\newcommand{\proj}{\operatorname{proj}}
+\newcommand{\ip}[2]{\left\langle #1,#2\right\rangle}
+
+\newcommand{\blank}[1]{\underline{\hspace*{#1}}}
+
+\newcommand{\dotp}{\,{\boldsymbol{\cdot}\hspace*{.01in}}}
+
+%%%%%%%%%%
+%Custom Theorem Environments
+%%%%%%%%%%
+\theoremstyle{definition}
+\newtheorem{exercise}{Exercise}
+\newtheorem{question}[exercise]{Question}
+\newtheorem*{defn}{Definition}
+\newtheorem*{exa}{Example}
+\newtheorem*{disc}{Group Discussion}
+\newtheorem*{nb}{Note}
+\newtheorem*{recall}{Recall}
+\renewcommand{\emph}[1]{{\color{blue}\texttt{#1}}}
+
+\definecolor{Gold}{RGB}{237, 172, 26}
+%Statement block
+\newenvironment{statementblock}[1]{%
+	\setbeamercolor{block body}{bg=Gold!20}
+	\setbeamercolor{block title}{bg=Gold}
+	\begin{block}{\textbf{#1.}}}{\end{block}}
+
+
+
+
+
+\begin{document}
+	\title{Math 324: Linear Algebra}
+	\subtitle{Section 5.2: Inner Product Spaces}
+	\author{Mckenzie West}
+	\date{Last Updated: \today}
+\begin{frame}
+\maketitle
+\end{frame}
+
+\begin{frame}{\insertframenumber}
+	\begin{block}{\textbf{Last Time.}}
+	\begin{itemize}[label=--]
+		\item Dot Product
+		\item Length
+		\item Cauchy-Schwarz Inequality
+		\item Triangle Inequality
+	\end{itemize}
+	\end{block}
+	\begin{block}{\textbf{Today.}}
+		\begin{itemize}[label=--]
+			\item Orthogonal Projection
+			\item Inner Products
+		\end{itemize}
+	\end{block}
+\end{frame}
+\begin{frame}{\fn}
+	You  may have seen the following definition last time.
+	\begin{defn}
+		Two vectors $\vec u$ and $\vec v$ in $\R^n$ are said to be \emph{orthogonal} if $\vec u\dotp\vec v=0$.
+	\end{defn}
+	\begin{recall}
+		The angle between $\vec u$ and $\vec v$ satisfies $$\cos(\theta)=\frac{\vec u\dotp \vec v}{\|\vec u\|\|\vec v\|}.$$
+		
+		Thus orthogonal vectors have angle $\theta$, with $\cos(\theta)=0$.  Or $\theta=\frac{\pi}{2}$, and are thus perpendicular.
+	\end{recall}
+\end{frame}
+\begin{frame}[fragile]
+	\frametitle{\fn}
+	\begin{exercise}
+		Find all vectors $(x,y,z)$ that are orthogonal to $(-2,1,0)$.
+		\begin{enumerate}[label=(\alph*)]
+			\item Compute $(x,y,z)\dotp (-2,1,0)$.
+			\item Set the dot product equal to zero and parameterize.\pause\\
+				The equation $-2x+y=0$ is equivalent to $y=2x$, so if $x$ and $z$ are given parameters, the orthogonal complement of $(-2,1,0)$ is the set \begin{equation}\label{orthcomp}
+					\{(t,2t,s)\ :\ s,t\in\R\}.
+				\end{equation}
+			\item Verify that no matter the values of $s$ and $t$, $(t,2t,s)\dotp(-2,1,0)=0$.\pause
+			\item The set in \eqref{orthcomp} is called the \emph{orthogonal complement} of $(-2,1,0)$.  Plot $(-2,1,0)$ and the orthogonal complement in Sage (\url{https://sagecell.sagemath.org/}) using:
+			{\tiny
+				\begin{verbatim}
+					s,t = var("s,t")
+					P = parametric_plot3d((t,2*t,s), (t,-2,2),(s,-2,2))
+					P += arrow((0,0,0), (-2,1,0), width=3, color="red")
+					P.show(aspect_ratio=1)
+					\end{verbatim}
+			}
+		\end{enumerate}
+	\end{exercise}
+\end{frame}
+\begin{frame}{\fn}
+	\begin{center}
+		\includegraphics[width=1in]{images/stop}
+	\end{center}
+	\begin{defn}
+		Let $\vec u$ and $\vec v$ be vectors in $\R^n$ with $\vec v\neq \vec 0$. The \emph{orthogonal projection} of $\vec u$ onto $\vec v$ is  the vector	
+	\end{defn}
+	\begin{center}
+		\begin{minipage}{1.5in}
+			$\ds\proj_{\vec v} \vec u=\frac{\vec u\dotp\vec v}{\|\vec v\|^2}\vec v.$
+		\end{minipage}\begin{minipage}{1.5in}
+		\includegraphics[width=1.5in]{images/orth_proj}
+	\end{minipage}
+	\end{center}
+\end{frame}
+\begin{frame}{\fn}
+	\begin{exercise}
+		Let $\vec u=(-2,1,0)$ and $\vec v=(5,0,-3)$. Compute
+		\begin{enumerate}[label=(\alph*)]
+			\item $\proj_{\vec v} \vec u$ 
+			\item $\proj_{\vec u}\vec v$
+		\end{enumerate}
+	\end{exercise}
+	\begin{exercise}
+		Intuitively, what do you think $\proj_{\vec v} \vec u$ will be if $\vec u=(1,0)$ and $\vec v=(0,1)$?
+		\vskip .25in
+		Does your thinking extend to vectors $\vec u=\vec e_i$ and $\vec v=\vec e_j$ where $\vec e_i$ and $\vec e_j$ are distinct elementary basis vectors of $\R^n$?
+	\end{exercise}
+\end{frame}
+\begin{frame}{\fn}
+	\begin{recall}
+		The four main properties of the dot product are:
+		\begin{enumerate}[label=\textbf{\arabic*.}]
+			\item $\vec u\dotp\vec v=\vec v\dotp\vec u$.
+			\item $\vec u\dotp(\vec v+\vec w)=\vec u\dotp\vec v+\vec u\dotp \vec w$.
+			\item $c(\vec u\dotp \vec v)=(c\vec u)\dotp\vec v$.
+			\item $\vec v\cdot\vec v\geq 0$ and $\vec v\cdot\vec v=0$ if and only if $\vec v=\vec 0$.
+		\end{enumerate}
+	\end{recall}
+\end{frame}
+\begin{frame}{\fn}
+	\begin{defn}
+		Let $\vec u,\vec v$ and $\vec w$ be vectors in a vector space $V$, and let $c$ be any scalar.  An \emph{inner product} on $V$ is a function that associates a real number $\ip{\vecu}{\vec v}$ for each pair of vectors $\vec u$ and $\vec v$ and satisfies the following axioms.
+		\begin{enumerate}[label=\textbf{\arabic*.}]
+			\item $\ip{\vec u}{\vec v}=\ip{\vec v}{\vec u}$
+			\item $\ip{\vec u}{\vec v+\vec w}=\ip{\vec u}{\vec v}+\ip{\vec u}{\vec w}$
+			\item $c\ip{\vec u}{\vec v}=\ip{c\vec u}{\vec v}$
+			\item $\ip{\vec v}{\vec v}\geq 0$ and $\ip{\vec v}{\vec v}=0$ if and only if $\vec v=\vec 0$.
+		\end{enumerate}
+	
+		A vector space with an inner product is called an \emph{inner product space}.
+	\end{defn}
+	\begin{exa}
+		The dot product is an inner product in $\R^n$, so $\R^n$ is an inner product space.
+	\end{exa}
+\end{frame}
+\begin{frame}{\fn}
+	\begin{exercise}
+		Let $\vec u=(u_1,u_2)$ and $\vec v=(v_1,v_2)$ be vectors in $\R^2$.  Show that
+			\[\ip{\vec u}{\vec v}=3u_1v_1+2u_2v_2\]
+		is an inner product on $\R^2$.  
+		
+		(This means you need to check that $\ip{\vec u}{\vec v}$ is a real number and all four of the properties in the definition of an inner product.)
+	\end{exercise}
+	\begin{exercise}
+		Let $\vec u=(u_1,u_2)$ and $\vec v=(v_1,v_2)$ be vectors in $\R^2$.  Show that
+		\[\ip{\vec u}{\vec v}=u_1v_2-u_2v_1\]
+		is NOT an inner product on $\R^2$.  
+		
+		(This means you need to show that $\ip{\vec u}{\vec v}$ fails a single one of the four axioms for a specific example of $\vec u$ and $\vec v$.)
+	\end{exercise}
+\end{frame}
+\begin{frame}{\fn}
+	\begin{exercise}\label{MatInnerProd}
+		Let $A=\begin{bmatrix} a_{11}&a_{12}\\a_{21}&a_{22}\end{bmatrix}$ and $B=\begin{bmatrix}b_{11}&b_{12}\\b_{21}&b_{22}\end{bmatrix}$ be matrices in the vector space $M_{2,2}$.  Show that the function
+			\[\ip{A}{B}=a_{11}b_{11}+a_{12}b_{12}+a_{21}b_{21}+a_{22}b_{22}\]
+		is an inner product on $M_{2,2}$.
+	\end{exercise}
+	\begin{nb}
+		For a finite dimensional vectors space, inner products essentially always look like dot products with positive scalars.  Infinite dimensional vector spaces are not always so straight forward.
+	\end{nb}
+\end{frame}
+\begin{frame}{\fn}
+	\begin{exercise}
+		Let $f$ and $g$ be real valued continuous functions in the vector space $C[0,1]$.  I claim that the following is an inner product,\[\ip{f}{g}=\int_0^1 f(x)g(x)\ dx.\]
+		
+		Compute $\ip{3x+2}{e^x}$. 
+		
+		(Yes, you can---and should---use your calculator).
+	\end{exercise}
+\end{frame}
+\begin{frame}{\fn}
+	\begin{defn}
+		Let $\vec u$ and $\vec v$ be vectors in an inner product space $V$.  Then similarly to in the case of the dot product, we can make similar definitions for length, distance, angle, orthogonal, and orthogonal projection.
+		\begin{enumerate}[label=\textbf{\arabic*.}]
+			\item The \emph{length} (or \emph{norm}) of $\vec u$ is $\|\vec u\|=\sqrt{\ip{\vec u}{\vec u}}$.
+			\item The \emph{distance} between $\vec u$ and $\vec v$ is $d(\vec u,\vec v)=\|\vec u-\vec v\|$.
+			\item The \emph{angle} between $\vec u$ and $\vec v$ is given by
+				\[\cos\theta=\frac{\ip{\vec u}{\vec v}}{\|\vec u\|\|\vec v\|},\hspace*{.1in}0\leq\theta\leq \pi.\]
+			\item We say $\vec u$ and $\vec v$ are \emph{orthogonal} if $\ip{\vec u}{\vec v}=0$.
+			\item The \emph{orthogonal projection} of $\vec u$ onto $\vec v$ is
+				\[\proj_{\vec v}(\vec u)=\frac{\ip{\vec u}{\vec v}}{\ip{\vec v}{\vec v}}\vec v.\]
+		\end{enumerate}
+	\end{defn}
+\end{frame}
+\begin{frame}{\fn}
+	\begin{exercise}
+		Consider the inner product on $M_{2,2}$ from exercise \ref{MatInnerProd}:
+			\[\ip{A}{B}=a_{11}b_{11}+a_{12}b_{12}+a_{21}b_{21}+a_{22}b_{22}.\]
+		Let $A=\begin{bmatrix}1&2\\0&-1\end{bmatrix}$ and $B=\begin{bmatrix}0&5\\2&-2\end{bmatrix}$.
+		Compute
+		\begin{enumerate}[label=(\alph*)]
+			\item $\|A\|$
+			\item $d(A,B)$
+			\item Cosine of the angle between $A$ and $B$.
+			\item The orthogonal projection of $B$ onto $A$.
+		\end{enumerate}
+	\end{exercise}
+\end{frame}
+\begin{frame}{\fn}
+	\begin{nb}
+		The inequalities also persist for inner products. (Note that in proving the Triangle Inequality for example, we didn't actually use the definition of the dot product.)
+	\end{nb}
+	\begin{statementblock}{Theorem 5.8}
+		Let $\vec u$ and $\vec v$ be vectors in an inner product space $V$.
+		\begin{enumerate}[label=\textbf{\arabic*.}]
+			\item Cauchy--Schwarz Inequality: $|\ip{\vec u}{\vec v}|\leq \|\vec u\|\|\vec v\|$
+			\item Triangle Inequality: $\|\vec u+\vec v\|\leq\|\vec u\|+\|\vec v\|$
+			\item Pythagorean Theorem: $\vec u$ and $\vec v$ are orthogonal if and only if 
+				\[\|\vec u+\vec v\|^2=\|\vec u\|^2+\|\vec v\|^2.\]
+		\end{enumerate}
+	\end{statementblock}
+\end{frame}
+\begin{frame}{\fn}
+	\begin{nb}
+		One of the great things that we can use this for is to prove these relationships for integrals without actually talking about integrals!
+	\end{nb}
+	\begin{exercise}
+		Let $f$ and $g$ be real valued continuous functions in the vector space $C[0,1]$. Use the inner product,\[\ip{f}{g}=\int_0^1 f(x)g(x)\ dx.\]
+		
+		Verify the Cauchy-Schwarz Inequality for $f=3x+2$ and $g=e^x$. 
+		
+		(Yes, you can---and should---use your calculator).
+	\end{exercise}
+\end{frame}
+\end{document}
+

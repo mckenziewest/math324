@@ -1,0 +1,281 @@
+\documentclass{beamer}
+%\usepackage[margin=1in]{geometry}
+\usepackage{amsthm,amsmath,amsfonts,hyperref,graphicx,color,multicol}
+\usepackage{enumitem,tikz}
+\usepackage{booktabs}
+%%%%%%%%%%
+%Beamer Template Customization
+%%%%%%%%%%
+\setbeamertemplate{navigation symbols}{}
+\setbeamertemplate{theorems}[ams style]
+\setbeamertemplate{blocks}[rounded]
+
+\definecolor{Blu}{RGB}{43,62,133} % UWEC Blue
+\setbeamercolor{structure}{fg=Blu} % Titles
+
+%Unnumbered footnotes:
+\newcommand{\blfootnote}[1]{%
+	\begingroup
+	\renewcommand\thefootnote{}\footnote{#1}%
+	\addtocounter{footnote}{-1}%
+	\endgroup
+}
+
+
+%%%%%%%%%%
+%Custom Commands
+%%%%%%%%%%
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\veca}{\vec{a}}
+\newcommand{\vecb}{\vec{b}}
+\newcommand{\vece}{\vec{e}}
+\newcommand{\vecu}{\vec{u}}
+\newcommand{\vecv}{\vec{v}}
+\newcommand{\vecw}{\vec{w}}
+\newcommand{\vecx}{\vec{x}}
+\newcommand{\zerovector}{\vec{0}}
+
+\newcommand{\ds}{\displaystyle}
+
+\newcommand{\fn}{\insertframenumber}
+
+\newcommand{\col}{\operatorname{col}}
+\newcommand{\row}{\operatorname{row}}
+\newcommand{\rank}{\operatorname{rank}}
+\newcommand{\nullity}{\operatorname{nullity}}
+\newcommand{\adj}{\operatorname{adj}}
+\newcommand{\proj}{\operatorname{proj}}
+\newcommand{\ip}[2]{\left\langle #1,#2\right\rangle}
+
+\newcommand{\blank}[1]{\underline{\hspace*{#1}}}
+
+\newcommand{\dotp}{\,{\boldsymbol{\cdot}\hspace*{.01in}}}
+
+%%%%%%%%%%
+%Custom Theorem Environments
+%%%%%%%%%%
+\theoremstyle{definition}
+\newtheorem{exercise}{Exercise}
+\newtheorem{question}[exercise]{Question}
+\newtheorem*{defn}{Definition}
+\newtheorem*{exa}{Example}
+\newtheorem*{disc}{Group Discussion}
+\newtheorem*{nb}{Note}
+\newtheorem*{recall}{Recall}
+\renewcommand{\emph}[1]{{\color{blue}\texttt{#1}}}
+
+\definecolor{Gold}{RGB}{237, 172, 26}
+%Statement block
+\newenvironment{statementblock}[1]{%
+	\setbeamercolor{block body}{bg=Gold!20}
+	\setbeamercolor{block title}{bg=Gold}
+	\begin{block}{\textbf{#1.}}}{\end{block}}
+
+
+
+
+
+\begin{document}
+	\title{Math 324: Linear Algebra}
+	\subtitle{Section 7.1: Eigenvalues and Eigenvectors\\ Section 7.2: Diagonalizability}
+	\author{Mckenzie West}
+	\date{Last Updated: \today}
+\begin{frame}[fragile]
+\maketitle	
+\end{frame}
+
+\begin{frame}{\insertframenumber}
+	\begin{block}{\textbf{Last Time.}}
+	\begin{itemize}[label=--]
+		\item Eigenvalues and Eigenvectors
+		\item Characteristic Polynomials and Equations
+	\end{itemize}
+	\end{block}
+	\begin{block}{\textbf{Today.}}
+		\begin{itemize}[label=--]
+			\item Eigenvalues of Triangular Matrices
+			\item Eigenvalues of Linear Transformations
+		\end{itemize}
+	\end{block}
+\end{frame}
+\begin{frame}{\fn}
+	\begin{recall}
+		\begin{statementblock}{Theorem 7.2}
+		Let $A$ be an $n\times n$ matrix.
+			\begin{enumerate}[label=\textbf{\arabic*.}]
+				\item An eigenvalue of $A$ is a scalar $\lambda$ such that $\det(\lambda I-A)=0$.
+				\item The eigenvectors of $A$ corresponding to $\lambda$ are the nonzero solutions of $(\lambda I-A)\vec x=\vec0$.
+				\item The eigenspace of $A$ corresponding to $\lambda$ is the nullspace of the matrix $\lambda I-A$.
+			\end{enumerate}
+	\end{statementblock}
+	\end{recall}
+\begin{question}
+What is the maximum number of eigenvalues that an $n\times n$ matrix can have?
+\end{question}
+\end{frame}
+\begin{frame}{\fn}
+	\begin{statementblock}{Theorem 3.2}
+		If $A$ is a triangular matrix of order $n$, then its determinant is the product of the entries on the main diagonal.  That is,	
+			\[\det(A)=a_{11}a_{22}a_{33}\cdots a_{nn}.\]
+	\end{statementblock}
+	\begin{nb}
+		We saw this back in Chapter 3.  Triangular matrices have easy determinants.
+		
+		Additionally, if $A$ is triangular, so is $\lambda I-A$.
+	\end{nb}
+	\begin{question}
+		If $A$ is triangular with diagonal entries $a_{11},a_{22},\dots,a_{nn}$, what are the diagonal entries of $\lambda I-A$?
+	\end{question}
+\end{frame}
+\begin{frame}{\fn}
+	\begin{statementblock}{Theorem 7.3}
+		If $A$ is an $n\times n$ triangular matrix, then its eigenvalues are the entries on its main diagonal.
+	\end{statementblock}
+	\begin{exercise}
+		Find the eigenvalues and eigenspaces of
+		\[A=\begin{bmatrix}
+		1&2&0&1\\
+		0&0&3&1\\
+		0&0&1&0\\
+		0&0&0&1
+		\end{bmatrix}\]
+	\end{exercise}
+\end{frame}
+\begin{frame}{\fn}
+	\begin{exercise}
+		Find the eigenvalues and eigenspaces of
+			\[A=\begin{bmatrix}
+				-1&0&0&0&0\\
+				0&2&0&0&0\\
+				0&0&2&0&0\\
+				0&0&0&10&0\\
+				0&0&0&0&5
+			\end{bmatrix}\]
+	\end{exercise}
+\end{frame}
+\begin{frame}{\fn}
+\begin{block}{\textbf{Brain Break.}}
+	If you won the lottery but only had one day to spend the money, what would you buy?
+	\begin{center}
+		\includegraphics[width=2in]{images/sleepy_pep}
+	\end{center}
+	Pepper says ``blankets!''
+\end{block}
+\end{frame}
+\begin{frame}{\fn}
+\begin{defn}
+	A square matrix $A$ is \emph{diagonalizable} if there is a diagonal matrix $D$ and and invertible matrix $P$ such that $D=P^{-1}AP$.
+\end{defn}
+\begin{exercise}\label{first}
+Let $A=\begin{bmatrix}-4&-15\\2&7\end{bmatrix}$ and $P=\begin{bmatrix}3&-5\\-1&2\end{bmatrix}$.
+
+Verify that $P^{-1}AP$ is diagonal, and confirm that $A$ is diagonalizable.
+\end{exercise}
+\begin{exercise}
+	Is $\begin{bmatrix}
+	3&0\\0&2
+	\end{bmatrix}$ diagonalizable?
+\end{exercise}
+\end{frame}
+\begin{frame}{\fn}
+\begin{statementblock}{Theorem 7.5}
+	An $n\times n$ matrix $A$ is diagonalizable if and only if it has $n$ linearly independent eigenvectors.
+	
+	Moreover if $P=\begin{bmatrix}\vec v_1&\vec v_2&\cdots&\vec v_n\end{bmatrix}$ is a matrix whose columns are these $n$ linearly independent eigenvectors, then $P^{-1}AP$ is diagonal.
+\end{statementblock}
+\begin{exercise}
+The matrix $A=\begin{bmatrix}0&2\\5&-3\end{bmatrix}$ has eigenvalues $\lambda_1=2$ and $\lambda_2=-5$.  There are eigenvectors $\vec v_1=\begin{bmatrix}1\\1\end{bmatrix}$ and $\vec v_2=\begin{bmatrix}2\\-5\end{bmatrix}$.
+\begin{enumerate}[label=(\alph*)]
+	\item Let $P=\begin{bmatrix}
+	\vec v_1 & \vec v_2
+	\end{bmatrix}=\begin{bmatrix}
+	1&2\\1&-5
+	\end{bmatrix}$ and compute $P^{-1}AP$.
+	\item Let $Q=\begin{bmatrix}
+	\vec v_2 & \vec v_1
+	\end{bmatrix}=\begin{bmatrix}
+	2&1\\-5&1
+	\end{bmatrix}$ and compute $Q^{-1}AQ$.
+\end{enumerate}
+\end{exercise}
+\end{frame}
+\begin{frame}[fragile]
+\frametitle{\fn}
+\vskip -.25in
+\begin{exercise}
+	Determine whether the matrix is diagonalizable. (Find all eigenspaces and add up their dimensions.)
+	\begin{multicols}{2}
+		\begin{enumerate}[label=(\alph*)]
+			\item $A=\begin{bmatrix}
+			4 & 0 & 1 \\
+			2 & -2 & 0 \\
+			0 & 0 & 5
+			\end{bmatrix}$
+			\item $A = \begin{bmatrix}1&1&1\\0&1&1\\0&0&1\end{bmatrix}$
+		\end{enumerate}
+	\end{multicols}
+\end{exercise}
+\begin{nb}
+	It may be helpful to use Sage for this:
+	\begin{verbatim}
+	A = matrix([[1,0],[3,4]])
+	print(A.eigenvalues())
+	print(A.right_eigenspaces())
+	\end{verbatim}
+	Notice that the eigenspaces command indicates a `right' eigenspace, as in we're multiplying on the right.  
+	
+	And the output includes each of the eigenvalues followed by their corresponding eigenspaces with basis.
+\end{nb}
+\end{frame}
+%\begin{frame}{\fn}
+%	\begin{defn}
+%		Let $T:V\to W$ be a  linear transformation.
+%		A number $\lambda$ is an \emph{eigenvalue} of $T$ if there is some nonzero vector $\vec v\in V$ such that $T(\vec v)=\lambda \vec v$.  In this case, we call $\vec v$ an \emph{eigenvector} of $T$ corresponding to $\lambda$.  The collection of all vectors satisfying $T(\vec v)=\lambda\vec v$ is called the \emph{eigenspace} of $T$ corresponding to $\lambda$.
+%	\end{defn}
+%	\begin{exercise}
+%		Consider the transformation $T:P_2\to P_2$ defined by $T(ax^2+bx+c)=(3a+2b+c)x^2+(c-b)x+(2b)$.  
+%		\begin{enumerate}[label=(\alph*)]
+%			\item Show that $x^2-5x+5$ is an eigenvector of $T$, and find the corresponding eigenvalue.
+%			\item Show that $x^2$ is also an eigenvector of $T$, and find the corresponding eigenvalue.
+%		\end{enumerate}
+%	\end{exercise}
+%\end{frame}
+%\begin{frame}{\fn}
+%	\begin{exercise}
+%		Let's try to find all eigenvalues and eigenvectors of the $T$ on the previous slide.
+%		\begin{enumerate}[label=(\alph*)]
+%			\item If $\lambda$ is an eigenvalue, then $T(ax^2+bx+c)=\lambda(ax^2+bx+c)$ for some lambda.  That is,
+%				\[(3a+2b+c)x^2+(c-b)x+(2b)=\lambda ax^2+\lambda b x+\lambda c.\]
+%			\item Use the equation above to create 3 equations by extracting the coefficients.\pause
+%				\only<1-2>{\begin{eqnarray}
+%				3a+2b+c&=&\lambda a\\
+%				c-b&=&\lambda b\\
+%				2b &=&\lambda c
+%				\end{eqnarray}}
+%			\item Use equations (2) and (3) to determine that either $c=0$ or $\lambda ^2+\lambda-2=0$.\pause
+%			\item First solve the quadratic equation to find that $\lambda = 1$ and $\lambda =-2$ are two of the eigenvalues of $T$. (Check they work with equation (1).)
+%			\item Next, plug $c=0$ into the equations to hopefully find a possible $\lambda$.
+%		\end{enumerate}
+%	\end{exercise}
+%\end{frame}
+%\begin{frame}{\fn}
+%	\begin{exercise}
+%		Finding eigenvalues (Option 2).  Again, use $T:P_2\to P_2$ defined by
+%			\[T(ax^2+bx+c)=(3a+2b+c)x^2+(c-b)x+(2b).\]
+%		\begin{enumerate}[label=(\alph*)]
+%			\item Associate $ax^2+bx+c$ with the vector $(a,b,c)\in \R^3$. And rewrite $T$ as a transformation $T:\R^3\to\R^3$.
+%			\item Find the standard matrix for $T$.
+%			\item Find the eigenvalues and corresponding eigenspaces for the standard matrix of $T$.
+%		\end{enumerate}
+%	\end{exercise}
+%\end{frame}
+%\begin{frame}{\fn}
+%	\begin{exercise}
+%		Find the eigenvalues (no need to find eigenspaces) for $T:M_{2,2}\to M_{2,2}$ defined by
+%			\[T\left(\begin{bmatrix}a&b\\c&d\end{bmatrix}\right)=\begin{bmatrix}
+%			a&2a+2b\\b+3c&2a-d
+%			\end{bmatrix}\]
+%	\end{exercise}%[3, 2, 1, -1]
+%\end{frame}
+\end{document}
+

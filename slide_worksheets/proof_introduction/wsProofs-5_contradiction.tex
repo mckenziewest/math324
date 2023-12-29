@@ -1,0 +1,191 @@
+\documentclass{beamer}
+%\usepackage[margin=1in]{geometry}
+\usepackage{amsthm,amsmath,amsfonts,hyperref,graphicx,color,multicol}
+\usepackage{enumitem,tikz}
+
+%%%%%%%%%%
+%Beamer Template Customization
+%%%%%%%%%%
+\setbeamertemplate{navigation symbols}{}
+\setbeamertemplate{theorems}[ams style]
+\setbeamertemplate{blocks}[rounded]
+
+\definecolor{Blu}{RGB}{43,62,133} % UWEC Blue
+\setbeamercolor{structure}{fg=Blu} % Titles
+
+%Unnumbered footnotes:
+\newcommand{\blfootnote}[1]{%
+	\begingroup
+	\renewcommand\thefootnote{}\footnote{#1}%
+	\addtocounter{footnote}{-1}%
+	\endgroup
+}
+
+
+%%%%%%%%%%
+%Custom Commands
+%%%%%%%%%%
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\veca}{\mathbf{a}}
+\newcommand{\vecb}{\mathbf{b}}
+\newcommand{\vecu}{\mathbf{u}}
+\newcommand{\vecv}{\mathbf{v}}
+\newcommand{\vecw}{\mathbf{w}}
+\newcommand{\vecx}{\mathbf{x}}
+\newcommand{\zerovector}{\mathbf{0}}
+
+\newcommand{\ds}{\displaystyle}
+
+\newcommand{\fn}{\insertframenumber}
+
+\newcommand{\rank}{\operatorname{rank}}
+
+\newcommand{\blank}[1]{\underline{\hspace*{#1}}}
+
+
+%%%%%%%%%%
+%Custom Theorem Environments
+%%%%%%%%%%
+\theoremstyle{definition}
+\newtheorem{exercise}{Exercise}
+\newtheorem{question}[exercise]{Question}
+\newtheorem*{defn}{Definition}
+\newtheorem*{exa}{Example}
+\newtheorem*{disc}{Group Discussion}
+\newtheorem*{nb}{Note}
+\newtheorem*{recall}{Recall}
+\renewcommand{\emph}[1]{{\color{blue}\texttt{#1}}}
+
+\definecolor{Gold}{RGB}{237, 172, 26}
+%Statement block
+\newenvironment{statementblock}[1]{%
+	\setbeamercolor{block body}{bg=Gold!20}
+	\setbeamercolor{block title}{bg=Gold}
+	\begin{block}{\textbf{#1.}}}{\end{block}}
+
+
+
+
+
+\begin{document}
+	\title{Math 324: Linear Algebra}
+	\subtitle{Contradiction}
+	\author{Mckenzie West}
+	\date{Last Updated: \today}
+\begin{frame}
+\maketitle
+\end{frame}
+%\begin{frame}{\fn}
+%\begin{statementblock}{Claim}
+%	If $x$ and $y$ are integers then $x^2\neq 4y+3$.
+%\end{statementblock}
+%\end{frame}
+
+\begin{frame}{\insertframenumber}
+	\begin{block}{\textbf{Last Time.}}
+	\begin{itemize}[label=--]
+		\item If and only If Statements
+		\item Contrapositive, Converse, and Inverse
+	\end{itemize}
+	\end{block}
+	\begin{block}{\textbf{Today.}}
+		\begin{itemize}[label=--]
+		\item Proof by contradiction
+		\end{itemize}
+	\end{block}
+\end{frame}
+\begin{frame}{\fn}
+	\begin{statementblock}{Proposition}
+		If $x$ is a real number in $[0,\pi/2]$ then $\sin x+\cos x\geq 1$.
+	\end{statementblock}
+	
+	\begin{exercise}
+		Complete the proof in the handout.
+	\end{exercise}
+	
+	The general format of proof by contradiction for a statement of the form $P\Rightarrow Q$
+	is as follows:
+	\begin{enumerate}[label=\arabic*.]
+		\item Assume $P$ is true.
+		\item Suppose \textbf{toward contradiction}, that $Q$ is false.  
+		
+		Yes, including ``toward contradiction'' is important, don't be lazy.
+		\item Derive any contradiction.
+		\item Conclusion: Therefore is impossible for both $P$ to be true and $Q$ to be false, so the claim is true. 
+		
+		Yes, write this line too, don't be lazy.
+	\end{enumerate}
+\end{frame}
+
+\begin{frame}{\fn}
+	\begin{exercise}
+		Use proof by contradiction to prove:
+		\begin{center}\begin{minipage}{.9\textwidth}
+				If $a$ and $b$ are integers then $a^2-4b\neq 2$.
+		\end{minipage}\end{center}
+		You may use the fact that if $a^2$ is even then $a$ is even.
+	\end{exercise}
+	\begin{exercise}
+	Use proof by contradiction to prove:
+	\begin{center}\begin{minipage}{.9\textwidth}If $a$, $b$ and $c$ are integers satisfying $a^2+b^2=c^2$, then $a$ or $b$ is even.
+	\end{minipage}\end{center}
+	\end{exercise}
+\end{frame}
+
+\begin{frame}{\fn}
+	\begin{exercise}
+		Often for contradiction proofs, we may be negating statements of the form \emph{$\neg(A$ or $B)$}, which is logically equivalent to \emph{$\neg A$ and $\neg B$}.
+		
+		Consider the statements $A=$\texttt{my cat is not orange} and $B=$\texttt{my dog has whiskers}.
+		\begin{enumerate}[label=(\alph*)] 
+			\item In an English sentence, how would you write \texttt{$\neg(A$ or $B)$}?
+			\item How would you write \texttt{$\neg A$ and $\neg B$}?
+			\item Why are these logically equivalent.
+		\end{enumerate}
+	\end{exercise}
+\end{frame}
+
+\begin{frame}{\fn}
+\begin{exercise}
+	\begin{statementblock}{Claim}
+	If $AB$ is singular then $A$ is singular or $B$ is singular.
+	\end{statementblock}
+	\begin{enumerate}[label=(\alph*)]
+		\item Represent this statement as $P\Rightarrow Q$.  What is $P$? $Q$? $\neg Q$?
+		\item What are the first two sentences of your contradiction proof of this claim?
+		\item Find a contradiction. You may want to consider citing Theorem 2.9.
+		\item Conclude the proof.
+	\end{enumerate}
+\end{exercise}
+\end{frame}
+
+\begin{frame}{\fn}
+\begin{exercise}
+	\begin{statementblock}{Claim}
+		There are no positive integers $a$ and $b$ such that $18a+6b=1$.
+	\end{statementblock}
+	\begin{enumerate}[label=(\alph*)]
+		\item Write this statement as: if $P$ then $18a+6b\neq 1$.
+		\item What are the first two sentences of your contradiction proof of this claim?
+		\item Find a contradiction.
+		\item Conclude the proof.
+	\end{enumerate}
+\end{exercise}
+\end{frame}
+
+\begin{frame}{\fn}
+\begin{exercise}
+	\begin{statementblock}{Claim}
+		The sum of a rational number and an irrational number is irrational.
+	\end{statementblock}
+	\begin{enumerate}[label=(\alph*)]
+		\item Write this statement as: if $P$ then $Q$.  
+		\item What is $P$? $Q$? $\neg Q$?
+		\item What are the first two sentences of your contradiction proof of this claim?
+		\item Find a contradiction.
+		\item Conclude the proof.
+	\end{enumerate}
+\end{exercise}
+\end{frame}
+\end{document}
+

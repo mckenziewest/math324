@@ -1,0 +1,287 @@
+\documentclass{beamer}
+%\usepackage[margin=1in]{geometry}
+\usepackage{amsthm,amsmath,amsfonts,hyperref,graphicx,color,multicol}
+\usepackage{enumitem,tikz}
+
+%%%%%%%%%%
+%Beamer Template Customization
+%%%%%%%%%%
+\setbeamertemplate{navigation symbols}{}
+\setbeamertemplate{theorems}[ams style]
+\setbeamertemplate{blocks}[rounded]
+
+\definecolor{Blu}{RGB}{43,62,133} % UWEC Blue
+\setbeamercolor{structure}{fg=Blu} % Titles
+
+%Unnumbered footnotes:
+\newcommand{\blfootnote}[1]{%
+	\begingroup
+	\renewcommand\thefootnote{}\footnote{#1}%
+	\addtocounter{footnote}{-1}%
+	\endgroup
+}
+
+
+%%%%%%%%%%
+%Custom Commands
+%%%%%%%%%%
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\veca}{\mathbf{a}}
+\newcommand{\vecb}{\mathbf{b}}
+\newcommand{\vecu}{\mathbf{u}}
+\newcommand{\vecv}{\mathbf{v}}
+\newcommand{\vecw}{\mathbf{w}}
+\newcommand{\vecx}{\mathbf{x}}
+\newcommand{\zerovector}{\mathbf{0}}
+
+\newcommand{\ds}{\displaystyle}
+
+\newcommand{\fn}{\insertframenumber}
+
+\newcommand{\rank}{\operatorname{rank}}
+
+\newcommand{\blank}[1]{\underline{\hspace*{#1}}}
+
+
+%%%%%%%%%%
+%Custom Theorem Environments
+%%%%%%%%%%
+\theoremstyle{definition}
+\newtheorem{exercise}{Exercise}
+\newtheorem{question}[exercise]{Question}
+\newtheorem*{defn}{Definition}
+\newtheorem*{exa}{Example}
+\newtheorem*{disc}{Group Discussion}
+\newtheorem*{nb}{Note}
+\newtheorem*{recall}{Recall}
+\renewcommand{\emph}[1]{{\color{blue}\texttt{#1}}}
+
+\definecolor{Gold}{RGB}{237, 172, 26}
+%Statement block
+\newenvironment{statementblock}[1]{%
+	\setbeamercolor{block body}{bg=Gold!20}
+	\setbeamercolor{block title}{bg=Gold}
+	\begin{block}{\textbf{#1.}}}{\end{block}}
+
+
+
+
+\newcounter{endenumi}[section]
+\begin{document}
+	\title{Math 324: Linear Algebra}
+	\subtitle{Section 3.3: Properties of Determinants}
+	\author{Mckenzie West}
+	\date{Last Updated: \today}
+\begin{frame}
+\maketitle
+\end{frame}
+
+\begin{frame}{\insertframenumber}
+	\begin{block}{\textbf{Last Time.}}
+	\begin{itemize}[label=--]
+		\item Determinants of Triangular Matrices
+		\item How Elementary Row Operations Affect Determinants
+	\end{itemize}
+	\end{block}
+	\begin{block}{\textbf{Today.}}
+		\begin{itemize}[label=--]
+			\item Determinants of Products
+		\end{itemize}
+	\end{block}
+\end{frame}
+	\begin{frame}{\fn}
+		\begin{statementblock}{Theorem 3.4}
+			If $A$ is a square matrix and any one of the following conditions is true, then $\det(A)=0$:
+			\begin{enumerate}[label=\textbf{\arabic*.}]
+				\item An entire row (or an entire column) consists entirely of zeros.
+				\item Two rows (or columns) are equal.
+				\item One row (or column) is a multiple of another row (or column).
+			\end{enumerate}
+		\end{statementblock}
+		\begin{exercise}
+			Prove property 1 using an appropriate cofactor expansion. I'm not going to help you with this one, but I do want your group to write it down on the worksheet.
+		\end{exercise}
+	\end{frame}
+\begin{frame}{\fn}
+\begin{question}
+	How could you use property 1 and elementary row (or column) operations to prove properties 2 and 3?
+\end{question}
+\begin{question}
+	Think of the properties from Theorem 3.4 in terms of coefficient matrices and linear systems of equations.  What would it mean for one row to be a multiple of another row?
+\end{question}
+\end{frame}
+%	\begin{frame}{\fn}
+%		\begin{exercise}
+%			Guided Proof of Property 2 of Theorem 3.3: If $B$ is obtained from $A$ by adding a multiple of a row of $A$ to another row of $A$, then $\det(A)=\det(B)$.
+%			
+%			WTS: The cofactor expansions of $A$ and $B$ are equal.
+%			
+%			\begin{enumerate}[label=(\roman*)]
+%				\item Begin by letting $B$ be the matrix obtained by performing the elementary row operation $R_i+cR_j\rightarrow R_i$.
+%				\item Write down the cofactor expansion of $B$ using the $i$-th row.
+%				\item Distribute and reorganize so that you have one sum containing multiples of $c$ and one sum with no $c$ in sight.
+%				\item Show that the sum of the terms without a $c$ is equal to $\det(A)$, and the sum of the terms with a $c$ is zero.
+%			\end{enumerate}
+%		\end{exercise}
+%	\end{frame}
+	
+	
+	\begin{frame}{\fn}
+		\begin{nb}
+			The ability to use elementary row operations to compute a determinant significantly reduce the effort needed to do the computation. 
+			
+			We can even count out the number of steps one would need for a generic matrix in each type of computation:
+				
+				\begin{center}
+					\begin{tabular}{l|ll|ll}
+						&\multicolumn{2}{l}{\small Cofactor Expansion Method} & \multicolumn{2}{l}{\small Row Reduction Method}\\
+						Order $n$ & \small Additions & \small Multiplications & \small Additions & \small  Multiplications\\
+						\hline
+						3&5&9&5&10\\
+						5&119&205&30&45\\
+						10&3,628,799&6,235,300&285&339
+					\end{tabular}
+				\end{center}
+		\end{nb}
+		\begin{question}
+			If these are the only options, what method do you think your calculator uses to compute determinants?
+		\end{question}
+	\end{frame}
+\begin{frame}\label{slide:thm3.5a}
+	\frametitle{\fn}
+	\begin{exercise}
+		Compute the determinants of the following elementary matrices,
+			\[\begin{bmatrix}
+			1&0&0\\0&4&0\\0&0&1
+			\end{bmatrix},\
+			\begin{bmatrix}
+			0&0&1\\0&1&0\\1&0&0
+			\end{bmatrix},\text{ and }
+			\begin{bmatrix}
+			1&0&0\\-5&1&0\\0&0&1
+			\end{bmatrix}
+			\]
+	\end{exercise}
+	\begin{exercise}
+		If $E$ is an elementary matrix and $B$ is any matrix, how does $|EB|$ compare to $|E|$ and $|B|$?
+		
+		You may want to reference Theorem 3.3 from last time as well as the previous exercise.
+	\end{exercise}
+	\pause
+	\begin{statementblock}{Lemma 3.5}
+		If $E$ is an elementary matrix and $B$ is a square matrix both of the same size, then $|EB|=|E||B|$.
+	\end{statementblock}
+\end{frame}
+
+\begin{frame}[fragile]
+	\frametitle{\fn}
+	\begin{statementblock}{Theorem 3.5}
+		If $A$ and $B$ are square matrices of order $n$, then $\det(AB)=\det(A)\det(B)$.
+	\end{statementblock}
+	\begin{exercise}
+		Use the following Sage code to produce two random $2\times 2$ matrices: (\url{https://sagecell.sagemath.org/})
+		{\footnotesize \begin{verbatim}
+			A = matrix([[randint(1,5) for j in [1,2]] for i in [1,2]])
+			print(f"A=\n{A}")
+			B = matrix([[randint(1,5) for j in [1,2]] for i in [1,2]])
+			print(f"B=\n{B}")
+		\end{verbatim}}
+		Then use your matrices to verify the Theorem.
+	\end{exercise}
+\end{frame}
+\begin{frame}{\fn}
+	\begin{block}{\textbf{Brain Break.}}
+		Why did you choose to attend University of Wisconsin-Eau Claire?
+		\begin{center}
+			\includegraphics[width=2in]{images/blugold}
+		\end{center}
+	\end{block}
+\end{frame}
+
+%\begin{frame}{\fn}
+%	Our next goal is to prove Theorem 3.5.
+%	However we first need the following result:
+%	\begin{exercise}
+%		Prove the following: If $AB$ is invertible, then $A$ is invertible. 
+%		\vskip .25in
+%		Note: To show $A$ is invertible, it is sufficient to find a $C$ such that $AC=I$.  WARNING: You cannot assume $(AB)^{-1}=B^{-1}A^{-1}$ because we do note know if $A$ and $B$ are invertible.
+%	\end{exercise}
+%\end{frame}
+
+\begin{frame}{\fn}
+	\vskip -.25in
+	\begin{exercise}
+		Guided Proof of Theorem 3.5, use the steps below to write the proof on your worksheet.
+		\begin{enumerate}[label=(\alph*)]
+			\item Let $A$ and $B$ be square matrices of order $n$.
+			\stepcounter{endenumi}
+			\item Consider two cases (i) $A$ is invertible or (ii) $A$ is singular.
+			\stepcounter{endenumi}
+			\item (i) Assume $A$ is invertible and invoke Theorem 2.15 to write $A$ as a product of elementary matrices.  Then use Lemma 3.5 on slide \ref{slide:thm3.5a} to prove that $|AB|=|A||B|$.  
+			
+			NOTE: In this case, you may assume for this proof that Lemma 3.5 says $|E_r\cdots E_2 E_1B|=|E_r|\cdots|E_2||E_1||B|$. Though in general, we would need to prove this by induction.
+			\stepcounter{endenumi}
+		\end{enumerate}
+	\end{exercise}
+\end{frame}
+\begin{frame}{\fn}
+	\addtocounter{exercise}{-1}
+	\begin{exercise}[Cont.]
+			\begin{enumerate}[label=(\alph*), resume]
+				\stepcounter{endenumi}
+			\item[(\alph{endenumi})] (ii) Assume $A$ is singular.  Use the inverse of Theorem 2.9 to note that $AB$ is also singular. 
+			Use Theorem 3.4 and Lemma 3.5 to explain why the determinant of a singular matrix is 0. Conclude that $|AB|=|A||B|=0$.
+			
+			 NOTE: If you did not watch the video for today, do that. I proved that the converse of Theorem 2.9 is true.  And thus the inverse is also true.  There is also an important corollary that will undoubtedly come in handy.
+			 \stepcounter{endenumi}
+			\item[(\alph{endenumi})] Conclude that no matter what $A$ is, $|AB|=|A||B|$.
+		\end{enumerate}
+	\end{exercise}
+\end{frame}
+\begin{frame}{\fn}
+	\begin{exercise}
+		In light of Theorem 3.5, how does $\det(A^{-1})$ compare to $\det(A)$? Can you prove it?
+	\end{exercise}\pause
+	\begin{statementblock}{Theorem 3.8}
+		If $A$ is an $n\times n$ invertible matrix, then $\ds \det(A^{-1})=\frac{1}{\det(A)}$.
+	\end{statementblock}
+\end{frame}
+\begin{frame}{\fn}
+	\begin{statementblock}{Equivalent Conditions for a Nonsingular Matrix}
+		If $A$ is an $n\times n$ matrix, then the following are equivalent:
+		\begin{enumerate}[label=\textbf{\arabic*.}]
+			\item $A$ is invertible.
+			\item $A\vecx=\vecb$ has a unique solution for every $n\times 1$ column matrix $\vecb$.
+			\item $A\vecx=O$ has only the trivial solution.
+			\item $A$ is row equivalent to $I_n$.
+			\item $A$ can be written as the product of elementary matrices.
+			\item $\det(A)\neq0$.  (\textbf{Theorem 3.7})
+		\end{enumerate}
+	\end{statementblock}
+	\begin{exercise}
+		Which of the following are invertible?
+		
+			\begin{center}
+				(a)\ $\begin{bmatrix}
+			4 & 5 & 4 \\
+			0 & 0 & 2 \\
+			0 & 0 & 3
+			\end{bmatrix}$
+			\hfill
+			(b)\ $\begin{bmatrix}
+			3 & 0 & 0 \\
+			4 & 3 & 0 \\
+			5 & 4 & 5
+			\end{bmatrix}$
+			\hfill
+			(c)\ $\begin{bmatrix}
+			0 & 0 & 0 & -2 \\
+			1 & 0 & 0 & 0 \\
+			2 & -2 & 0 & 0 \\
+			2 & 1 & -1 & 0
+			\end{bmatrix}$
+			\end{center}
+	\end{exercise}
+\end{frame}
+\end{document}
+

@@ -1,0 +1,270 @@
+\documentclass[handout]{beamer}
+%\usepackage[margin=1in]{geometry}
+\usepackage{amsthm,amsmath,amsfonts,hyperref,graphicx,color,multicol}
+\usepackage{enumitem,tikz}
+
+%%%%%%%%%%
+%Beamer Template Customization
+%%%%%%%%%%
+\setbeamertemplate{navigation symbols}{}
+\setbeamertemplate{theorems}[ams style]
+\setbeamertemplate{blocks}[rounded]
+
+\definecolor{Blu}{RGB}{43,62,133} % UWEC Blue
+\setbeamercolor{structure}{fg=Blu} % Titles
+
+%Unnumbered footnotes:
+\newcommand{\blfootnote}[1]{%
+	\begingroup
+	\renewcommand\thefootnote{}\footnote{#1}%
+	\addtocounter{footnote}{-1}%
+	\endgroup
+}
+
+
+%%%%%%%%%%
+%Custom Commands
+%%%%%%%%%%
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\veca}{\vec{a}}
+\newcommand{\vecb}{\vec{b}}
+\newcommand{\vece}{\vec{e}}
+\newcommand{\vecu}{\vec{u}}
+\newcommand{\vecv}{\vec{v}}
+\newcommand{\vecw}{\vec{w}}
+\newcommand{\vecx}{\vec{x}}
+\newcommand{\zerovector}{\vec{0}}
+
+\newcommand{\ds}{\displaystyle}
+
+\newcommand{\fn}{\insertframenumber}
+
+\newcommand{\rank}{\operatorname{rank}}
+\newcommand{\adj}{\operatorname{adj}}
+
+\newcommand{\blank}[1]{\underline{\hspace*{#1}}}
+
+
+%%%%%%%%%%
+%Custom Theorem Environments
+%%%%%%%%%%
+\theoremstyle{definition}
+\newtheorem{exercise}{Exercise}
+\newtheorem{question}[exercise]{Question}
+\newtheorem*{defn}{Definition}
+\newtheorem*{exa}{Example}
+\newtheorem*{disc}{Group Discussion}
+\newtheorem*{nb}{Note}
+\newtheorem*{recall}{Recall}
+\renewcommand{\emph}[1]{{\color{blue}\texttt{#1}}}
+
+\definecolor{Gold}{RGB}{237, 172, 26}
+%Statement block
+\newenvironment{statementblock}[1]{%
+	\setbeamercolor{block body}{bg=Gold!20}
+	\setbeamercolor{block title}{bg=Gold}
+	\begin{block}{\textbf{#1.}}}{\end{block}}
+
+
+\begin{document}
+	\title{Math 324: Linear Algebra}
+	\subtitle{2.1: Operations with Matrices}
+	\author{Mckenzie West}
+	\date{Last Updated: \today}
+\begin{frame}
+\maketitle
+\end{frame}
+
+\begin{frame}{\insertframenumber}
+	\begin{block}{\textbf{Last Time.}}
+	\begin{itemize}[label=--]
+		\item Polynomial Curve Fitting
+		\item Network Analysis
+	\end{itemize}
+	\end{block}
+\begin{block}{\textbf{Today.}}
+	\begin{itemize}[label=--]
+		\item Matrix Equality
+		\item Matrix Addition, Subtraction and Scalar Multiplication
+		\item Matrix Multiplication
+	\end{itemize}
+\end{block}
+\end{frame}
+
+\begin{frame}{\insertframenumber}
+	We begin by recalling some matrix notation:
+		\begin{itemize}[label=--]
+			\item An $m\times n$ matrix is a grid with $m$ rows and $n$ columns.
+			\item Matrices are usually denoted using capital letters.
+			\item The $i,j$-entry of a matrix $A$ is the entry in the $i$-th row and $j$-th column.  It may also be denoted by $a_{ij}$.
+			\item Other ways to denote a matrix include a compact version, $A=[a_{ij}]$, and a rectangular array,
+				\[A=\begin{bmatrix}
+				a_{11}&a_{12}&a_{13}&\dots&a_{1n}\\
+				a_{21}&a_{22}&a_{23}&\dots&a_{2n}\\
+				a_{31}&a_{32}&a_{33}&\dots&a_{3n}\\
+				\vdots&\vdots&\vdots&&\vdots\\
+				a_{m1}&a_{m2}&a_{m3}&\dots&a_{mn}\\
+				\end{bmatrix}.\]
+			Which one we use may depend on the circumstance.
+		\end{itemize}
+\end{frame}
+
+\begin{frame}{\fn}
+	\begin{defn}
+		Two matrices $A=[a_{ij}]$ and $B=[b_{ij}]$ are \emph{equal} if they have the same size ($m\times n$) and $a_{ij}=b_{ij}$ for all $1\leq i\leq m$ and $1\leq j\leq n$.
+	\end{defn}	
+	\begin{exercise}
+		Find $x$ and $y$:
+			\[\begin{bmatrix}
+				-5 & x\\3y-2 & 8
+			\end{bmatrix}=
+			\begin{bmatrix}
+			-5 & 7\\13 & 8
+			\end{bmatrix}
+			\]
+	\end{exercise}
+	\begin{exercise}
+		Are the following matrices equal?
+		\[\begin{bmatrix}
+		54 \\ -654
+		\end{bmatrix}=
+		\begin{bmatrix}
+		54 & -654
+		\end{bmatrix}
+		\]
+	\end{exercise}
+\end{frame}
+
+\begin{frame}{\fn}
+	\begin{defn}
+		The \emph{sum} of two $m\times n$ matrices $A=[a_{ij}]$ and $B=[b_{ij}]$ is the $m\times n$ matrix $A+B=[a_{ij}+b_{ij}]$. 
+	\end{defn}
+	\begin{nb}
+		We're using the fact that we know how to add real numbers in order to add matrices.
+	\end{nb}
+	\begin{defn}
+		If $A=[a_{ij}]$ is an $m\times n$ matrix and $c$ is a real number, then the \emph{scalar multiple} of $A$ by $c$ is the $m\times n$ matrix given by $cA=[ca_{ij}]$.
+	\end{defn}
+\end{frame}
+
+\begin{frame}{\fn}
+	\begin{exercise}
+		Solve for $x,y$ and $z$ in the matrix equation:	
+		\[
+			4\begin{bmatrix}
+			x&y\\z&-1
+			\end{bmatrix}
+			=
+			2\begin{bmatrix}
+			y&z\\-x&1
+			\end{bmatrix}
+			+
+			2\begin{bmatrix}
+			4&x\\5&-x
+			\end{bmatrix}
+		\]
+		
+		Hint: Simplify the right-hand and left-hand sides using scalar multiplication and matrix addition, then remember back to what it means for two matrices to be equal.
+	\end{exercise}
+	\pause
+	\begin{question}
+		What does it mean, in terms of addition and scalar multiplication, to subtract one matrix from another?
+	\end{question}
+\end{frame}
+
+\begin{frame}{\fn}
+	\begin{block}{\textbf{Brain Break.}}
+		Remind you group of your name.
+		
+		What would you name your boat if you owned one?
+		
+		\begin{center}
+			\includegraphics[width=2in]{images/boat}
+		\end{center}
+	\end{block}
+\end{frame}
+\begin{frame}{\fn}
+	\begin{defn}[\emph{Matrix Multiplication}]
+		If $A=[a_{ij}]$ is an $m\times n$ matrix and $B=[b_{ij}]$ is an $n\times p$ matrix, then the \emph{product} of $A$ and $B$ is an $m\times p$ matrix 
+		\[AB=[c_{ij}],\]
+		where
+		\[c_{ij}=a_{i1}b_{1j}+a_{i2}b_{2j}+\cdots+a_{in}b_{nj}=\sum_{k=1}^n a_{ik}b_{kj}.\]
+	\end{defn}
+\end{frame}
+
+\begin{frame}{\fn}
+	\begin{exercise}
+		We begin by asking which products we can take.  Go back to the definition and make careful note about the size of each matrix.
+	\end{exercise}
+	\pause
+	\begin{exercise}
+		Here are six matrices.  List several products that we can take along with the size of the resulting matrix.  Then list several products that are not allowed.
+		\[A=\begin{bmatrix}2&6\\-3&-7\end{bmatrix}\
+		B=\begin{bmatrix}0&1&-1\\3&-1&1\end{bmatrix}\
+		C=\begin{bmatrix}-1&7\\0&3\\-1&2\end{bmatrix}
+		\]
+		\[
+		D=\begin{bmatrix}1&-1\\-3&5\end{bmatrix}\
+		E=\begin{bmatrix}5\\4\end{bmatrix}\
+		F=\begin{bmatrix}-1&1\end{bmatrix}
+		\]
+	\end{exercise}
+\end{frame}
+
+\begin{frame}{\fn}
+	\begin{exercise}
+		Compute $CA$, where
+		$A=\begin{bmatrix}2&6\\-3&-7\end{bmatrix}\textup{ and }
+		C=\begin{bmatrix}-1&7\\0&3\\-1&2\end{bmatrix}.$\vskip 3in
+	\end{exercise}
+	\begin{exercise}
+		Compute $DE$, where
+		$D=\begin{bmatrix}1&-1\\-3&5\end{bmatrix}\textup{ and }
+		E=\begin{bmatrix}5\\4\end{bmatrix}.$\vskip 3in
+	\end{exercise}
+	\begin{exercise}
+		Compute $AD$, where
+		$A=\begin{bmatrix}2&6\\-3&-7\end{bmatrix}\textup{ and }
+		D=\begin{bmatrix}1&-1\\-3&5\end{bmatrix}$.
+	\end{exercise}
+\end{frame}
+
+\begin{frame}{\fn}
+	\begin{exercise}
+		Let $A$ be a matrix such that 
+		$\begin{bmatrix}
+		1&2\\3&5
+		\end{bmatrix}A=
+		\begin{bmatrix}
+		1&0\\0&1
+		\end{bmatrix}$
+		\begin{enumerate}[label=(\alph*)]
+			\item What is the size of $A$?\pause
+			\item Using variables as placeholders for the entries of $A$, multiply the matrices on the left-hand side of the equation.\pause
+			\item Set the entries on the LHS equal to the corresponding entries on the RHS to create a system of linear equations.\pause
+			\item Solve the system of linear equations to find $A$.
+		\end{enumerate}
+	\end{exercise}
+\end{frame}
+
+
+\begin{frame}{\fn}
+	\begin{exercise}
+		Let $B$ be a matrix such that 
+		$B\begin{bmatrix}
+		-3&0\\1&2
+		\end{bmatrix}=
+		\begin{bmatrix}
+		1&0\\-1&0\\0&1
+		\end{bmatrix}$
+		\begin{enumerate}[label=(\alph*)]
+			\item What is the size of $B$?\pause
+			\item Using variables as placeholders for the entries of $B$, multiply the matrices on the left-hand side of the equation.\pause
+			\item Set the entries on the LHS equal to the corresponding entries on the RHS to create a system of linear equations.\pause
+			\item Solve the system of linear equations to find $B$.
+		\end{enumerate}
+	\end{exercise}
+\end{frame}
+
+\end{document}
+

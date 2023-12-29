@@ -1,0 +1,299 @@
+\documentclass{beamer}
+%\usepackage[margin=1in]{geometry}
+\usepackage{amsthm,amsmath,amsfonts,hyperref,graphicx,color,multicol}
+\usepackage{enumitem,tikz}
+\usepackage{booktabs}
+%%%%%%%%%%
+%Beamer Template Customization
+%%%%%%%%%%
+\setbeamertemplate{navigation symbols}{}
+\setbeamertemplate{theorems}[ams style]
+\setbeamertemplate{blocks}[rounded]
+
+\definecolor{Blu}{RGB}{43,62,133} % UWEC Blue
+\setbeamercolor{structure}{fg=Blu} % Titles
+
+%Unnumbered footnotes:
+\newcommand{\blfootnote}[1]{%
+	\begingroup
+	\renewcommand\thefootnote{}\footnote{#1}%
+	\addtocounter{footnote}{-1}%
+	\endgroup
+}
+
+
+%%%%%%%%%%
+%Custom Commands
+%%%%%%%%%%
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\veca}{\vec{a}}
+\newcommand{\vecb}{\vec{b}}
+\newcommand{\vece}{\vec{e}}
+\newcommand{\vecu}{\vec{u}}
+\newcommand{\vecv}{\vec{v}}
+\newcommand{\vecw}{\vec{w}}
+\newcommand{\vecx}{\vec{x}}
+\newcommand{\zerovector}{\vec{0}}
+
+\newcommand{\ds}{\displaystyle}
+
+\newcommand{\fn}{\insertframenumber}
+
+\newcommand{\col}{\operatorname{col}}
+\newcommand{\row}{\operatorname{row}}
+\newcommand{\rank}{\operatorname{rank}}
+\newcommand{\nullity}{\operatorname{nullity}}
+\newcommand{\adj}{\operatorname{adj}}
+\newcommand{\proj}{\operatorname{proj}}
+\newcommand{\ip}[2]{\left\langle #1,#2\right\rangle}
+
+\newcommand{\blank}[1]{\underline{\hspace*{#1}}}
+
+\newcommand{\dotp}{\,{\boldsymbol{\cdot}\hspace*{.01in}}}
+
+%%%%%%%%%%
+%Custom Theorem Environments
+%%%%%%%%%%
+\theoremstyle{definition}
+\newtheorem{exercise}{Exercise}
+\newtheorem{question}[exercise]{Question}
+\newtheorem*{defn}{Definition}
+\newtheorem*{exa}{Example}
+\newtheorem*{disc}{Group Discussion}
+\newtheorem*{nb}{Note}
+\newtheorem*{recall}{Recall}
+\renewcommand{\emph}[1]{{\color{blue}\texttt{#1}}}
+
+\definecolor{Gold}{RGB}{237, 172, 26}
+%Statement block
+\newenvironment{statementblock}[1]{%
+	\setbeamercolor{block body}{bg=Gold!20}
+	\setbeamercolor{block title}{bg=Gold}
+	\begin{block}{\textbf{#1.}}}{\end{block}}
+
+
+
+
+
+\begin{document}
+	\title{Math 324: Linear Algebra}
+	\subtitle{Section 5.4: Orthogonal Complements}
+	\author{Mckenzie West}
+	\date{Last Updated: \today}
+\begin{frame}
+\maketitle
+\end{frame}
+
+\begin{frame}{\insertframenumber}
+	\begin{block}{\textbf{Last Time.}}
+	\begin{itemize}[label=--]
+		\item Properties of Inner Products
+		\item Orthogonal Sets
+	\end{itemize}
+	\end{block}
+	\begin{block}{\textbf{Today.}}
+		\begin{itemize}[label=--]
+			\item Orthogonal Complements
+			\item Least Squares Analysis
+		\end{itemize}
+	\end{block}
+\end{frame}
+\begin{frame}{\fn}
+	\begin{statementblock}{Key Idea 1}
+		$A\vec x=\vec b$ has a solution if and only if $\vec b\in\col(A)$:
+		\[\begin{bmatrix}
+		a_{11}&a_{12}&\cdots&a_{1n}\\
+		a_{21}&a_{22}&\cdots&a_{2n}\\
+		\vdots&\vdots&&\vdots\\
+		a_{m1}&a_{m2}&\cdots&a_{mn}
+		\end{bmatrix}\begin{bmatrix}x_1\\x_2\\\vdots\\x_n\end{bmatrix}
+		=x_1\begin{bmatrix}
+			a_{11}\\a_{21}\\\vdots\\a_{m1}
+			\end{bmatrix}
+		+x_2\begin{bmatrix}
+		a_{12}\\a_{22}\\\vdots\\a_{m2}
+		\end{bmatrix}
+		+x_n\begin{bmatrix}
+		a_{1n}\\a_{2n}\\\vdots\\a_{mn}
+		\end{bmatrix}.\]
+	\end{statementblock}
+	\begin{exercise}
+		Let $A=\begin{bmatrix}1&2\\0&1\\1&0\end{bmatrix}$. Show that $\vec b=\begin{bmatrix}-7\\-5\\3\end{bmatrix}$ is in $\col(A)$ by solving the system $A\vec x=\vec b$ and writing $\vec b$ as a combination or the columns  using the entries of $\vec x$ as the coefficients.
+	\end{exercise}
+\end{frame}
+\begin{frame}{\fn}
+\begin{statementblock}{Key Idea 2}
+	If $A\vec x=\vec 0$, then $\vec x$ is orthogonal to every row of $A$:
+	\[\begin{bmatrix}
+	\vec a_1\\\vec a_2\\\vdots\\\veca_m
+	\end{bmatrix}\vec x
+	=\begin{bmatrix}
+	\vec a_1\dotp\vec x\\\veca_2\dotp\vec x\\\vdots\\\vec a_m\dotp\vec x
+	\end{bmatrix}=\begin{bmatrix}0\\0\\\vdots\\0\end{bmatrix}.\]
+	That is, $\vec a_i\dotp\vec x=0$ for all rows $\vec a_i$ of $A$.
+\end{statementblock}
+\begin{exercise}
+	Let $A=\begin{bmatrix}1&2&0\\0&1&0\end{bmatrix}$. Show that $\vecx=\begin{bmatrix}0\\0\\1\end{bmatrix}$ is orthogonal to every row of~$A$ by computing $A\vec x$.
+\end{exercise}
+\end{frame}
+\begin{frame}{\fn}
+	\begin{statementblock}{Key Idea 3}
+		If $\vec u$ is orthogonal to each of $\vec v_1,\vec v_2,\dots,\vec v_n$, then $\vec u$ is orthogonal to every linear combination, $c_1\vec v_1+c_2\vec v_2+\cdots+c_n\vec v_n$:
+			\begin{multline*}
+			\vec u\dotp(c_1\vec v_1+c_2\vec v_2+\cdots+c_n\vec v_n)\\=c_1(\vec u\dotp\vec v_1)+c_2(\vec u\dotp\vec v_2)+\cdots+c_n(\vec u\dotp\vec v_n)\\=c_1(0)+c_2(0)+\cdots+c_n(0)=0.
+			\end{multline*}
+		Morally, this means that to check $\vec u$ is orthogonal to every vector in $V$, we just need to check $\vec u$ is orthogonal to every vector in a basis for $V$.
+	\end{statementblock}
+	\begin{exercise}
+	Let $A=\begin{bmatrix}1&2&0\\0&1&0\end{bmatrix}$. Explain why $\vecx=\begin{bmatrix}0\\0\\1\end{bmatrix}$ is orthogonal to every linear combination of the rows of $A$ using Exercise 2.
+	\end{exercise}
+\end{frame}
+\begin{frame}{\fn}
+\begin{statementblock}{Key Idea 4}
+	If $V$ is a subspace of $\R^n$, we define the \emph{orthogonal complement} of $V$ to be
+		$$\begin{array}{rcl}
+			V^\perp&=&\{\text{all vectors orthogonal to all vectors in }V\}\\
+			&=&\{\text{all vectors orthogonal to the basis vectors of }V\}\\
+		\end{array}.$$
+	A very important note is that $\dim(V)+\dim(V^\perp)=n$.
+\end{statementblock}
+\begin{exercise}
+	Let $A=\begin{bmatrix}1&2&0\\0&1&0\end{bmatrix}$. Explain why $\vecx=\begin{bmatrix}0\\0\\1\end{bmatrix}$ is in $\row(A)^\perp$.
+\end{exercise}
+\end{frame}
+\begin{frame}{\fn}
+\begin{statementblock}{Key Idea 5}
+	If $V$ is a subspace of $\R^n$ with basis $\{\vec v_1,\vec v_2,\dots,\vec v_m\}$, we can find $V^\perp$ by computing
+		\[\operatorname{null}\left(\begin{bmatrix}\vec v_1\\\vec v_2\\\vdots\\\vec v_n\end{bmatrix}\right),\]
+	when we consider each $\vec v_1$ as a row vector.
+	
+	Note $\dim(V)=m=\rank(A)$ and $\dim(V^\perp)=\nullity(A)=n-m$.
+\end{statementblock}
+\begin{exercise}
+	Let $V=\operatorname{span}\{(3,2,-1),(0,2,2)\}$. Find a basis for $V^\perp$.
+\end{exercise}
+\end{frame}
+\begin{frame}{\fn}
+	\begin{statementblock}{Key Idea 6}
+		The \emph{Four Fundamental Subspaces} of an $m\times n$ matrix $A$ are
+		
+			\begin{tabular}{|c|c|l}
+				\cmidrule{1-2}
+				$V=\row(A)$ & $V^\perp=\operatorname{null}(A)$ & $\leftarrow$ subspaces of $\R^n$\\
+				\cmidrule{1-2}
+				$W=\col(A)=\row(A^T)$ & $W^\perp=\operatorname{null}(A^T)$ & $\leftarrow$ subspaces of $\R^m$\\
+				\cmidrule{1-2}
+			\end{tabular}
+	\end{statementblock}
+	\begin{exercise}
+		Find the four fundamental subspaces of \[A=\begin{bmatrix}
+		-2 & -3 & 3 & -2 \\
+		1 & 2 & 2 & 1 \\
+		0 & -3 & -2 & 0 \\
+		-1 & 5 & 0 & -1 \\
+		2 & -1 & 4 & 2
+		\end{bmatrix}\xrightarrow{\textsc{rref}}\begin{bmatrix}
+		1 & 0 & 0 & 1 \\
+		0 & 1 & 0 & 0 \\
+		0 & 0 & 1 & 0 \\
+		0 & 0 & 0 & 0 \\
+		0 & 0 & 0 & 0
+		\end{bmatrix}.\]
+		Note: a reduction of the transpose is on the next slide.
+	\end{exercise}
+\end{frame}
+	\begin{frame}{\fn}
+	\[A^T\xrightarrow{\textsc{rref}}\begin{bmatrix}
+	19 & 0 & 0 & -8 & 10 \\
+	0 & 19 & 0 & -35 & 58 \\
+	0 & 0 & 19 & -47 & 35 \\
+	0 & 0 & 0 & 0 & 0
+	\end{bmatrix}\]
+\end{frame}
+\begin{frame}{\fn}
+	\begin{block}{\textbf{Brain Break.}}
+		What's the first memory you have?
+		\begin{center}
+			\includegraphics[height=.75in]{images/Children_Playing}
+		\end{center}
+	\end{block}
+\end{frame}
+\begin{frame}{\fn}
+	\begin{statementblock}{Key Idea 7}
+		If $V$ is a subspace of $\R^n$ and $\vec u\in R^n$ we define the \emph{projection of $\vec u$ onto $V$}, denoted $\proj_V\vec u$ to be the closest point in $V$ to $\vec u$.
+		
+		The $\proj_V\vec u-\vec u$ is orthogonal to $V$.
+		
+		Therefore if $V=\col(A)$ then $\proj_V\vec u-\vec u$ is in $V^\perp=\operatorname{null}(A^T)$.
+		
+		By definition, this means that \begin{equation}\label{star}
+		A^T(\proj_V \vec u-\vec u)=\vec 0
+		\end{equation}
+		\vskip .1in
+		But wait, $\proj_V\vec u$ is in $V=\col(A)$, so there is some $\vec x$ such that
+			\[A\vec x=\proj_V\vec u. \text{ (key idea 1)}\]
+		\vskip .1in
+		Continuing from \eqref{star}, this means that we want to find $\vec x$ such that
+		\begin{center}
+				\begin{minipage}{.4\textwidth}
+				$\left.\begin{array}{rcl}
+					A^T(A\vec x-\vec u)&=&\vec 0\\A^TA\vec x-A^T\vec u&=&\vec 0
+				\end{array}\right\}$
+			\end{minipage}
+			\begin{minipage}{.4\textwidth}
+				$\Rightarrow A^TA\vec x=A^T\vec u$
+			\end{minipage}
+		\end{center}
+	\end{statementblock}
+\end{frame}
+\begin{frame}{\fn}
+	\begin{statementblock}{Key Idea 7 (Cont.)}
+		Therefore if $V=\col(A)$, to find the projection of $\vec u$ onto $V$, first solve
+			\[A^TA\vec x=A^T\vec u,\]
+		for $\vec x$.
+		
+		Then
+			\[\proj_V\vec u=A\vec x.\]
+	\end{statementblock}
+	\begin{exercise}
+		Let $V=\col\left(\begin{bmatrix}
+		1&0\\2&0\\0&3\\0&4
+		\end{bmatrix}\right)$.  Compute $\proj_V \left(\begin{bmatrix}1\\1\\1\\1\end{bmatrix}\right)$.
+	\end{exercise}
+\end{frame}
+\begin{frame}{\fn}
+\begin{defn}
+	For a set of points $(x_1,y_1),\ (x_2,y_2),\dots,\ (x_n,y_n)$, the \emph{least squares regression line} is given by the linear function $f(x)=a_0+a_1x$ that minimizes the sum of squared error:
+	\begin{multline*}
+	[f(x_1)-y_1]^2+[f(x_2)-y_2]^2+\cdots+[f(x_n)-y_n]^2\\=\|(f(x_1),f(x_2),\dots,f(x_n))-(y_1,y_2,\dots,y_n)\|^2.
+	\end{multline*}
+\end{defn}
+\begin{defn}
+	Given an $m\times n$ matrix $A$ and a vector $\vec b\in\R^m$, the \emph{least squares problem} is to find $\vec x\in\R^n$ such that $\|A\vec x-\vec b\|^2$ is minimized.
+	
+	That is, we solve for the $\vec x$ in the equation $A^TA\vec x=A^T\vec b$.
+\end{defn}
+\end{frame}
+
+\begin{frame}{\fn}
+	\begin{exercise}[Optional]
+		Solve the least squares problem for \[A=\begin{bmatrix}1&0&1\\1&1&1\\0&1&1\\1&1&0\end{bmatrix}\text{ and }\vec b=\begin{bmatrix}4\\-1\\0\\1\end{bmatrix}.\]
+		
+		That is, solve for the $\vec x$ in the equation $A^TA\vec x=A^T\vec b$.
+	\end{exercise}
+\end{frame}
+\begin{frame}{\fn}
+	\begin{exercise}[Optional]
+		The table shows the number of doctoral degrees $y$ (in thousands) awarded in the United States from 2005 through 2008.  Find the least squares regression line for the data.  Then use the model to predict the number of degrees awarded in 2015.  The $t$ represent the year with $t=5$ corresponding to 2005.
+		$$\begin{array}{l|cccc}
+		\hline
+		\text{Year}&2005&2006&2007&2008\\
+		\text{Doctoral Degrees }y&52.6&56.1&60.6&63.7\\
+		\hline
+		\end{array}$$
+		The least squares regression line is a line $y=a_0+a_1 x$, and we're trying to solve the least squares problem with
+		\[A=\begin{bmatrix}1&5\\1&6\\1&7\\1&8\end{bmatrix}, \vec x=\begin{bmatrix}a_0\\a_1\end{bmatrix},\text{ and }\vec b=\begin{bmatrix}52.6\\56.1\\60.6\\63.7\end{bmatrix}.\]
+	\end{exercise}
+\end{frame}
+\end{document}
+

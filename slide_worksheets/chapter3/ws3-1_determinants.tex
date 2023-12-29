@@ -1,0 +1,327 @@
+\documentclass[handout]{beamer}
+%\usepackage[margin=1in]{geometry}
+\usepackage{amsthm,amsmath,amsfonts,hyperref,graphicx,color,multicol}
+\usepackage{enumitem,tikz}
+
+%%%%%%%%%%
+%Beamer Template Customization
+%%%%%%%%%%
+\setbeamertemplate{navigation symbols}{}
+\setbeamertemplate{theorems}[ams style]
+\setbeamertemplate{blocks}[rounded]
+
+\definecolor{Blu}{RGB}{43,62,133} % UWEC Blue
+\setbeamercolor{structure}{fg=Blu} % Titles
+
+%Unnumbered footnotes:
+\newcommand{\blfootnote}[1]{%
+	\begingroup
+	\renewcommand\thefootnote{}\footnote{#1}%
+	\addtocounter{footnote}{-1}%
+	\endgroup
+}
+
+
+%%%%%%%%%%
+%Custom Commands
+%%%%%%%%%%
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\veca}{\vec{a}}
+\newcommand{\vecb}{\vec{b}}
+\newcommand{\vece}{\vec{e}}
+\newcommand{\vecu}{\vec{u}}
+\newcommand{\vecv}{\vec{v}}
+\newcommand{\vecw}{\vec{w}}
+\newcommand{\vecx}{\vec{x}}
+\newcommand{\zerovector}{\vec{0}}
+
+\newcommand{\ds}{\displaystyle}
+
+\newcommand{\fn}{\insertframenumber}
+
+\newcommand{\rank}{\operatorname{rank}}
+\newcommand{\adj}{\operatorname{adj}}
+
+\newcommand{\blank}[1]{\underline{\hspace*{#1}}}
+
+
+%%%%%%%%%%
+%Custom Theorem Environments
+%%%%%%%%%%
+\theoremstyle{definition}
+\newtheorem{exercise}{Exercise}
+\newtheorem{question}[exercise]{Question}
+\newtheorem*{defn}{Definition}
+\newtheorem*{exa}{Example}
+\newtheorem*{disc}{Group Discussion}
+\newtheorem*{nb}{Note}
+\newtheorem*{recall}{Recall}
+\renewcommand{\emph}[1]{{\color{blue}\texttt{#1}}}
+
+\definecolor{Gold}{RGB}{237, 172, 26}
+%Statement block
+\newenvironment{statementblock}[1]{%
+	\setbeamercolor{block body}{bg=Gold!20}
+	\setbeamercolor{block title}{bg=Gold}
+	\begin{block}{\textbf{#1.}}}{\end{block}}
+
+
+
+\begin{document}
+	\title{Math 324: Linear Algebra}
+	\subtitle{Section 3.1: The Determinant of a Matrix}
+	\author{Mckenzie West}
+	\date{Last Updated: \today}
+\begin{frame}
+\maketitle
+\end{frame}
+
+\begin{frame}{\insertframenumber}
+	\begin{block}{\textbf{Last Time.}}
+	\begin{itemize}[label=--]
+		\item Proof by Induction
+	\end{itemize}
+	\end{block}
+	\begin{block}{\textbf{Today.}}
+		\begin{itemize}[label=--]
+			\item The determinant of a $2\times 2$ matrix
+			\item Minors
+			\item Cofactors
+			\item The determinant of an $n\times n$ matrix.
+		\end{itemize}
+	\end{block}
+\end{frame}
+\begin{frame}{\fn}
+	\begin{defn}
+		Generally speaking, the \emph{determinant} of an $n\times n$ matrix is a real number that we can associate to it that indicates whether $A\vec x=\vec 0$ has nontrivial solutions.
+	\end{defn}
+
+	\begin{nb}
+		Recall that $A\vec x=\vec 0$ has a unique solution if and only if $A$ is invertible.  Therefore, the determinant can also indicate whether $A$ is invertible.
+	\end{nb}
+	\begin{question}
+		In light of this discussion, what do you think the determinant of the matrix $A=\begin{bmatrix}a_{11}&a_{12}\\a_{21}&a_{22}\end{bmatrix}$ is?
+	\end{question}
+\end{frame}
+
+\begin{frame}{\fn}
+	\begin{block}{\textbf{Notation.}}
+		If $A$ is an $2\times 2$ matrix, denote the determinant of $A$ by $|A|$, $\det(A)$,\[\text{or } \begin{vmatrix}a_{11}&a_{12}\\a_{21}&a_{22}\end{vmatrix} = a_{11}a_{22}-a_{12}a_{21}.\]
+	\end{block}
+	\begin{exercise}
+		Compute each of the following:
+		\begin{multicols}{3}
+			\begin{enumerate}[label=(\alph*)]
+			\item $\left|\begin{array}{rr}
+			-5 & 2 \\
+			4 & -3
+			\end{array}\right|$
+			\item $\left|\begin{array}{rr}
+			1 & -\frac{1}{3} \\
+			-2 & -5
+			\end{array}\right|$
+			\item $\left|\begin{array}{rr}
+			0 & 0 \\
+			1 & -1
+			\end{array}\right|$
+		\end{enumerate}
+		\end{multicols}
+	\end{exercise}
+	\begin{question}
+		What are the possible values for $|A|$?
+	\end{question}
+\end{frame}
+\begin{frame}{\fn}
+	\begin{defn}
+		If $A$ is a square matrix, then the \emph{$(i,j)$-minor}, $M_{ij}$, is the determinant of the matrix obtained by deleting the $i$th row and $j$th column of $A$.
+	\end{defn}
+	\begin{exercise}
+		Determine the given minor:
+		\begin{enumerate}[label=(\alph*)]
+			\item $(1,2)$-minor of $\begin{bmatrix}
+			0 & 3 & 3 \\
+			4 & 3 & 5 \\
+			-1 & 0 & 3
+			\end{bmatrix}$
+			\item $(3,3)$-minor of $\begin{bmatrix}
+			-1 & 2 & 4 \\
+			2 & -1 & -3 \\
+			1 & 4 & 5
+			\end{bmatrix}$
+			\item $(2,1)$-minor of $\begin{bmatrix}
+			a_{11}&a_{12}&a_{13}\\
+			a_{21}&a_{22}&a_{23}\\
+			a_{31}&a_{32}&a_{33}
+			\end{bmatrix}$
+		\end{enumerate}
+	\end{exercise}
+\end{frame}
+\begin{frame}{\fn}
+\begin{defn}
+	If $A$ is a square matrix, then the \emph{$(i,j)$-cofactor}, $C_{ij}$, is a signed version of the $(i,j)$-minor given by $C_{ij}=(-1)^{i+j}M_{ij}$.
+\end{defn}
+\begin{exercise}
+	Determine the given cofactor:
+	\begin{enumerate}[label=(\alph*)]
+		\item $(1,2)$-cofactor of $\begin{bmatrix}
+		0 & 3 & 3 \\
+		4 & 3 & 5 \\
+		-1 & 0 & 3
+		\end{bmatrix}$
+		\item $(3,3)$-cofactor of $\begin{bmatrix}
+		-1 & 2 & 4 \\
+		2 & -1 & -3 \\
+		1 & 4 & 5
+		\end{bmatrix}$
+		\item $(2,1)$-cofactor of $\begin{bmatrix}
+		a_{11}&a_{12}&a_{13}\\
+		a_{21}&a_{22}&a_{23}\\
+		a_{31}&a_{32}&a_{33}
+		\end{bmatrix}$
+	\end{enumerate}
+\end{exercise}
+\end{frame}
+\begin{frame}{\fn}
+	\begin{nb}
+		The sign of the cofactor alternates across rows and columns:
+		\begin{center}
+			\begin{tabular}{ccc}
+			$\begin{bmatrix}+&-&+\\-&+&-\\+&-&+\end{bmatrix}$&
+			
+			$\begin{bmatrix}+&-&+&-\\-&+&-&+\\+&-&+&-\\-&+&-&+\end{bmatrix}$&
+			
+			$\begin{bmatrix}+&-&+&-&+&\cdots\\-&+&-&+&-&\cdots\\+&-&+&-&+&\cdots\\
+			-&+&-&+&-&\cdots\\+&-&+&-&+&\cdots\\\vdots&\vdots&\vdots&\vdots&\vdots&\end{bmatrix}$\\
+			$3\times 3$&$4\times 4$ & $n\times n$
+		\end{tabular}
+		\end{center}
+	\end{nb}
+\end{frame}
+\begin{frame}{\fn}
+	\begin{defn}
+		If $A$ is an $n\times n$ matrix ($n\geq 2$), the \emph{determinant} of $A$ is the value
+			\[\det(A)=|A|=a_{11}C_{11}+a_{12}C_{12}+\cdots+a_{1n}C_{1n}=\sum_{j=1}^n a_{1j}C_{1j}.\]
+	\end{defn}
+	\begin{nb}
+		We call this an inductive definition because we use the determinant of one size smaller matrix to define the determinant of the next.
+	\end{nb}
+	\begin{exercise}
+		Use the definition given here to compute	
+			\[\begin{vmatrix}
+			0 & 3 & 3 \\
+			4 & 3 & 5 \\
+			-1 & 0 & 3
+			\end{vmatrix}\]
+	\end{exercise}
+\end{frame}
+\begin{frame}{\fn}
+	\begin{block}{\textbf{Brain Break.}}
+		What band were you obsessed with in middle school?
+		\begin{center}
+			\includegraphics[width=2in]{images/band}
+		\end{center}
+	\end{block}
+\end{frame}
+\begin{frame}{\fn}
+	\begin{nb}
+		Notice how convenient it was that one of the entries in the first row of the last matrix was 0.  We didn't actually have to compute the $(1,1)$-cofactor to compute the determinant.
+		
+		We can actually take advantage of rows (and columns!) that have a lot of zeros when we take determinants.
+	\end{nb}
+\end{frame}
+\begin{frame}{\fn}
+	\begin{statementblock}{Theorem 3.1 (Expansion by Cofactors)}
+		Let $A$ be a square matrix of order $n$.  Then the determinant of $A$ is given by:
+			\begin{enumerate}[label=(\alph*)]
+				\item the \emph{$i$-th row expansion} $$\det(A)=|A|=a_{i1}C_{i1}+a_{i2}C_{i2}+\cdots+a_{in}C_{in}=\sum_{j=1}^n a_{ij}C_{ij}.$$
+				\item or the \emph{$j$-th column expansion}
+				$$\det(A)=|A|=c_{1j}C_{1j}+a_{2j}C_{2j}+\cdots+a_{nj}C_{nj}=\sum_{i=1}^n a_{ij}C_{ij}.$$
+			\end{enumerate}
+	\end{statementblock}
+\end{frame}
+\begin{frame}{\fn}
+	\begin{exercise}
+		Compute the determinant of the following matrix in two different ways: (a) the 3rd row expansion and (b) the 4th column expansion:
+		$$\left[\begin{array}{rrrr}
+			-4 & -2 & 5 & 0 \\
+			-3 & -1 & 0 & 0 \\
+			0 & 0 & -5 & 0 \\
+			-5 & 0 & 0 & 3
+		\end{array}\right].$$
+		
+	 	Hopefully you got the same answer in both cases. Why do you think that happened?
+	\end{exercise}
+\end{frame}
+\begin{frame}{\fn}
+	\begin{exercise}
+		Use your choice of row/column cofactor expansion(s) to compute each of the following:
+		\begin{multicols}{2}
+			\begin{enumerate}[label=(\alph*)]
+			\item $\begin{vmatrix}
+			-2 & 1 & 0 \\
+			4 & 0 & -2 \\
+			-4 & -1 & 5
+			\end{vmatrix}$
+			\item $\begin{vmatrix}
+			2 & 2 & -2 & 1 \\
+			0 & -1 & 5 & -2 \\
+			0 & 0 & -3 & 3 \\
+			0 & 0 & 0 & 4
+			\end{vmatrix}$
+			\item $\begin{vmatrix}
+				-5 & 5 & 0 & -4 \\
+				5 & 4 & 0 & 0 \\
+				-1 & -2 & 2 & -3 \\
+				-4 & 0 & 0 & 2
+			\end{vmatrix}$
+			\item $\begin{vmatrix}
+			1 & -3 & -2 & 0 \\
+			-3 & 0 & 1 & 1 \\
+			5 & 0 & 0 & 0 \\
+			-5 & 0 & -4 & -4
+			\end{vmatrix}$
+		\end{enumerate}
+		\end{multicols}
+	\end{exercise}
+\end{frame}
+\begin{frame}{\fn}
+	\begin{exercise}
+		Determine the values of $\lambda$ for which the determinant of the given matrix is zero:
+			\begin{enumerate}[label=(\alph*)]
+				\item $\begin{bmatrix}
+				\lambda+2&0\\-5&\lambda-3
+				\end{bmatrix}$
+				\item $\begin{bmatrix}
+					\lambda&1\\7&\lambda+6
+				\end{bmatrix}$
+				\item $\begin{bmatrix}
+				\lambda+1 & 0 & 0 \\
+				1 & \lambda-2 & 1 \\
+				1 & 0 & \lambda
+				\end{bmatrix}$
+			\end{enumerate}
+	\end{exercise}
+\end{frame}
+\begin{frame}{\fn}
+	\begin{exercise}
+		Evaluate the determinant to verify the equation:
+		\begin{enumerate}[label=(\alph*)]
+			\item $\begin{vmatrix}a&b\\c&d\end{vmatrix}=-\begin{vmatrix}c&d\\a&b\end{vmatrix}$
+			\item $\begin{vmatrix}
+				1&x&x^2\\1&y&y^2\\1&z&z^2
+			\end{vmatrix}=(y-x)(z-x)(z-y)$
+	\end{enumerate}
+	\end{exercise}
+\end{frame}
+\begin{frame}{\fn}
+	\begin{exercise}
+		Show that the system of linear equations
+			$$\begin{array}{rcl}
+				ax+by&=&e\\
+				cx+dy&=&f
+			\end{array}$$
+		has a unique solution if and only if the determinant of the coefficient matrix is nonzero.
+	\end{exercise}
+\end{frame}
+\end{document}
+

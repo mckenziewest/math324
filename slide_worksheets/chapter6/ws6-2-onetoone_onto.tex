@@ -1,0 +1,282 @@
+\documentclass{beamer}
+%\usepackage[margin=1in]{geometry}
+\usepackage{amsthm,amsmath,amsfonts,hyperref,graphicx,color,multicol}
+\usepackage{enumitem,tikz}
+\usepackage{booktabs}
+%%%%%%%%%%
+%Beamer Template Customization
+%%%%%%%%%%
+\setbeamertemplate{navigation symbols}{}
+\setbeamertemplate{theorems}[ams style]
+\setbeamertemplate{blocks}[rounded]
+
+\definecolor{Blu}{RGB}{43,62,133} % UWEC Blue
+\setbeamercolor{structure}{fg=Blu} % Titles
+
+%Unnumbered footnotes:
+\newcommand{\blfootnote}[1]{%
+	\begingroup
+	\renewcommand\thefootnote{}\footnote{#1}%
+	\addtocounter{footnote}{-1}%
+	\endgroup
+}
+
+
+%%%%%%%%%%
+%Custom Commands
+%%%%%%%%%%
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\veca}{\vec{a}}
+\newcommand{\vecb}{\vec{b}}
+\newcommand{\vece}{\vec{e}}
+\newcommand{\vecu}{\vec{u}}
+\newcommand{\vecv}{\vec{v}}
+\newcommand{\vecw}{\vec{w}}
+\newcommand{\vecx}{\vec{x}}
+\newcommand{\zerovector}{\vec{0}}
+
+\newcommand{\ds}{\displaystyle}
+
+\newcommand{\fn}{\insertframenumber}
+
+\newcommand{\col}{\operatorname{col}}
+\newcommand{\row}{\operatorname{row}}
+\newcommand{\rank}{\operatorname{rank}}
+\newcommand{\nullity}{\operatorname{nullity}}
+\newcommand{\adj}{\operatorname{adj}}
+\newcommand{\proj}{\operatorname{proj}}
+\newcommand{\ip}[2]{\left\langle #1,#2\right\rangle}
+
+\newcommand{\blank}[1]{\underline{\hspace*{#1}}}
+
+\newcommand{\dotp}{\,{\boldsymbol{\cdot}\hspace*{.01in}}}
+
+%%%%%%%%%%
+%Custom Theorem Environments
+%%%%%%%%%%
+\theoremstyle{definition}
+\newtheorem{exercise}{Exercise}
+\newtheorem{question}[exercise]{Question}
+\newtheorem*{defn}{Definition}
+\newtheorem*{exa}{Example}
+\newtheorem*{disc}{Group Discussion}
+\newtheorem*{nb}{Note}
+\newtheorem*{recall}{Recall}
+\renewcommand{\emph}[1]{{\color{blue}\texttt{#1}}}
+
+\definecolor{Gold}{RGB}{237, 172, 26}
+%Statement block
+\newenvironment{statementblock}[1]{%
+	\setbeamercolor{block body}{bg=Gold!20}
+	\setbeamercolor{block title}{bg=Gold}
+	\begin{block}{\textbf{#1.}}}{\end{block}}
+
+
+
+
+
+\begin{document}
+	\title{Math 324: Linear Algebra}
+	\subtitle{Section 6.2: The Kernel and Range of a Linear Transformation}
+	\author{Mckenzie West}
+	\date{Last Updated: \today}
+\begin{frame}[fragile]
+\maketitle	
+\end{frame}
+
+\begin{frame}{\insertframenumber}
+	\begin{block}{\textbf{Last Time.}}
+	\begin{itemize}[label=--]
+		\item Matrix Transformations
+		\item The Kernel of a Transformation
+		\item The Range of a Transformation
+		\item Rank and Nullity
+	\end{itemize}
+	\end{block}
+	\begin{block}{\textbf{Today.}}
+		\begin{itemize}[label=--]
+			\item One-to-One Transformations
+			\item Onto Transformations
+			\item Isomorphisms
+		\end{itemize}
+	\end{block}
+\end{frame}
+\begin{frame}{\fn}
+	\begin{recall}
+			The \emph{kernel} of a linear transformation $T\colon V\to W$ is the collection of all vectors in $V$ that map to the zero vector in $W$.  We denote this by	\[\ker(T)=\{\vec v\in V:T(\vec v)=\vec 0_W\}\]
+			
+			The \emph{range} of $T$ is all of the vectors in $W$ that are `hit' by $T$.  This is can be denoted using either of the following
+				\begin{eqnarray*}
+				\operatorname{range}(T)&=&\{T(\vec v):\vec v\in V\}\\
+				&=&\{\vec w\in W:T(\vec v)=\vec w\ \exists\  \vec v\in V\}.
+				\end{eqnarray*}
+			(Note: Here we read the $\exists$ symbol as `for some'.)
+	\end{recall}
+\end{frame}
+\begin{frame}{\fn}
+\begin{recall}
+	We also saw last time that if $T$ is a matrix transformation with matrix $A$, then $\ker(T)=N(A)$ and $\operatorname{range}(T)=\col(A)$.
+	
+	Some natural questions that may arise are whether or not 
+	\begin{itemize}[label=\textbullet]
+		\item the kernel/nullspace have only the trivial solution;
+		\item the range/column space is all of the codomain. (That is, the columns span the space.)
+	\end{itemize}
+	The first of these ideas we will call \emph{one-to-one} and the second is called \emph{onto}.  They will be precisely defined in this worksheet.
+	
+\end{recall}
+\end{frame}
+\begin{frame}{\fn}
+	\begin{defn}
+		A linear transformation, $T\colon V\to W$, is \emph{one-to-one} if the preimage of every vector in $\operatorname{range}(T)$ has exactly one vector.
+		
+		That is, for every $\vec u, \vec v\in V$, if $T(\vec u)=T(\vec v)$ then $\vec u=\vec v$.
+	\end{defn}
+	\begin{exercise}
+		Show that the linear transformation $T: \R^2\to \R^3$ defined by $T(x,y)=(x+y,x-y,0)$ is one-to-one.
+			\begin{enumerate}[label=(\alph*)]
+				\item Let $\vec v_1=(x_1,y_1)$ and $\vec v_2=(x_2,y_2)$ be two vectors in $\R^2$ such that $T(\vec v_1)=T(\vec v_2)$.
+				\item Write out what it means for $T(\vec v_1)=T(\vec v_2)$ using the definition of $T$.
+				\item Show that $x_1=x_2$ and $y_1=y_2$.  Thus proving $\vec v_1=\vec v_2$.
+				\item Conclude that $T$ is one-to-one.
+			\end{enumerate}
+	\end{exercise}
+\end{frame}
+\begin{frame}{\fn}
+	\begin{statementblock}{Theorem 6.6}
+		Let $T:V\to W$ be a linear transformation.  Then $T$ is one-to-one if and only if $\ker(T)=\{\vec 0\}$.
+	\end{statementblock}
+	\begin{nb}
+		Notice how powerful this is.  It says that knowing how many things map to $\vec 0$ immediately tells you how many things map to everything else in the range.
+	\end{nb}
+
+\end{frame}
+\begin{frame}{\fn}
+	\begin{exercise}
+		Use Theorem 6.6 to show that the linear transformation $T: \R^2\to \R^3$ defined by $T(x,y)=(x+y,x-y,0)$ is one-to-one.
+		\begin{enumerate}[label=(\alph*)]
+			\item Let $\vec v=(x,y)$ be a vector in $\R^2$ such that $T(\vec v)=\vec 0$.
+			\item Carefully write out what $T(\vec v)$ is and show that in fact $\vec v=\vec 0$ must be true.
+		\end{enumerate}
+	\end{exercise}
+%	\begin{exercise}
+%		Determine whether the transformation $T:M_{2,2}\to M_{2,2}$ defined by $T(A)=A-A^T$ is one-to-one.
+%	\end{exercise}
+	\begin{exercise}
+		Determine whether the transformation $T: \R^3\to\R^2$ defined by $A=\begin{bmatrix}1&2&0\\0&1&1\end{bmatrix}$ is one-to-one.
+	\end{exercise}
+\end{frame}
+\begin{frame}{\fn}
+	\begin{question}
+		If $T:V\to W$ is a one-to-one linear transformation, how does $\dim(V)$ compare to $\dim(W)$?
+			\begin{itemize}[label=--]
+				\item Can a transformation $T:\R^3\to\R^2$ be one-to-one?
+				\item Can a transformation $T:\R^2\to\R^3$ be one-to-one?
+				\item Can a transformation $T:\R^3\to\R^3$ be one-to-one? 
+			\end{itemize}
+	\end{question}
+\end{frame}
+\begin{frame}{\fn}
+	\begin{defn}
+		A linear transformation $T:V\to W$ is \emph{onto} if $\operatorname{range}(T)=W$.
+	\end{defn}
+	\begin{statementblock}{Theorem 6.7}
+		Let $T:V\to W$ be a linear transformation where $W$ is finite dimensional.  Then $T$ is onto if and only if $\rank(T)=\dim(W)$.
+	\end{statementblock}
+	\begin{exercise}
+		Discuss this theorem, make sure you agree and understand the difference between $T$ being onto and $\rank(T)=\dim(W)$.
+	\end{exercise}
+\end{frame}
+\begin{frame}{\fn}
+	\begin{block}{\textbf{Brain Break.}}
+		What would you go viral for on the Internet?
+		\begin{center}
+			\includegraphics[height=.5\textheight]{images/internet_famous.jpg}
+		\end{center}
+	\end{block}
+\end{frame}
+\begin{frame}{\fn}
+	\begin{statementblock}{Theorem 6.8}
+		Let $T:V\to W$ be a lienar transformation with vector space $V$ and $W$, both dimension $n$.  Then $T$ is one-to-one if and only if $T$ is onto.
+	\end{statementblock}
+	\begin{exercise}
+		Prove Theorem 6.8,
+			\begin{enumerate}[label=(\alph*)]
+				\item Assume first that $T$ is one-to-one.
+					\begin{enumerate}[label=\roman*.]
+						\item What does theorem 6.6 say about $\ker (T)$?
+						\item You know $\dim(V)=\dim(W)=n$ and $n=\rank(T)+\nullity(T)$.  Use this and part (i) to conclude that $\rank(T)=n$.
+						\item Use Theorem 6.7 to conclude $T$ is onto.
+					\end{enumerate}
+				\item Now, reset and assume $T$ is onto.  Reverse the arguments from (a) with the starting point of $\rank(T)=n$ to get to $\ker(T)=\{\vec 0\}$.
+			\end{enumerate}
+	\end{exercise}
+\end{frame}
+\begin{frame}{\fn}
+	\begin{defn}
+		A linear transformation $T:V\to W$ that is one-to-one and onto is called an \emph{isomorphism}.  Moreover, if there exists at least one isomorphism between two vector spaces $V$ and $W$, then we call $V$ and $W$ \emph{isomorphic}.
+	\end{defn}
+	\begin{nb}
+		Note that isomorphic means ``same''.  It often does not mean ``equal''.
+	\end{nb}
+	\begin{exa}
+		The vector spaces $P_2$ and $\R^3$ are isomorphic because $T:P_2\to\R^3$ defined by $T(ax^2+bx+c)=(a,b,c)$ is an isomorphism.  (Check this.)
+	\end{exa}
+\end{frame}
+\begin{frame}{\fn}
+	\begin{exercise}
+		For (a)-(d), consider the linear transformation $T:\R^n\to\R^m$ defined by $T(\vec x)=A\vec x$. 
+			\begin{enumerate}[label=\roman*.]
+				\item Determine $n$ and $m$.
+				\item Is $T$ one-to-one, onto, or neither?
+				\item Is $T$ an isomorphism?
+			\end{enumerate} 
+			\begin{multicols}{2}
+				\begin{enumerate}[label=(\alph*)]
+					\item $A=\begin{bmatrix}1&0&3\\0&1&2\\0&0&0\end{bmatrix}$
+					\item $A=\begin{bmatrix}1&0&3\\0&1&2\end{bmatrix}$
+					\item $A=\begin{bmatrix}1&0\\0&1\\3&2\end{bmatrix}$
+					\item $A=\begin{bmatrix} 1&0&3\\0&1&2\\0&0&1\end{bmatrix}$
+				\end{enumerate}
+			\end{multicols}
+	\end{exercise}
+\end{frame}
+\begin{frame}{\fn}
+	\begin{statementblock}{Theorem 6.9}
+		Two finite-dimensional vector spaces $V$ and $W$ are isomorphic if and only if they are of the same dimension.
+	\end{statementblock}
+	\begin{nb}
+		Holy schmoley is this awesome! Theorem 6.9 says so many things we know, e.g.~$R^2$ is essentially the same as $M_{2,1}$, $M_{1,2}$, $P_1$, a plane in $\R^3$, a plane in $\R^4$,.... the list goes on.
+	\end{nb}
+	\begin{exercise}
+		List at least 4 vector spaces that are isomorphic to $\R^6$.
+	\end{exercise}
+\end{frame}
+\begin{frame}{\fn}
+	\begin{question}
+		If $T:\R^n\to\R^m$ is a linear transformation defined by the matrix $A$, what do each of the following tell you about the dimensions and the invertibility of $A$?
+			\begin{enumerate}[label=(\alph*)]
+				\item $T$ is neither one-to-one nor onto
+				\item $T$ is one-to-one
+				\item $T$ is onto
+				\item $T$ is an isomorphism
+			\end{enumerate}
+	\end{question}
+\end{frame}
+%\begin{frame}{\fn}
+%	\begin{exercise}
+%		Let $B$ be a fixed invertible $n\times n$ matrix.  
+%		Prove that the linear transformation $T:M_{n,n}\to M_{n,n}$ defined by $T(A)=AB$ is an isomorphism.
+%			\begin{enumerate}[label=(\alph*)]
+%				\item Show that $\ker(T)=\{O_{n,n}\}$.
+%				\item State why this implies $T$ is one-to-one.
+%				\item State why it is sufficient to show that $T$ is one-to-one in order to prove that it is an isomorphism.
+%			\end{enumerate}
+%	\end{exercise}
+%	\begin{question}
+%		Similarly, Theorem 6.8 also says that it would be sufficient to show that $T$ is onto.
+%		It is often easier to show that a linear transformation is one-to-one than to show it is onto.  Why might this be the case?
+%	\end{question}
+%\end{frame}
+\end{document}
+

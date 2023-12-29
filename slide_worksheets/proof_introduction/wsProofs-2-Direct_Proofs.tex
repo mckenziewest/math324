@@ -1,0 +1,157 @@
+\documentclass{beamer}
+%\usepackage[margin=1in]{geometry}
+\usepackage{amsthm,amsmath,amsfonts,hyperref,graphicx,color,multicol}
+\usepackage{enumitem}
+
+%\usepackage{setspace}
+%\doublespacing
+% or:
+%\onehalfspacing
+
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\veca}{\mathbf{a}}
+\newcommand{\vecb}{\mathbf{b}}
+\newcommand{\vecu}{\mathbf{u}}
+\newcommand{\vecv}{\mathbf{v}}
+\newcommand{\vecw}{\mathbf{w}}
+\newcommand{\vecx}{\mathbf{x}}
+\newcommand{\zerovector}{\mathbf{0}}
+
+\newcommand{\fn}{\insertframenumber}
+
+\newcommand{\rank}{\operatorname{rank}}
+
+\newcommand{\blank}[1]{\underline{\hspace*{#1}}}
+
+\theoremstyle{definition}
+\newtheorem{exercise}{Exercise}
+\newtheorem{question}[exercise]{Question}
+\newtheorem*{defn}{Definition}
+\newtheorem*{exa}{Example}
+\newtheorem*{disc}{Group Discussion}
+\newtheorem*{nb}{Note}
+\newtheorem*{recall}{Recall}
+\renewcommand{\emph}[1]{{\color{blue}\texttt{#1}}}
+
+\setbeamertemplate{navigation symbols}{}
+\setbeamertemplate{theorems}[ams style]
+
+
+%Unnumbered footnotes:
+\newcommand{\blfootnote}[1]{%
+	\begingroup
+	\renewcommand\thefootnote{}\footnote{#1}%
+	\addtocounter{footnote}{-1}%
+	\endgroup
+}
+
+\begin{document}
+	\title{Math 324: Linear Algebra}
+	\subtitle{Direct Proofs}
+	\author{Mckenzie West}
+	\date{Last Updated: \today}
+\begin{frame}
+\maketitle
+\end{frame}
+
+\begin{frame}{\insertframenumber}
+	\begin{block}{\textbf{Last Time.}}
+	\begin{itemize}[label=--]
+		\item Statements
+		\item Exploration and Counterexamples
+		\item Quantifiers
+		\item Conditional Statements
+		\item Compound Statements
+		\item Negation
+	\end{itemize}
+	\end{block}
+\begin{block}{\textbf{Today.}}
+	\begin{itemize}[label=--]
+		\item Proper Proof Techniques
+		\item Direct Proofs
+	\end{itemize}
+\end{block}
+\end{frame}
+
+\begin{frame}{\fn}
+	\begin{exercise}
+		\begin{itemize}[label=--]
+			\item Read the bolded summaries on the handout, focus on those highlighted here.
+			\item (1) For this class, who is your audience?
+			\item (3) What is the purpose of stating assumptions?
+			\item (4) Why are proofs written using ``we'' instead of $I$?
+			\item (7) What's the difference between writing a proof and computing an answer?
+			\item (9) Notice that even displayed equations end in a period because they should be considered a sentence.
+			\item (11) No sentence can begin with a mathematical symbol.  Why?
+			\item (15) Can we just write something and walk away?
+		\end{itemize}
+	\end{exercise}
+\end{frame}
+
+\begin{frame}{\fn}
+	\begin{exercise}
+		Examine your pre-class proof in the context of the handout.  What guidelines does it follow? Does it break any of the guidelines? 
+		
+		Share your thoughts with your table-mates.
+	\end{exercise}
+\end{frame}
+
+\begin{frame}{\fn}
+	\begin{exercise}
+		Re-write the following ``proof'' of the claim that follows so that the proof is correct and matches the guidelines from the handout.
+		\begin{block}{\textbf{Claim.}}
+			If the product $AB$ is a square matrix, then the product $BA$ is defined.
+		\end{block}
+		\begin{proof}
+			$AB$ is square so it is size $n\times n$. This means $A$ has $n$ columns and $B$ has $n$ columns. I can now multiply $BA$.
+		\end{proof}
+	\end{exercise}
+\end{frame}
+\begin{frame}{\fn}
+	\begin{block}{\textbf{Brain Break.}}
+		What food are you always running out of at your house or dorm?
+		\begin{center}
+			\includegraphics[width=2in]{images/pantry}
+		\end{center}
+	\end{block}
+\end{frame}
+\begin{frame}{\fn}
+	\vskip-.25in
+	\begin{exercise}
+		The proof of the following claim is long, wordy, and hard to understand.  Re-write a better proof.
+		\begin{block}{\textbf{Claim.}}
+			If the products $AB$ and $BA$ are both defined then $AB$ is a square matrix.
+		\end{block}
+		\begin{proof}
+			Let $A$ and $B$ be matrices of size $m\times n$ and $r\times s$. Assume that both of the products $AB$ and $BA$ are defined.  Since $AB$ is defined the number of columns of $A$ must equal the number of rows of $B$.  Since $BA$ is defined the number of columns of $B$ must equal the number of rows of $A$.  This means that $n$ equals $r$ and $m$ equals $s$.  Since $A$ is size $m\times n$ and $B$ is size $r\times s$, $AB$ is size $m\times s$.  But $m$ equals $s$ so $AB$ is square because the number of rows of $AB$ is equal to the number of rows of $A$ which is $m$ and the number of columns of $AB$ is equal to the number of columns of $B$ which is $s$ which is equal to $m$, the number of rows of $AB$.
+		\end{proof}
+	\end{exercise}
+\end{frame}
+\begin{frame}{\fn}
+	\begin{defn}
+		You may have seen previously that if $A$ is a square matrix satisfying $A^2=A$, then we call $A$ \emph{idempotent}.
+	\end{defn}
+	\begin{exercise}
+		Follow the steps to prove that if $A$ and $B$ are idempotent matrices satisfying $AB=BA$, then $AB$ is also idempotent.
+		\begin{enumerate}[label=(\alph*)]
+			\item Start with some scratch work, you want to show $(AB)^2=AB$.  
+			Try multiplying, where do you use the fact that $AB=BA$?
+			\item Write down your assumptions.
+			\item State what it means for $A$ and $B$ to be idempotent.
+			\item Write down a sentence stating what you want to show.
+			\item Go through the algebraic steps.  Note: You may want to display them as in guideline (9).
+			\item Write a concluding sentence as suggested in guideline (13).
+		\end{enumerate}
+	\end{exercise}
+\end{frame}
+%\begin{frame}{\fn}
+%\begin{block}{\textbf{Theorem 2.2 property 3.}}
+%	Let $A$ be an $m\times n$ matrix and $c$ a scalar.
+%	If $cA=O_{mn}$, then $c=0$ or $A=O_{mn}$.
+%\end{block}
+%\begin{exercise}
+%	\includegraphics[width=1.5in]{images/stop}
+%\end{exercise}
+%\end{frame}
+\end{document}
+

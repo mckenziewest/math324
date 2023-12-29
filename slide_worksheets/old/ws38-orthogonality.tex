@@ -1,0 +1,298 @@
+\documentclass{beamer}
+%\usepackage[margin=1in]{geometry}
+\usepackage{amsthm,amsmath,amsfonts,hyperref,graphicx,color,multicol}
+\usepackage{enumitem,tikz}
+
+%%%%%%%%%%
+%Beamer Template Customization
+%%%%%%%%%%
+\setbeamertemplate{navigation symbols}{}
+\setbeamertemplate{theorems}[ams style]
+\setbeamertemplate{blocks}[rounded]
+
+\definecolor{Blu}{RGB}{43,62,133} % UWEC Blue
+\setbeamercolor{structure}{fg=Blu} % Titles
+
+%Unnumbered footnotes:
+\newcommand{\blfootnote}[1]{%
+	\begingroup
+	\renewcommand\thefootnote{}\footnote{#1}%
+	\addtocounter{footnote}{-1}%
+	\endgroup
+}
+
+
+%%%%%%%%%%
+%Custom Commands
+%%%%%%%%%%
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\veca}{\vec{a}}
+\newcommand{\vecb}{\vec{b}}
+\newcommand{\vece}{\vec{e}}
+\newcommand{\vecu}{\vec{u}}
+\newcommand{\vecv}{\vec{v}}
+\newcommand{\vecw}{\vec{w}}
+\newcommand{\vecx}{\vec{x}}
+\newcommand{\zerovector}{\vec{0}}
+
+\newcommand{\ds}{\displaystyle}
+
+\newcommand{\fn}{\insertframenumber}
+
+\newcommand{\col}{\operatorname{col}}
+\newcommand{\row}{\operatorname{row}}
+\newcommand{\rank}{\operatorname{rank}}
+\newcommand{\nullity}{\operatorname{nullity}}
+\newcommand{\adj}{\operatorname{adj}}
+\newcommand{\proj}{\operatorname{proj}}
+\newcommand{\ip}[2]{\left\langle #1,#2\right\rangle}
+
+\newcommand{\blank}[1]{\underline{\hspace*{#1}}}
+
+\newcommand{\dotp}{\,{\boldsymbol{\cdot}\hspace*{.01in}}}
+
+%%%%%%%%%%
+%Custom Theorem Environments
+%%%%%%%%%%
+\theoremstyle{definition}
+\newtheorem{exercise}{Exercise}
+\newtheorem{question}[exercise]{Question}
+\newtheorem*{defn}{Definition}
+\newtheorem*{exa}{Example}
+\newtheorem*{disc}{Group Discussion}
+\newtheorem*{nb}{Note}
+\newtheorem*{recall}{Recall}
+\renewcommand{\emph}[1]{{\color{blue}\texttt{#1}}}
+
+\definecolor{Gold}{RGB}{237, 172, 26}
+%Statement block
+\newenvironment{statementblock}[1]{%
+	\setbeamercolor{block body}{bg=Gold!20}
+	\setbeamercolor{block title}{bg=Gold}
+	\begin{block}{\textbf{#1.}}}{\end{block}}
+
+
+
+
+
+\begin{document}
+	\title{Math 324: Linear Algebra}
+	\subtitle{Section 5.2: Inner Product Spaces\\Section 5.3: Orthonormal Bases}
+	\author{Mckenzie West}
+	\date{Last Updated: \today}
+\begin{frame}
+\maketitle
+\end{frame}
+
+\begin{frame}{\insertframenumber}
+	\begin{block}{\textbf{Last Time.}}
+	\begin{itemize}[label=--]
+		\item Orthogonal Projection
+		\item Inner Products
+	\end{itemize}
+	\end{block}
+	\begin{block}{\textbf{Today.}}
+		\begin{itemize}[label=--]
+			\item Properties of Inner Products
+			\item Orthogonal Sets
+		\end{itemize}
+	\end{block}
+\end{frame}
+\begin{frame}{\fn}
+	\begin{defn}
+		Let $\vec u,\vec v$ and $\vec w$ be vectors in a vector space $V$, and let $c$ be any scalar.  An \emph{inner product} on $V$ is a function that associates a real number $\ip{\vecu}{\vec v}$ for each pair of vectors $\vec u$ and $\vec v$ and satisfies the following axioms.
+		\begin{enumerate}[label=\textbf{\arabic*.}]
+			\item $\ip{\vec u}{\vec v}=\ip{\vec v}{\vec u}$
+			\item $\ip{\vec u}{\vec v+\vec w}=\ip{\vec u}{\vec v}+\ip{\vec u}{\vec w}$
+			\item $c\ip{\vec u}{\vec v}=\ip{c\vec u}{\vec v}$
+			\item $\ip{\vec v}{\vec v}\geq 0$ and $\ip{\vec v}{\vec v}=0$ if and only if $\vec v=\vec 0$.
+		\end{enumerate}
+	
+		A vector space with an inner product is called an \emph{inner product space}.
+	\end{defn}
+\end{frame}
+\begin{frame}{\fn}
+	\begin{exa} (From Last time.)
+		
+		Let $\vec u=(u_1,u_2)$ and $\vec v=(v_1,v_2)$ be vectors in $\R^2$.  Show that
+		\[\ip{\vec u}{\vec v}=u_1v_2-u_2v_1\]
+		is NOT an inner product on $\R^2$.  
+		
+		Consider $\vec u=(1,2)$ and $\vec v=(3,4)$, then 
+			\[\ip{\vec u}{\vec v}=1\cdot 4-2\cdot 3=-2\text{ and }\ip{\vec v}{\vec u}=2\cdot 3-1\cdot 4=2.\]
+		Thus $\ip{\vec u}{\vec v}\neq\ip{\vec v}{\vec u}$, so this is not an inner product.
+		
+		Moreover, this fails property 4, as $\ip{\vec u}{\vec u}=1\cdot 2-2\cdot 1=0$ while $\vec u\neq\vec 0$.
+	\end{exa}
+\end{frame}
+\begin{frame}{\fn}
+	\begin{exercise}\label{MatInnerProd}
+		Let $A=\begin{bmatrix} a_{11}&a_{12}\\a_{21}&a_{22}\end{bmatrix}$ and $B=\begin{bmatrix}b_{11}&b_{12}\\b_{21}&b_{22}\end{bmatrix}$ be matrices in the vector space $M_{2,2}$.  The following mapping is an inner product on $M_{2,2}$,
+			\[\ip{A}{B}=a_{11}b_{11}+a_{12}b_{12}+a_{21}b_{21}+a_{22}b_{22}.\]
+		Make sure you believe all four of the properties of an inner product are satisfied.
+	\end{exercise}
+	\begin{nb}
+		For a finite dimensional vectors space, inner products essentially always look like dot products with positive scalars.  Infinite dimensional vector spaces are not always so straight forward.
+	\end{nb}
+\end{frame}
+\begin{frame}{\fn}
+	\begin{exercise}
+		Let $f$ and $g$ be real valued continuous functions in the vector space $C[0,1]$.  I claim that the following is an inner product,\[\ip{f}{g}=\int_0^1 f(x)g(x)\ dx.\]
+		
+		Compute $\ip{3x+2}{e^x}$. 
+		
+		(Yes, you can---and should---use your calculator).
+	\end{exercise}
+\end{frame}
+\begin{frame}{\fn}
+	\begin{defn}
+		Let $\vec u$ and $\vec v$ be vectors in an inner product space $V$.  Then similarly to in the case of the dot product, we can make similar definitions for length, distance, angle, orthogonal, and orthogonal projection.
+		\begin{enumerate}[label=\textbf{\arabic*.}]
+			\item The \emph{length} (or \emph{norm}) of $\vec u$ is $\|\vec u\|=\sqrt{\ip{\vec u}{\vec u}}$.
+			\item The \emph{distance} between $\vec u$ and $\vec v$ is $d(\vec u,\vec v)=\|\vec u-\vec v\|$.
+			\item The \emph{angle} between $\vec u$ and $\vec v$ is given by
+				\[\cos\theta=\frac{\ip{\vec u}{\vec v}}{\|\vec u\|\|\vec v\|},\hspace*{.1in}0\leq\theta\leq \pi.\]
+			\item We say $\vec u$ and $\vec v$ are \emph{orthogonal} if $\ip{\vec u}{\vec v}=0$.
+			\item The \emph{orthogonal projection} of $\vec u$ onto $\vec v$ is
+				\[\proj_{\vec v}(\vec u)=\frac{\ip{\vec u}{\vec v}}{\ip{\vec v}{\vec v}}\vec v.\]
+		\end{enumerate}
+	\end{defn}
+\end{frame}
+\begin{frame}{\fn}
+	\begin{exercise}
+		Consider the inner product on $M_{2,2}$ from exercise \ref{MatInnerProd}:
+			\[\ip{A}{B}=a_{11}b_{11}+a_{12}b_{12}+a_{21}b_{21}+a_{22}b_{22}.\]
+		Let $A=\begin{bmatrix}1&2\\0&-1\end{bmatrix}$ and $B=\begin{bmatrix}0&5\\2&-2\end{bmatrix}$.
+		Compute
+		\begin{enumerate}[label=(\alph*)]
+			\item $\|A\|$
+			\item $d(A,B)$
+			\item Cosine of the angle between $A$ and $B$.
+			\item The orthogonal projection of $B$ onto $A$.
+		\end{enumerate}
+	\end{exercise}
+\end{frame}
+\begin{frame}{\fn}
+	\begin{nb}
+		The inequalities also persist for inner products. (Note that in proving the Triangle Inequality for example, we didn't actually use the definition of the dot product.)
+	\end{nb}
+	\begin{statementblock}{Theorem 5.8}
+		Let $\vec u$ and $\vec v$ be vectors in an inner product space $V$.
+		\begin{enumerate}[label=\textbf{\arabic*.}]
+			\item Cauchy--Schwarz Inequality: $|\ip{\vec u}{\vec v}|\leq \|\vec u\|\|\vec v\|$
+			\item Triangle Inequality: $\|\vec u+\vec v\|\leq\|\vec u\|+\|\vec v\|$
+			\item Pythagorean Theorem: $\vec u$ and $\vec v$ are orthogonal if and only if 
+				\[\|\vec u+\vec v\|^2=\|\vec u\|^2+\|\vec v\|^2.\]
+		\end{enumerate}
+	\end{statementblock}
+\end{frame}
+\begin{frame}{\fn}
+	\begin{nb}
+		One of the great things that we can use this for is to prove these relationships for integrals without actually talking about integrals!
+	\end{nb}
+	\begin{exercise}
+		Let $f$ and $g$ be real valued continuous functions in the vector space $C[0,1]$. Use the inner product,\[\ip{f}{g}=\int_0^1 f(x)g(x)\ dx.\]
+		
+		Verify the Cauchy-Schwarz Inequality for $f=3x+2$ and $g=e^x$. That is, verify that
+			\[|\ip{f}{g}|\leq \|f\|\|g\|.\]
+		(Yes, you can---and should---use your calculator).
+	\end{exercise}
+\end{frame}
+\begin{frame}{\fn}
+	\begin{defn}
+		A set $S$ of vectors in an inner product space $V$ is said to be \emph{orthogonal} if each pair of vectors in $S$ is orthogonal.
+		
+		If, in addition, each vectors in the set is a unit vector then $S$ is called \emph{orthonormal}.
+	\end{defn}
+	\begin{exa}
+		The standard basis $\{\vec e_1,\vec e_2,\vec e_3\}$ for $\R^3$ is an orthonormal set under the dot product because:
+			\[\begin{array}{ccc}
+				\|\vec e_1\|=1 & {\vec e_1}\dotp{\vec e_2}=0 & {\vec e_1}\dotp{\vec e_3}=0\\
+				 & \|\vec e_2\|=1 & {\vec e_2}\dotp{\vec e_3}=0\\
+				 &  & \|\vec e_3\|=1\\
+			\end{array}\]
+	\end{exa}
+\end{frame}
+\begin{frame}{\fn}
+	\begin{exercise}
+		Show that the set $S=\{(\frac{3}{5},\frac{4}{5}),(-\frac{4}{5},\frac{3}{5})\}$ is an orthonormal set of vectors in $\R^2$.
+		
+		Show that $S$ is a basis for $\R^2$.
+	\end{exercise}
+	\begin{exercise}
+		Using the inner product for $P_2$ given by the analogue of the dot product, \[\ip{a_0+a_1x+a_2x^2}{b_0+b_1x+b_2x^2}=a_0b_0+a_1b_1+a_2b_2,\]
+		determine whether $\{1+2x^2,-x,3+x^2\}$ is an orthogonal set.  If it is orthogonal is it orthonormal?
+	\end{exercise}
+\end{frame}
+\begin{frame}{\fn}
+	\begin{defn}
+		If a basis for a vector space $V$ of dimension $n$ is an orthonormal set, then we call it an \emph{orthonormal basis}.
+	\end{defn}
+	\begin{statementblock}{Theorem 5.11}
+		If $B=\{\vec v_1,\vec v_2,\dots,\vec v_n\}$ is an orthonormal basis for an inner product space $V$, then the representation of $\vec w\in V$ in terms of $B$ is given by
+			\[\vec w=\ip{\vec w}{\vec v_1}\vec v_1+\ip{\vec w}{\vec v_2}\vec v_2+\cdots+\ip{\vec w}{\vec v_n}\vec v_n.\]
+	\end{statementblock}
+	\begin{exercise}
+		Write $\vec w=(3,-2)$ in terms of $S=\{(\frac{3}{5},\frac{4}{5}),(-\frac{4}{5},\frac{3}{5})\}$, which you proved to be an orthonormal basis for $\R^2$.
+	\end{exercise}
+\end{frame}
+\begin{frame}{\fn}
+	\begin{statementblock}{Theorem 5.10}
+		If $S=\{\vec v_1,\vec v_2,\dots,\vec v_n\}$ is an orthogonal set of nonzero vectors in an inner product space $V$, then $S$ is linearly independent.
+	\end{statementblock}
+	\begin{nb}
+		In the beginning of the proof of this, we let $c_1,c_2,\dots,c_n$ be scalars such that
+			\[c_1\vec v_1+c_2\vec v_2+\cdots+c_n\vec v_n=\vec 0.\]
+		You then should use the orthogonality by taking the inner product of $\vec v_i$ with \[c_1\vec v_1+c_2\vec v_2+\cdots+c_n\vec v_n.\]
+		for each $i$.
+		
+		You also make use of the fact that $\langle \vec 0,\vec v\rangle=0$ for all $\vec v$, no matter the inner product space $V$.
+	\end{nb}
+\end{frame}
+\begin{frame}{\fn}
+	\begin{exercise}
+		Let $S=\{\vec v_1,\vec v_2\}$ be an orthogonal set in some inner product space $V$.  What is
+		\begin{enumerate}[label=(\alph*)]
+			\item $\ip{3\vec v_1-2\vec v_2}{\vec v_1}?$
+			\item $\ip{3\vec v_1-2\vec v_2}{\vec v_2}?$
+			\item $\ip{3\vec v_1-2\vec v_2}{-\vec v_1+5\vec v_2}?$
+		\end{enumerate}
+	\end{exercise}
+\end{frame}
+\begin{frame}{\fn}
+	\begin{statementblock}{Theorem 5.12 (Gram--Schmidt Process)}
+		Let $B=\{\vec v_1,\vec v_2,\dots,\vec v_n\}$ be a basis for an inner product space $V$.
+		
+		Consider $B'=\{\vec w_1,\vec w_2,\dots,\vec w_n\}$ consist of the vectors $\vec w_i$ in $V$ defined by
+			\begin{eqnarray*}
+				\vec w_1 &=&\vec v_1\\
+				\vec w_2 &=& \vec v_2-\proj_{\vec w_1} \vec v_2\\
+				\vec w_2 &=& \vec v_3-\proj_{\vec w_1}\vec v_3-\proj_{\vec w_2} \vec v_3\\
+				&\vdots\\
+				\vec w_n &=& \vec v_n-\proj_{\vec w_1}\vec v_n-\proj_{\vec w_2}\vec v_n- \cdots -\proj_{\vec w_{n-1}}\vec v_n.
+			\end{eqnarray*}
+		Then $B'$ is an orthogonal basis for $V$.
+		
+		Moreover if $\vec u_i=\frac{\vec w_i}{\|\vec w_i\|}$, the unit vector in the direction of $\vec w_i$, then $B''=\{\vec u_1,\vec u_2,\dots,\vec u_n\}$ is a basis for $V$.
+	\end{statementblock}
+\end{frame}
+\begin{frame}{\fn}
+	\begin{exercise}
+		Use the Gram--Schmidt process to find an orthonormal basis for $V=\{(2t+s,3t+s,s,t):s,t\in\R\}$ with respect to the dot product in $\R^4$.
+		\begin{enumerate}[label=(\alph*)]
+			\item Find a basis for $V$, $B=\{\vec v_1,\vec v_2\}$.
+			\item Set $\vec w_1=\vec v_1$.
+			\item Compute $\proj_{\vec w_1} \vec v_2$.
+			\item Set $\vec w_2=\vec v_2-\proj_{\vec w_1} \vec v_2$.
+			\item Find $\vec u_1=\frac{\vec w_1}{\|\vec w_1\|}$ and $\vec u_2=\frac{\vec w_2}{\|\vec w_2\|}$.
+			\item Then $B''=\{\vec u_1,\vec u_2\}$ is an orthogonal basis for $V$.
+		\end{enumerate}
+	\end{exercise}
+\end{frame}
+\begin{frame}{\fn}
+	\begin{exercise}
+		Use the inner product $\ip{\vec u}{\vec v}=2u_1v_1+u_2v_2$ in $\R^2$ and the Gram--Schmidt process to transform $B=\{(2,-1),(-2,10)\}$ into an orthonormal basis for $\R^2$ with respect to this inner product.
+	\end{exercise}
+\end{frame}
+\end{document}
+

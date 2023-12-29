@@ -1,0 +1,245 @@
+\documentclass{beamer}
+%\usepackage[margin=1in]{geometry}
+\usepackage{amsthm,amsmath,amsfonts,hyperref,graphicx,color,multicol}
+\usepackage{enumitem,tikz}
+\usepackage{booktabs}
+%%%%%%%%%%
+%Beamer Template Customization
+%%%%%%%%%%
+\setbeamertemplate{navigation symbols}{}
+\setbeamertemplate{theorems}[ams style]
+\setbeamertemplate{blocks}[rounded]
+
+\definecolor{Blu}{RGB}{43,62,133} % UWEC Blue
+\setbeamercolor{structure}{fg=Blu} % Titles
+
+%Unnumbered footnotes:
+\newcommand{\blfootnote}[1]{%
+	\begingroup
+	\renewcommand\thefootnote{}\footnote{#1}%
+	\addtocounter{footnote}{-1}%
+	\endgroup
+}
+
+
+%%%%%%%%%%
+%Custom Commands
+%%%%%%%%%%
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\veca}{\vec{a}}
+\newcommand{\vecb}{\vec{b}}
+\newcommand{\vece}{\vec{e}}
+\newcommand{\vecu}{\vec{u}}
+\newcommand{\vecv}{\vec{v}}
+\newcommand{\vecw}{\vec{w}}
+\newcommand{\vecx}{\vec{x}}
+\newcommand{\zerovector}{\vec{0}}
+
+\newcommand{\ds}{\displaystyle}
+
+\newcommand{\fn}{\insertframenumber}
+
+\newcommand{\col}{\operatorname{col}}
+\newcommand{\row}{\operatorname{row}}
+\newcommand{\rank}{\operatorname{rank}}
+\newcommand{\nullity}{\operatorname{nullity}}
+\newcommand{\adj}{\operatorname{adj}}
+\newcommand{\proj}{\operatorname{proj}}
+\newcommand{\ip}[2]{\left\langle #1,#2\right\rangle}
+
+\newcommand{\blank}[1]{\underline{\hspace*{#1}}}
+
+\newcommand{\dotp}{\,{\boldsymbol{\cdot}\hspace*{.01in}}}
+
+%%%%%%%%%%
+%Custom Theorem Environments
+%%%%%%%%%%
+\theoremstyle{definition}
+\newtheorem{exercise}{Exercise}
+\newtheorem{question}[exercise]{Question}
+\newtheorem*{defn}{Definition}
+\newtheorem*{exa}{Example}
+\newtheorem*{disc}{Group Discussion}
+\newtheorem*{nb}{Note}
+\newtheorem*{recall}{Recall}
+\renewcommand{\emph}[1]{{\color{blue}\texttt{#1}}}
+
+\definecolor{Gold}{RGB}{237, 172, 26}
+%Statement block
+\newenvironment{statementblock}[1]{%
+	\setbeamercolor{block body}{bg=Gold!20}
+	\setbeamercolor{block title}{bg=Gold}
+	\begin{block}{\textbf{#1.}}}{\end{block}}
+
+
+
+
+
+\begin{document}
+	\title{Math 324: Linear Algebra}
+	\subtitle{Section 6.1: Linear Transformations\\
+	Section 6.2: The Kernel and Range of a Linear Transformation}
+	\author{Mckenzie West}
+	\date{Last Updated: \today}
+\begin{frame}
+\maketitle
+\end{frame}
+
+\begin{frame}{\insertframenumber}
+	\begin{block}{\textbf{Last Time.}}
+	\begin{itemize}[label=--]
+		\item Linear Transformations
+		\item Properties of Linear Transformations
+	\end{itemize}
+	\end{block}
+	\begin{block}{\textbf{Today.}}
+		\begin{itemize}[label=--]
+			\item Matrix Transformations
+			\item The Kernel of a Transformation
+			\item The Range of a Transformation
+			\item Rank and Nullity
+		\end{itemize}
+	\end{block}
+\end{frame}
+\begin{frame}{\fn}
+	\begin{recall}
+		If $V$ and $W$ are vector spaces, a \emph{linear transformation} from $V$ to $W$ is a mapping $T\colon V\to W$ that satisfies
+			\begin{enumerate}[label=(\alph*)]
+				\item $T(\vec v_1+\vec v_2)=T(\vec v_1)+T(\vec v_2)$ for all $\vec v_1,\vec v_2\in V$,
+				\item and $T(c\vec v)=cT(\vec v)$ for all scalars $c$ and $\vec v\in V$.
+			\end{enumerate}
+	\end{recall}
+	\begin{exa}
+	A very important linear transformation is a \emph{matrix transformation}, $T\colon \R^n\to\R^m$ given by $T(\vec x)=A\vec x$ where $A$ is some fixed $m\times n$ matrix.
+	\end{exa}
+\end{frame}
+%\begin{frame}{\fn}
+%	\begin{exercise}
+%		Define the linear transformation $T:\R^n\to\R^m$ by $T(\vec v)=\begin{bmatrix}
+%		1&1&0&0\\1&0&2&0\\1&0&0&1	\end{bmatrix}\vec v$.
+%		\begin{enumerate}[label=(\alph*)]
+%			\item What are $n$ and $m$?
+%			\item What is $T(1,1,1,1)$?
+%			\item What is the preimage of $(1,1,1)$?\\
+%				(Hint: You're trying to find vectors $\vec v\in\R^n$ such that $T(\vec v)=(1,1,1)$, what is $T(\vec v)$?)
+%			\item What is the preimage of $\vec 0$?
+%		\end{enumerate}
+%	\end{exercise}
+%\end{frame}
+\begin{frame}{\fn}
+	\begin{defn}
+		The \emph{kernel} of the linear transformation $T\colon V\to W$ is the collection of all vectors $\vec v$ in $V$ such that $T(\vec v)=\vec 0$.  The notation for this is,	\[\ker(T)=\{\vec v\in V: T(\vec v)=\vec 0\}.\]
+	\end{defn}
+	\begin{nb}
+		The kernel of a linear transformation is the preimage of $\vec 0$.
+	\end{nb}
+	\begin{exercise}
+		Let $T\colon \R^3\to\R^3$ be defined by $T(x,y,z)=(0,y,z)$.  What is $\ker(T)$?
+	\end{exercise}
+\end{frame}
+\begin{frame}{\fn}
+	\begin{defn}
+		The \emph{identity transformation} $T\colon V\to V$ is the map $T(\vec v)=\vec v$.  Sometimes we denote this map by $Id_V$.
+		
+		The \emph{zero transformation} $T\colon V\to W$ is the map $T(\vec v)=\vec 0$.
+	\end{defn}
+	\begin{exercise}
+		What is $\ker(Id_V)$?
+		
+		What is the kernel of the zero transformation $T\colon V\to W$?
+	\end{exercise}
+\end{frame}
+\begin{frame}{\fn}
+	\begin{exercise}
+		Consider the transformation $T\colon\R^3\to\R^2$ defined by the matrix
+			\[A=\begin{bmatrix}
+			-1 & -2 & 4 \\
+			2 & 3 & 4
+			\end{bmatrix}\]
+		What is $\ker(T)$? Carefully write out what it means for $T(\vec v)=\vec 0$.  Answer this question by finding a basis for the kernel.
+	\end{exercise}\pause
+	\begin{statementblock}{The Kernel of a Matrix Transformation}
+		If $T:\R^n\to\R^m$ is a matrix transformation defined by the $m\times n$ matrix $A$, then $\ker(T)=\operatorname{null}(A)$.
+	\end{statementblock}
+\end{frame}
+\begin{frame}{\fn}
+	\begin{statementblock}{Theorem 6.3}
+		The kernel of a linear transformation $T\colon V\to W$ is a subspace of the domain, $V$.
+	\end{statementblock}
+	\begin{exercise}
+		Prove Theorem 6.3 via the subspace test.	
+		\begin{enumerate}[label=(\alph*)]
+			\item State why $\ker(T)$ contains $\vec 0$.
+			\item Show that if $\vec u$ and $\vec v$ are in $\ker(T)$---meaning $T(\vec u)=\vec 0$ and $T(\vec v)=\vec 0$---then $\vec u+\vec v\in\ker(T)$ too.
+			\item Show that if $c$ is a scalar, then $c\vec u$ is also in $\ker(T)$.
+		\end{enumerate}
+	\end{exercise}
+\end{frame}
+\begin{frame}{\fn}
+\begin{block}{\textbf{Brain Break.}}
+	When you were a kid, what did you want to be when you grew up?
+	\begin{center}
+		\includegraphics[height=.3\textheight]{images/dream_job}
+		
+		\tiny Image source \url{https://www.flexjobs.com/blog/post/childhood-dream-job-pay-well/}
+	\end{center}
+\end{block}
+\end{frame}
+\begin{frame}{\fn}
+	\begin{recall}
+		The range of a transformation $T\colon V\to W$ is the collection of all possible images under the transformation.  We write
+			\[\operatorname{range}(T)=\{T(\vec v): \vec v\in V\}.\]
+	\end{recall}
+	\begin{statementblock}{Theorem 6.4}
+		The range of a linear transformation $T\colon V\to W$ is a subspace of the codomain $W$.
+	\end{statementblock}
+	\begin{block}{Proof Idea.}
+		Take two generic elements of the range of $T$, $T(\vec u)$ and $T(\vec v)$.  Then by the definition of linear transformation,
+			\[T(\vec u)+T(\vec v)=T(\vec u+\vec v).\]
+		Therefore the sum of the two generic elements is also in the form of $\operatorname{range}(T)$.  Similarly, this can be one with scalar multiples.
+	\end{block}
+\end{frame}
+\begin{frame}{\fn}
+	\begin{statementblock}{The Range of a Matrix Transformation}
+		If $T\colon \R^n\to\R^m$ is a matrix transformation defined by the $m\times n$ matrix $A$, then $\operatorname{range}(T)=\operatorname{col}(A)$.
+	\end{statementblock}
+	\begin{exercise}
+	Consider the transformation $T\colon \R^3\to\R^2$ defined by the matrix
+	\[A=\begin{bmatrix}
+	-1 & -2 & 4 \\
+	2 & 3 & 4
+	\end{bmatrix}\]
+	What is $\operatorname{range}(T)$? Answer this question by finding a basis for the range.
+	\end{exercise}
+\end{frame}
+\begin{frame}{\fn}
+	\begin{defn}
+		Let $T\colon V\to W$ be a linear transformation.  The \emph{nullity} of $T$, denoted $\operatorname{nullity}(T)$, is the dimension of $\ker(T)$.
+		
+		The \emph{rank} of $T$, denoted $\rank(T)$, is the dimension of $\operatorname{range}(T)$.
+	\end{defn}
+	\begin{exercise}
+		Consider the derivative transformation, $D\colon P_2\to P_1$.  What is the nullity and rank of $D$?
+	\end{exercise}
+\end{frame}
+\begin{frame}{\fn}
+	\begin{statementblock}{Theorem 6.5}
+		Let $T\colon V\to W$ be a linear transformation from an $n$-dimensional vector space $V$ into a vector space $W$.  Then 
+			\[\dim(V)=\rank(T)+\operatorname{nullity}(T).\]
+	\end{statementblock}
+	\begin{exercise}
+		Does this match up with the fact that if $A$ is an $m\times n$ matrix then \[n=\rank(A)+\operatorname{nullity}(A)?\]
+	\end{exercise}
+\end{frame}
+\begin{frame}{\fn}
+	\begin{exercise}
+		Find the rank and nullity of the matrix transformation $T\colon \R^3\to\R^3$ defined by	
+			\[A=\begin{bmatrix}
+			1 & 0 & -6 \\
+			0 & 1 & -4\\
+			0&0&0
+			\end{bmatrix}\]
+	\end{exercise}
+\end{frame}
+\end{document}
+

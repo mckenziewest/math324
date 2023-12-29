@@ -1,0 +1,348 @@
+\documentclass[handout]{beamer}
+%\usepackage[margin=1in]{geometry}
+\usepackage{amsthm,amsmath,amsfonts,hyperref,graphicx,color,multicol}
+\usepackage{enumitem,tikz}
+
+%%%%%%%%%%
+%Beamer Template Customization
+%%%%%%%%%%
+\setbeamertemplate{navigation symbols}{}
+\setbeamertemplate{theorems}[ams style]
+\setbeamertemplate{blocks}[rounded]
+
+\definecolor{Blu}{RGB}{43,62,133} % UWEC Blue
+\setbeamercolor{structure}{fg=red} % Titles
+
+%Unnumbered footnotes:
+\newcommand{\blfootnote}[1]{%
+	\begingroup
+	\renewcommand\thefootnote{}\footnote{#1}%
+	\addtocounter{footnote}{-1}%
+	\endgroup
+}
+
+
+%%%%%%%%%%
+%Custom Commands
+%%%%%%%%%%
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\veca}{\vec{a}}
+\newcommand{\vecb}{\vec{b}}
+\newcommand{\vece}{\vec{e}}
+\newcommand{\vecu}{\vec{u}}
+\newcommand{\vecv}{\vec{v}}
+\newcommand{\vecw}{\vec{w}}
+\newcommand{\vecx}{\vec{x}}
+\newcommand{\zerovector}{\vec{0}}
+
+\newcommand{\ds}{\displaystyle}
+
+\newcommand{\fn}{\insertframenumber}
+
+\newcommand{\rank}{\operatorname{rank}}
+\newcommand{\adj}{\operatorname{adj}}
+
+\newcommand{\blank}[1]{\underline{\hspace*{#1}}}
+
+
+%%%%%%%%%%
+%Custom Theorem Environments
+%%%%%%%%%%
+\theoremstyle{definition}
+\newtheorem{exercise}{Exercise}
+\newtheorem{question}[exercise]{Question}
+\newtheorem*{defn}{Definition}
+\newtheorem*{exa}{Example}
+\newtheorem*{disc}{Group Discussion}
+\newtheorem*{nb}{Note}
+\newtheorem*{recall}{Recall}
+\renewcommand{\emph}[1]{{\color{red}\texttt{#1}}}
+
+\definecolor{Gold}{RGB}{237, 172, 26}
+%Statement block
+\newenvironment{statementblock}[1]{%
+	\setbeamercolor{block body}{bg=pink!20}
+	\setbeamercolor{block title}{bg=pink}
+	\begin{block}{\textbf{#1.}}}{\end{block}}
+
+\begin{document}
+	\title{Math 324: Linear Algebra}
+	\subtitle{2.3: The Inverse of a Matrix}
+	\author{Mckenzie West}
+	\date{Last Updated: \today}
+\begin{frame}
+\maketitle
+\begin{picture}(0,0)
+\put(250,-25){\includegraphics[width=1in]{images/penguin_hearts}}
+\end{picture}
+\end{frame}
+
+\begin{frame}{\insertframenumber}
+	\begin{block}{\textbf{Last Time.}}
+	\begin{itemize}[label=--]
+		\item Properties of Matrix Addition
+		\item Additive and Multiplicative Identities
+		\item Properties of Matrix Multiplication
+		\item Transposes and Properties of
+	\end{itemize}
+	\end{block}
+\begin{block}{\textbf{Today.}}
+	\begin{itemize}[label=--]
+		\item Inverses of Matrices
+		\item Gauss-Jordan Elimination
+		\item Inverses of $2\times2$ matrices
+	\end{itemize}
+\end{block}
+\end{frame}
+
+\begin{frame}{\fn}
+	\begin{exercise}[Warm-up]
+		Compute the product of the matrices:
+			\begin{enumerate}[label=(\alph*)]
+				\item $\begin{bmatrix}-1&-3\\2&4\end{bmatrix}
+				\begin{bmatrix}2\\-1\end{bmatrix}$
+				\item $\begin{bmatrix}-1&-3\\2&4\end{bmatrix}
+				\begin{bmatrix}a&b\\c&d\end{bmatrix}$
+			\end{enumerate}
+	\end{exercise}
+\end{frame}
+
+\begin{frame}{\fn}
+	\begin{nb}
+		We are NEVER going to be able to divide by matrices.
+		
+		But maybe we can multiply to get the identity matrix (also known as 1 in matrix land).
+	\end{nb}
+	\begin{defn}
+		An $n\times n$ matrix $A$ is \emph{invertible} (or \emph{nonsingular}) when there is an $n\times n$ matrix $B$ satisfying 
+			\[AB=BA=I_n.\]
+		The matrix $B$ is called an \emph{inverse} of $A$.
+		
+		If $A$ does not have an inverse, we call it \emph{noninvertible} (or \emph{singular}).
+	\end{defn}
+\end{frame}
+\begin{frame}{\fn}
+	\begin{exa}
+		The matrix $A=\begin{bmatrix}
+		13&1\\-1&0
+		\end{bmatrix}$ is invertible because
+			\[A\begin{bmatrix}
+			0&-1\\1&13
+			\end{bmatrix}=
+			\begin{bmatrix}
+			1&0\\0&1
+			\end{bmatrix}\textup{ and }
+			\begin{bmatrix}
+			0&-1\\1&13
+			\end{bmatrix}A=
+			\begin{bmatrix}
+			1&0\\0&1
+			\end{bmatrix}\]
+	\end{exa}
+	\begin{exercise}
+		The following matrices are singular.  Is there a pattern?
+			\[\left[\begin{array}{rr}
+			-2 & 1 \\
+			-6 & 3
+			\end{array}\right]
+			\left[\begin{array}{rr}
+			3 & -5 \\
+			\frac{1}{2} & -\frac{5}{6}
+			\end{array}\right]
+			\left[\begin{array}{rr}
+			-5 & 0 \\
+			17 & 0
+			\end{array}\right]
+			\left[\begin{array}{rr}
+			5 & -5 \\
+			-1 & 1
+			\end{array}\right]\]
+	\end{exercise}
+\end{frame}
+
+\begin{frame}{\fn}
+	\begin{nb}
+		An invertible matrix only has one inverse.
+	\end{nb}
+	\begin{statementblock}{Theorem 2.7}
+		If $A$ is an invertible matrix, then its inverse is unique and can be denoted by $A^{-1}$.
+	\end{statementblock}
+	\begin{center}
+		\begin{picture}(100,0)
+	\put(0,-60){\includegraphics[width=1in]{images/snoopy_heart}}
+	\end{picture}
+	\end{center}
+\end{frame}
+
+\begin{frame}{\fn}
+	\begin{statementblock}{The Gauss-Jordan Method for Inverses}
+		Let $A$ be a square matrix of order $n$.
+		\begin{enumerate}[label=\arabic*.]
+			\item Write the $n\times 2n$ matrix that consists of the given matrix $A$ on the left and the $n\times n$ identity matrix $I$ on the right to obtain $\begin{bmatrix}A&\vdots& I\end{bmatrix}$.  This process is called \emph{adjoining} $I$ to $A$.
+			\item If possible, row reduce $A$ to $I$ using elementary row operations on the entire matrix $\begin{bmatrix}A&\vdots& I\end{bmatrix}$.  The result will be the matrix $\begin{bmatrix}I&\vdots& A^{-1}\end{bmatrix}$.  If this is not possible, then $A$ is noninvertible (or singular).
+			\item Check your work by multiplying $AA^{-1}=I=A^{-1}A$.
+		\end{enumerate}
+	\end{statementblock}
+\end{frame}
+
+\begin{frame}{\fn}
+	\begin{exercise}
+		By hand, without a calculator, determine whether each of the following are invertible. If so, what is the inverse?
+		\begin{enumerate}[label=(\alph*)]
+			\item $A=\begin{bmatrix}1 & 1 & 0 \\-1 & 0 & 1 \\0 & 0 & -1\end{bmatrix}$
+			\item $B=\begin{bmatrix}1 & -1 & 0 \\0 & 0 & 1 \\-1 & 1 & 0\end{bmatrix}$
+			\item $C=\begin{bmatrix}1 & 0 & -1 \\-1 & 0 & 0 \\-1 & 0 & 1\end{bmatrix}$
+		\end{enumerate}
+	\end{exercise}
+\end{frame}
+\begin{frame}{\fn}
+	\begin{exercise}
+		Use the Gauss-Jordan method to find the inverse of the matrix if it exists.  You should use a calculator or Sage to row reduce.
+		\begin{enumerate}[label=(\alph*)]
+			\item $A=\left[\begin{array}{rrr}
+			2 & -4 & 8 \\
+			-7 & -3 & 10 \\
+			10 & -3 & 2
+			\end{array}\right]$
+			\item $B=
+			\left[\begin{array}{rrr}
+			-3 & 5 & -2 \\
+			3 & -5 & 1 \\
+			-4 & 7 & -6
+			\end{array}\right]$
+			\item $C=\left[\begin{array}{rrrr}
+			5 & 8 & 5 & 6 \\
+			1 & -10 & 9 & -6 \\
+			-3 & -2 & 1 & -5 \\
+			6 & -4 & -7 & -2
+			\end{array}\right]$
+		\end{enumerate}	
+	\end{exercise}
+\end{frame}
+
+\begin{frame}{\fn}
+	\begin{block}{\textbf{Brain Break.}}
+		Always start these by reminding your group members of your name.  Names are hard.
+		
+		What acquired skill have you always wanted to learn?
+		\begin{center}
+			\includegraphics[width=2in]{images/skill_tree}
+		\end{center}
+	\end{block}
+\end{frame}
+
+\begin{frame}{\fn}
+	\begin{exercise}
+		Let's discover the nice formula for the inverse of a $2\times 2$ matrix.
+		\begin{enumerate}[label=(\alph*)]
+			\item Take a generic $2\times 2$ matrix 
+			$A=\begin{bmatrix}a&b\\c&d\end{bmatrix}$, and adjoin it by $I_2$.
+			\pause
+			\item Do the following elementary row operations:
+				\begin{enumerate}[label=\roman*.]
+					\item $aR_2\rightarrow R_2$
+					\item $R_2-cR_1\rightarrow R_2$
+				\end{enumerate}
+			\pause
+			\item At this stage, what must be true in order for $A$ to have an inverse?
+		\end{enumerate}
+	\end{exercise}
+\end{frame}
+\begin{frame}{\fn}
+	\begin{block}{\textbf{Exercise 4. (Continued)}}
+		\begin{enumerate}[label=(\alph*)]
+			\item[(d)] Do the following elementary row operations:
+			\begin{enumerate}[label=\roman*.]
+				\item[iii.] $\frac{1}{ad-bc}R_2\rightarrow R_2$
+				\item[iv.] $R_1-bR_2\rightarrow R_1$
+				\item[v.] $\frac{1}{a}R_1\rightarrow R_1$
+			\end{enumerate}
+			\pause
+			\item[(e)] Simplify the (1,1)-entry of the inverse.  Did you get:\vskip -.15in
+				\[\frac{1}{ad-bc}\begin{bmatrix}d&-b\\-c&a\end{bmatrix}?\]
+		\end{enumerate}
+	\end{block}
+	\pause
+	\begin{block}{\textbf{Warning/Challenge.}}
+		We cheated on step i of our elementary row operations by scaling by $a$ --- $a$ could have been 0. 
+		
+		Find the inverse of the matrix $\begin{bmatrix}
+		0&b\\c&d
+		\end{bmatrix}$.
+		
+		Hint: The same formula works. Why?
+	\end{block}
+\end{frame}
+\begin{frame}{\fn}
+	\begin{statementblock}{Proposition}
+		If $A$ is a $2\times 2$ matrix given by
+			\[A=\begin{bmatrix} a&b\\c&d\end{bmatrix},\]
+		then $A$ is invertible if and only if $ad-bc\neq 0$.  Moreover if $ad-bc\neq 0$, then the inverse is given by
+		\[A^{-1}=\frac{1}{ad-bc}\begin{bmatrix}d&-b\\-c&a\end{bmatrix}.\]
+	\end{statementblock}
+\end{frame}
+\begin{frame}{\fn}
+	\begin{exercise}
+		Which is invertible?  Find the inverse of those that are:
+		\begin{enumerate}[label=(\alph*)]
+			\item $\left[\begin{array}{rr}
+				8 & -2 \\
+				-1 & -9
+			\end{array}\right]$
+			\item $\left[\begin{array}{rr}
+			8 & -2 \\
+			4 & -1
+			\end{array}\right]$
+			\item $\left[\begin{array}{rr}
+			2 & 7 \\
+			0 & 7
+			\end{array}\right]$
+			\item $\left[\begin{array}{rr}
+			-9 & -5 \\
+			8 & -10
+			\end{array}\right]$
+		\end{enumerate}
+	\end{exercise}
+\end{frame}
+\begin{frame}{\fn}
+	\begin{exercise}
+		Find all $x$ and $y$ that make the matrix singular
+			$\begin{bmatrix}
+				2&x\\-3&y
+			\end{bmatrix}$
+	\end{exercise}
+	\begin{exercise}
+		Find $x$ so that $A=A^{-1}$ if $A=\left[\begin{array}{rr}
+		-2 & x \\
+		3 & 2
+		\end{array}\right]$
+	\end{exercise}
+\end{frame}
+\begin{frame}{\fn}
+	\begin{exercise}
+		Under what conditions will the diagonal matrix
+			\[A=\begin{bmatrix}a_{11}&0&0&\cdots&0\\
+				0&a_{22}&0&\cdots&0\\
+				\vdots&\vdots&\vdots&&\vdots\\
+				0&0&0&\cdots&a_{nn}\end{bmatrix}\]
+		be invertible? 
+		
+		In the case that $A$ is invertible, what is its inverse?
+	\end{exercise}
+\end{frame}
+\begin{frame}{\fn}
+	\begin{exercise}
+		Let $A=\left[\begin{array}{rr}
+	-3 & -2 \\
+	3 & -1
+	\end{array}\right]$.
+	\begin{enumerate}[label=(\alph*)]
+		\item Verify that $A^2+4A+9I=O$.
+		\item Verify that $A^{-1}=\frac{-1}{9}(A+4I)$.
+		\item Show that for any square matrix satisfying $A^2+4A+9I=O$, the inverse of $A$ is given by $A^{-1}=\frac{-1}{9}(A+4I)$.
+	\end{enumerate}
+	\end{exercise}
+\end{frame}
+\end{document}
+
+ 

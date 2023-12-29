@@ -1,0 +1,217 @@
+\documentclass{beamer}
+%\usepackage[margin=1in]{geometry}
+\usepackage{amsthm,amsmath,amsfonts,hyperref,graphicx,color,multicol}
+\usepackage{enumitem,tikz}
+
+%%%%%%%%%%
+%Beamer Template Customization
+%%%%%%%%%%
+\setbeamertemplate{navigation symbols}{}
+\setbeamertemplate{theorems}[ams style]
+\setbeamertemplate{blocks}[rounded]
+
+\definecolor{Blu}{RGB}{43,62,133} % UWEC Blue
+\setbeamercolor{structure}{fg=Blu} % Titles
+
+%Unnumbered footnotes:
+\newcommand{\blfootnote}[1]{%
+	\begingroup
+	\renewcommand\thefootnote{}\footnote{#1}%
+	\addtocounter{footnote}{-1}%
+	\endgroup
+}
+
+
+%%%%%%%%%%
+%Custom Commands
+%%%%%%%%%%
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\veca}{\vec{a}}
+\newcommand{\vecb}{\vec{b}}
+\newcommand{\vece}{\vec{e}}
+\newcommand{\vecu}{\vec{u}}
+\newcommand{\vecv}{\vec{v}}
+\newcommand{\vecw}{\vec{w}}
+\newcommand{\vecx}{\vec{x}}
+\newcommand{\zerovector}{\vec{0}}
+
+\newcommand{\ds}{\displaystyle}
+
+\newcommand{\fn}{\insertframenumber}
+
+\newcommand{\rank}{\operatorname{rank}}
+\newcommand{\adj}{\operatorname{adj}}
+
+\newcommand{\blank}[1]{\underline{\hspace*{#1}}}
+
+
+%%%%%%%%%%
+%Custom Theorem Environments
+%%%%%%%%%%
+\theoremstyle{definition}
+\newtheorem{exercise}{Exercise}
+\newtheorem{question}[exercise]{Question}
+\newtheorem*{defn}{Definition}
+\newtheorem*{exa}{Example}
+\newtheorem*{disc}{Group Discussion}
+\newtheorem*{nb}{Note}
+\newtheorem*{recall}{Recall}
+\renewcommand{\emph}[1]{{\color{blue}\texttt{#1}}}
+
+\definecolor{Gold}{RGB}{237, 172, 26}
+%Statement block
+\newenvironment{statementblock}[1]{%
+	\setbeamercolor{block body}{bg=Gold!20}
+	\setbeamercolor{block title}{bg=Gold}
+	\begin{block}{\textbf{#1.}}}{\end{block}}
+
+
+
+
+
+\begin{document}
+	\title{Math 324: Linear Algebra}
+	\subtitle{Section 4.4: Linear Combinations and Spans}
+	\author{Mckenzie West}
+	\date{Last Updated: \today}
+\begin{frame}
+\maketitle
+\end{frame}
+
+\begin{frame}{\insertframenumber}
+	\begin{block}{\textbf{Last Time.}}
+	\begin{itemize}[label=--]
+		\item Subspaces of $\R^2$
+		\item Subspaces of $\R^3$
+		\item Intersections of Subspaces
+	\end{itemize}
+	\end{block}
+	\begin{block}{\textbf{Today.}}
+		\begin{itemize}[label=--]
+			\item Linear Combination
+			\item Span
+		\end{itemize}
+	\end{block}
+\end{frame}
+\begin{frame}{\fn}
+	\begin{defn}
+		A vector $\vec v$ in a vector space $V$ is a \emph{linear combination} of $\vec u_1,\vec u_2,\dots,\vec u_n\in V$ if there exist scalars $c_1,c_2,\dots,c_n$ such that
+		\[\vec v=c_1\vec u_1+c_2\vec u_2+\cdots+c_n\vec u_n.\]
+	\end{defn}
+	\begin{exa}
+		The vector $\vec v=(1,4,5)$ is a linear combination of $\vec u_1=(1,2,3)$ and $\vec u_2 = (3,4,7)$ because
+			\[\vec v = 4\vec u_1-\vec u_2.\]
+	\end{exa}
+\end{frame}
+\begin{frame}{\fn}
+	\begin{exa}
+		The polynomial $p(x)=3+x-2x^2$ is a linear combination of $q_1(x)=1+x$, $q_2(x)=1+x^2$, $q_3(x)=1+x+x^2$, and $q_4(x)=x^2$ because \begin{eqnarray*}p(x)&=&3+x-2x^2\\ &=&5(1+x)+2(1+x^2)-4(1+x+x^2)+0x^2\\&=&5q_1(x)+2q_2(x)+(-4)q_3(x)+0q_4(x)\end{eqnarray*}
+	\end{exa}
+\end{frame}
+\begin{frame}{\fn}
+	\begin{exercise}
+		Can the vector $\vec v=(1,0,5)$ be written as a linear combination of $\vec u_1=(-1,1,1)$ and $\vec u_2=(2,1,3)$?
+		
+		I suggest you turn this into a question about solutions to a linear system of equations.
+	\end{exercise}
+	\begin{exercise}
+		Can the polynomial $p(x)=2+x+x^2$ be written as a linear combination of $q_1(x)=1+x$ and $q_2(x)=1+x^2$?
+		
+		You should also turn this into a question of solutions to a linear system.
+	\end{exercise}
+	\begin{exercise}
+		Can $A = \begin{bmatrix}1&2\\3&4\end{bmatrix}$ be written as a linear combination of $M_1=\begin{bmatrix}1&1\\0&0\end{bmatrix}$, $M_2=\begin{bmatrix}1&0\\0&1\end{bmatrix}$, and $M_3=\begin{bmatrix}0&0\\1&1\end{bmatrix}$?
+	\end{exercise}
+\end{frame}
+\begin{frame}{\fn}
+	\begin{defn}
+		If $S=\{\vec v_1,\vec v_2,\dots,\vecv_k\}$ is a set of vectors in a vector space $V$, then the \emph{span of $S$}, denoted $\operatorname{span}(S)$, is the set of all linear combinations of the vectors in $S$,
+		\[\operatorname{span}(S)=\{c_1\vec v_1+c_2\vec v_2+\cdots+c_k\vec v_k\ :\ c_1,c_2,\dots,c_k\in\R\}.\]
+	\end{defn}
+\end{frame}\begin{frame}[fragile]
+\frametitle{\fn}
+\begin{exercise}
+	Compute $\operatorname{span}(S)$ for $S=\{(1,2,3),(4,5,6)\}$ as a subset of $\R^3$. That is, describe all vectors, $\vec v = (x,y,z)$, that can be written in the form
+		\[(x,y,z) = a(1,2,3)+ b(4,5,6).\]
+	
+	Use the following code to row reduce a matrix with variables in Sage: (\url{https://sagecell.sagemath.org/})
+	\begin{verbatim}
+	R.<x,y,z> = QQ[]
+	A = matrix([[1,4,x],[2,5,y],[3,6,z]])
+	print(A.echelon_form())
+	\end{verbatim}
+	\only<1>{Go to the next slide to see the solution.}
+	\only<2->{Notice that the last row of the augmented matrix $A$ reduces to $\begin{bmatrix}0&0&x-2y+z\end{bmatrix}$.  We want the system to have solutions.	
+	This means that \[\operatorname{span}(S)=\{(x,y,z):0=x-2y+z\}.\]}
+\end{exercise}
+\end{frame}
+\begin{frame}[fragile]
+\frametitle{\fn}
+\begin{exercise}
+	Continuing, open \url{https://sagecell.sagemath.org/} and use the code below to plot the plane $x-2y+z=0$ along with the vectors in $S=\{(1,2,3),(4,5,6)\}$.
+	
+	\begin{verbatim}
+	x,y = var("x,y")
+	P = plot3d(-x+2*y,(x,-2,6),(y,-2,6),opacity=.5)
+	P += arrow((0,0,0),(1,2,3),color="red",thickness=5)
+	P += arrow((0,0,0),(4,5,6),color="green",thickness=5)
+	P.show()
+	\end{verbatim}
+\end{exercise}
+\end{frame}
+\begin{frame}{\fn}
+	\begin{block}{\textbf{Brain Break.}}
+		Do you have any art-related hobbies?
+		
+		I'm a bit knitting obsessed. Here's Pepper enjoying two homemade blankets and Me trying on a half(quarter)-finished sweater.
+		\begin{center}
+			\includegraphics[height=1.25in]{images/blanket_Pepper}
+			\hskip .25in
+			\includegraphics[angle=90,origin=c,width=1.25in]{images/butterfly_sweater}
+		\end{center}
+	\end{block}
+\end{frame}
+\begin{frame}{\fn}
+\begin{exercise}
+	Compute $\operatorname{span}(S)$ for $S=\{1+x,1-x\}$ as a subset of $P_1$. That is, provide a meaningful description of all polynomials that can be written as $a(1+x)+b(1-x)$.
+\end{exercise}
+\end{frame}
+\begin{frame}{\fn}
+	\begin{defn}
+		Let $V$ be a vector space.  We call the set $S=\{\vec v_1,\vec v_2,\dots,\vec v_n\}$ a \emph{spanning set} for $V$ if $\operatorname{span}(S)=V$.
+	\end{defn}
+	\begin{exa}
+		$S=\{1+x,1-x\}$ is a spanning set for $P_1$
+	\end{exa}
+	\begin{block}{\textbf{Non-Example.}}
+		The set $S=\{(1,2,3),(4,5,6)\}$ is NOT a spanning set for $\R^3$ because $\operatorname{span}(S)$ is the plane defined by $x-2y+z=0$.  
+		
+		How might you prove it is not a spanning set? Pick a vector not on the plane, say $\vec v=(1,0,0)$ and prove that it is not a linear combination of $(1,2,3)$ and $(4,5,6)$.
+	\end{block}
+	\begin{exercise}
+		Use proof by contradiction to show that $\vec v= (1,0,0)$ is not a linear combination of $\vec u_1=(1,2,3)$ and $\vec u_2=(4,5,6)$.
+	\end{exercise}
+\end{frame}
+\begin{frame}{\fn}
+	\begin{statementblock}{Theorem 4.7}
+		If $S=\{\vec v_1,\vec v_2,\dots,\vec v_k\}$ is a set of vectors in a vector space $V$, then $\operatorname{span}(S)$ is a subspace of $V$.
+		
+		Moreover, $\operatorname{span}(S)$ is the \emph{smallest} subspace of $V$ that contains~$S$.  This means that if $W$ is any other subspace of $V$ that contains $S$, then $W$ also contains $\operatorname{span}(S)$.
+	\end{statementblock}
+\end{frame}
+\begin{frame}{\fn}	
+	\begin{exercise}
+		Prove that $\operatorname{span}(S)$ is a subspace of $V$.
+		\begin{proof}
+			Let $S=\{\vec v_1,\vec v_2,\dots,\vec v_n\}$ be a subset of a vector space $V$. To show that $\operatorname{span}(S)$ is a subspace of $V$, we use the Subspace Test:
+			\begin{enumerate}[label=(\alph*)]
+				\item Write $\vec 0$ as a linear combination of the vectors in $S$. *Be sure to reference any previous Theorems.*
+				\item Let $\vec u$ and $\vec w$ be elements of $\operatorname{span}(S)$.  Then we can write $\vec u=c_1\vec v_1+c_2\vec v_2+\cdots+c_k\vec v_k$ and $\vec w=d_1\vec v_1+d_2\vec v_2+\cdots +c_k\vec v_k$.  Show that $\vec u+\vec w$ can be written as a linear combination of the vectors in $S$.
+				\item Let $c$ be a scalar.  Show that $c\vec u$ can be written as a linear combination of the scalars in $S$.
+			\end{enumerate}
+		\end{proof}
+	\end{exercise}
+\end{frame}
+
+\end{document}
+

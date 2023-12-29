@@ -1,0 +1,393 @@
+\documentclass[handout]{beamer}
+%\usepackage[margin=1in]{geometry}
+\usepackage{amsthm,amsmath,amsfonts,hyperref,graphicx,color,multicol}
+\usepackage{enumitem,tikz}
+
+%%%%%%%%%%
+%Beamer Template Customization
+%%%%%%%%%%
+\setbeamertemplate{navigation symbols}{}
+\setbeamertemplate{theorems}[ams style]
+\setbeamertemplate{blocks}[rounded]
+
+\definecolor{Blu}{RGB}{43,62,133} % UWEC Blue
+\setbeamercolor{structure}{fg=Blu} % Titles
+
+%Unnumbered footnotes:
+\newcommand{\blfootnote}[1]{%
+	\begingroup
+	\renewcommand\thefootnote{}\footnote{#1}%
+	\addtocounter{footnote}{-1}%
+	\endgroup
+}
+
+
+%%%%%%%%%%
+%Custom Commands
+%%%%%%%%%%
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\veca}{\vec{a}}
+\newcommand{\vecb}{\vec{b}}
+\newcommand{\vece}{\vec{e}}
+\newcommand{\vecu}{\vec{u}}
+\newcommand{\vecv}{\vec{v}}
+\newcommand{\vecw}{\vec{w}}
+\newcommand{\vecx}{\vec{x}}
+\newcommand{\zerovector}{\vec{0}}
+
+\newcommand{\ds}{\displaystyle}
+
+\newcommand{\fn}{\insertframenumber}
+
+\newcommand{\rank}{\operatorname{rank}}
+\newcommand{\adj}{\operatorname{adj}}
+
+\newcommand{\blank}[1]{\underline{\hspace*{#1}}}
+
+
+%%%%%%%%%%
+%Custom Theorem Environments
+%%%%%%%%%%
+\theoremstyle{definition}
+\newtheorem{exercise}{Exercise}
+\newtheorem{question}[exercise]{Question}
+\newtheorem*{defn}{Definition}
+\newtheorem*{exa}{Example}
+\newtheorem*{disc}{Group Discussion}
+\newtheorem*{nb}{Note}
+\newtheorem*{recall}{Recall}
+\renewcommand{\emph}[1]{{\color{blue}\texttt{#1}}}
+
+\definecolor{Gold}{RGB}{237, 172, 26}
+%Statement block
+\newenvironment{statementblock}[1]{%
+	\setbeamercolor{block body}{bg=Gold!20}
+	\setbeamercolor{block title}{bg=Gold}
+	\begin{block}{\textbf{#1.}}}{\end{block}}
+
+
+
+\begin{document}
+	\title{Math 324: Linear Algebra}
+	\subtitle{1.1: Introduction to Systems of Linear Equations\\1.2: Gaussian Elimination and Gauss-Jordan Elimination}
+	\author{Mckenzie West}
+	\date{Last Updated: \today}
+\begin{frame}
+\maketitle
+\end{frame}
+
+\begin{frame}{\insertframenumber}
+	\begin{block}{\textbf{Last Time.}}
+	\begin{itemize}[label=--]
+		\item Linear Equations
+		\item Solving Linear Equations and Parametrization
+		\item Linear Systems of Equations
+		\item Solving Linear Systems of Equations
+		\item Consistent vs Inconsistent Systems
+	\end{itemize}
+	\end{block}
+	\begin{block}{\textbf{Today.}}
+	\begin{itemize}[label=--]
+		\item $m\times n$ matrix
+		\item coefficient and augmented matrix
+		\item elementary row operations
+		\item row-echelon form and leading 1's
+		\item reduced row-echelon form
+	\end{itemize}
+	\end{block}
+\end{frame}
+
+
+
+\begin{frame}{\insertframenumber}
+	Today we will use matrices and elementary row operations to simplify the process of solving a system of linear equations.
+\end{frame}
+
+\begin{frame}{\insertframenumber}
+	\begin{question}
+		Last time you found solutions to the system of equations:
+		\[\begin{array}{rcrcrcl}
+		3x&-&2y&+&3z&=&4\\
+		x&&&+&z&=&5\\
+		\end{array}\]
+		what were some steps you took to do this?
+	\end{question}
+\end{frame}
+
+\begin{frame}{\insertframenumber}
+	\begin{exa}
+	I don't know about you, but I think that writing variables is a waste of time, when all we're looking at is canceling coefficients.  Let's save ourselves some time by turning everything into a nicely arranged table:
+	\[\begin{array}{rcrcrcl}
+	3x&-&2y&+&3z&=&4\\
+	x&&&+&z&=&5\\
+	\end{array}\dashrightarrow
+	\begin{bmatrix}
+	3&-2&3&4\\
+	1&0&1&5
+	\end{bmatrix}\]
+	\end{exa}
+\begin{center}
+\includegraphics[width=1in]{images/stop}
+\end{center}
+\end{frame}
+
+\begin{frame}{\insertframenumber}
+	\begin{defn}
+		The tables from the previous page are called \emph{matrices}.
+		
+		If $m$ and $n$ are positive integers, an \emph{$m\times n$ matrix} is a rectangular array with $m$ rows and $n$ columns:
+			\[\begin{bmatrix}
+				a_{11}&a_{12}&a_{13}&\dots&a_{1n}\\
+				a_{21}&a_{22}&a_{23}&\dots&a_{2n}\\
+				a_{31}&a_{32}&a_{33}&\dots&a_{3n}\\
+				\vdots&\vdots&\vdots&&\vdots\\
+				a_{m1}&a_{m2}&a_{m3}&\dots&a_{mn}\\
+			\end{bmatrix}\]
+		where the entries $a_{ij}$ are real numbers.  
+		
+		We say the \emph{size} of the matrix is $m\times n$.
+		
+		A \emph{square} matrix is one where $m=n$, in this case we call the entries $a_{11},a_{22},\dots,a_{nn}$ the \emph{main diagonal}.
+	\end{defn}
+\end{frame}
+
+\begin{frame}{\insertframenumber}
+	\begin{exercise}
+	What is the size of each of the following matrices:
+		\begin{enumerate}[label=(\alph*)]
+			\item $\begin{bmatrix}
+				1&-1&2\\0&0&1
+			\end{bmatrix}$
+			\item $\begin{bmatrix}
+			4&0\\-54&8
+			\end{bmatrix}$
+			\item $\begin{bmatrix}
+			1\\2\\-1\\1
+			\end{bmatrix}$
+		\end{enumerate}
+	\end{exercise}
+\end{frame}
+
+\begin{frame}{\insertframenumber}
+	\begin{defn}
+		There are two basic matrices that can be constructed using a linear system of equations:
+			\begin{itemize}
+				\item the \emph{coefficient matrix} which contains only the coefficients of the linear system, not the constant terms;
+				\item the \emph{augmented matrix} which is the matrix that contains both the coefficients and the constant terms.
+			\end{itemize}
+	\end{defn}
+	\begin{question}
+		If we're solving a system of linear equations which of these two matrices are we going to use?
+	\end{question}
+\end{frame}
+
+
+\begin{frame}{\insertframenumber}
+	\begin{exercise}
+		Write down the coefficient matrix and augmented matrix for the following system of linear equations:
+			\[
+				\begin{array}{rcrcrccl}
+					x&&&-&2z&=&5\\
+					2x&+&3y&&&=&-3\\
+					-2x&+&y&-&2z&=&3
+				\end{array}
+			\]
+	\end{exercise}
+\end{frame}
+
+\begin{frame}{\insertframenumber}
+	\begin{defn}[Elementary Row Operations]
+		There are three \emph{elementary row operations} that we use on a matrix:
+			\begin{enumerate}[label=\textbf{\arabic*.}]
+				\item Interchange two rows.
+				\item Multiply an equation by a nonzero constant.
+				\item Add a multiple of on equation to another equation.
+			\end{enumerate}
+	\end{defn}
+	\begin{nb}
+		Each of these operations corresponds to an equivalent action on the linear equations.
+	\end{nb}
+\end{frame}
+
+\begin{frame}{\insertframenumber}
+	\begin{exercise}
+		Use elementary row operations on the augmented matrix and back substitution to solve the system of linear equations.
+		\[\begin{array}{rcrcrcl}
+		 	x&+&2y&-&4z&=&-5\\
+		 	&&y&+&z&=&1\\
+		 	-2x&-&y&-&z&=&5
+		\end{array}\]
+%		\[
+%		\left[\begin{array}{rrrr}
+%			1 & 2 & -4 & -5 \\
+%			4 & -3 & -5 & 5 \\
+%			-2 & 5 & -1 & 5
+%		\end{array}\right]
+%		\]
+%		\left[\begin{array}{rrrr}
+%			1 & 0 & -2 & 0 \\
+%			0 & 1 & -1 & 0 \\
+%			0 & 0 & 0 & 1
+%		\end{array}\right]
+	\end{exercise}
+\end{frame}
+
+\begin{frame}{\insertframenumber}
+	\begin{defn}
+	A matrix is in \emph{row-echelon form} if it satisfies the following properties:
+		\begin{enumerate}[label=\arabic*.]
+			\item Any rows consisting entirely of zeros occur at the bottom of the matrix.
+			\item For each row that does not consist entirely of zeros, the first nonzero entry is 1 (called a \emph{leading 1}).
+			\item For two successive (nonzero) rows, the leading 1 in the higher row is farther to the left than the leading 1 of the lower row.
+		\end{enumerate}
+	\end{defn}
+	\begin{exa}
+		The following matrix is in row echelon form, verify this
+		\[\left[\begin{array}{rrrr}
+		1 & 4 & 0 & 11 \\
+		0 & 1 & 14 & 8 \\
+		0 & 0 & 0 & 1
+		\end{array}\right]\]
+	\end{exa}
+\end{frame}
+\begin{frame}{\insertframenumber}
+	\begin{exercise}
+		Which of the following matrices is in row-echelon form?
+		\begin{enumerate}[label=(\alph*)]
+			\item $\left[\begin{array}{rr}
+			1 & 4 \\
+			0 & 1 \\
+			0 & 0
+			\end{array}\right]$
+			\item $\left[\begin{array}{rrr}
+			1 & 4 & -2 \\
+			3 & 0 & -6
+			\end{array}\right]$
+			\item $\left[\begin{array}{rrrrrrrr}
+			1 & 4 & -1 & 5 & -4 & -2 & -4 & 4
+			\end{array}\right]$
+			\item $\left[\begin{array}{rrrr}
+				1 & 0 & 0 & 0 \\
+				0 & 1 & 0 & 0 \\
+				0 & 0 & 1 & 0 \\
+				0 & 0 & 0 & 1 \\
+				0 & 0 & 0 & 1
+			\end{array}\right]$
+		\end{enumerate}
+	\end{exercise}
+\end{frame}
+
+\begin{frame}{\insertframenumber}
+	\begin{question}
+		Can we use elementary row operations to reduce a matrix to row echelon form?
+	\end{question}
+	\begin{question}
+		How will row-echelon form help us solve linear systems of equations?
+	\end{question}
+\end{frame}
+
+\begin{frame}{\insertframenumber}
+	\begin{defn}
+		A matrix is in \emph{reduced row-echelon form} if it is in row-echelon form and in every column with a leading 1 all other entries are zero.
+	\end{defn}
+	\begin{exercise}
+		Which of the following matrices are in reduced row-echelon form?
+		\begin{enumerate}[label=(\alph*)]
+			\item $\left[\begin{array}{rr}
+			1 & 0 \\
+			0 & 0 \\
+			0 & 1
+			\end{array}\right]$
+			\item $\left[\begin{array}{rrr}
+			1 & 13 & 0 \\
+			0 & 30 & 1
+			\end{array}\right]$
+			\item$\left[\begin{array}{rrr}
+				1 & 3 & 0 \\
+				0 & 0 & 1
+			\end{array}\right]$
+		\end{enumerate}
+	\end{exercise}
+\end{frame}
+
+\begin{frame}{\insertframenumber}
+	\begin{block}{\textbf{Gaussian Elimination with Back-Substitution}}
+		\begin{enumerate}[label=\arabic*.]
+			\item Write the augmented matrix of the system of linear equations.
+			\item Use elementary row operations to rewrite the matrix in row-echelon form.
+			\item Write the system of linear equations corresponding to the matrix in row-echelon form, and use back-substitution to find the solution.
+		\end{enumerate}
+	\end{block}
+\end{frame}
+
+\begin{frame}{\insertframenumber}
+\begin{exa}
+	In a chemical reaction, atoms reorganize in one or more substances.  For instance, when methane gas (CH$_4$) combines with oxygen (O$_2$) and burns, carbon dioxide (CO$_2$) and water (H$_2$O) form.  Chemists represent this process by a chemical equation of the form	
+	\[(x_1){CH}_4+(x_2){O}_2\rightarrow(x_3){CO}_2 + (x_4){H}_2{O}.\]
+	With hopes of solving, we can create a system of linear equations, one for each element:
+	$$\begin{array}{rrcl}
+		C:&1x_1+0x_2&=&1x_3+0x_4\\
+		H:&4x_1+0x_2&=&0x_3+2x_4\\
+		O:&0x_1+2x_2&=&2x_3+1x_4
+	\end{array}
+	$$
+\end{exa}
+\end{frame}
+
+\begin{frame}{\fn}
+	We then rearrange this system into the form we have been working with:
+		$$\begin{array}{rrcl}
+	C:&1x_1+0x_2&=&1x_3+0x_4,\\
+	H:&4x_1+0x_2&=&0x_3+2x_4,\\
+	O:&0x_1+2x_2&=&2x_3+1x_4,
+	\end{array}$$
+	becomes
+	$$\begin{array}{rcrcrcrcl}
+	x_1&&&-&x_3&&&=&0,\\
+	4x_1&&&&&-&2x_4&=&0,\\
+	&&2x_2&-&2x_3&-&x_4&=&0.
+	\end{array}
+	$$
+	As an augmented matrix, we get the following matrix and reduced row echelon form:
+	\[\begin{bmatrix}
+	1&0&-1&0&0\\4&0&0&-2&0\\0&2&-2&-1&0
+	\end{bmatrix}\rightarrow
+	\begin{bmatrix}
+	1 & 0 & 0 & -\frac{1}{2} & 0 \\
+	0 & 1 & 0 & -1 & 0 \\
+	0 & 0 & 1 & -\frac{1}{2} & 0
+	\end{bmatrix}\]
+	\begin{exercise}
+		Write the solutions to the system in parametric form.
+	\end{exercise}
+\end{frame}
+
+\begin{frame}
+	\begin{exercise}
+		Balance the chemical equation:	
+			\[(x_1)Cu+(x_2)HNO_3\rightarrow (x_3)Cu(NO_3)_2+(x_4)NO+(x_5)H_2O\]
+		That is, find a parametric representation of the solutions to the linear system as in the previous example.
+		
+		If you want to end up with 7,200 units of water, $H_2O$, how much of the initial compounds must you start with?
+	\end{exercise}
+\end{frame}
+
+\begin{frame}[fragile]
+	\frametitle{\insertframenumber}
+\begin{exercise}
+	Discuss a general method you would use to reduce a matrix to row echelon form.
+\end{exercise}
+\begin{exercise}
+	Open \url{http://sagecell.sagemath.org} and use the following code to generate a random matrix:
+	
+	\begin{verbatim}
+	matrix([[randint(-2,2) for i in [1..5]] for j in [1..4]])
+	\end{verbatim}
+
+	Do this a couple times until you have one with 3-6 zeros.
+	
+	Use elementary row operations to reduce this matrix to (reduced) row-echelon form.
+\end{exercise}
+\end{frame}
+\end{document}
+

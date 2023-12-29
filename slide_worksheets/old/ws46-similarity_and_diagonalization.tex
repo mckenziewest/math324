@@ -1,0 +1,240 @@
+\documentclass{beamer}
+%\usepackage[margin=1in]{geometry}
+\usepackage{amsthm,amsmath,amsfonts,hyperref,graphicx,color,multicol}
+\usepackage{enumitem,tikz}
+\usepackage{booktabs}
+%%%%%%%%%%
+%Beamer Template Customization
+%%%%%%%%%%
+\setbeamertemplate{navigation symbols}{}
+\setbeamertemplate{theorems}[ams style]
+\setbeamertemplate{blocks}[rounded]
+
+\definecolor{Blu}{RGB}{43,62,133} % UWEC Blue
+\setbeamercolor{structure}{fg=Blu} % Titles
+
+%Unnumbered footnotes:
+\newcommand{\blfootnote}[1]{%
+	\begingroup
+	\renewcommand\thefootnote{}\footnote{#1}%
+	\addtocounter{footnote}{-1}%
+	\endgroup
+}
+
+
+%%%%%%%%%%
+%Custom Commands
+%%%%%%%%%%
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\veca}{\vec{a}}
+\newcommand{\vecb}{\vec{b}}
+\newcommand{\vece}{\vec{e}}
+\newcommand{\vecu}{\vec{u}}
+\newcommand{\vecv}{\vec{v}}
+\newcommand{\vecw}{\vec{w}}
+\newcommand{\vecx}{\vec{x}}
+\newcommand{\zerovector}{\vec{0}}
+
+\newcommand{\ds}{\displaystyle}
+
+\newcommand{\fn}{\insertframenumber}
+
+\newcommand{\col}{\operatorname{col}}
+\newcommand{\row}{\operatorname{row}}
+\newcommand{\rank}{\operatorname{rank}}
+\newcommand{\nullity}{\operatorname{nullity}}
+\newcommand{\adj}{\operatorname{adj}}
+\newcommand{\proj}{\operatorname{proj}}
+\newcommand{\ip}[2]{\left\langle #1,#2\right\rangle}
+
+\newcommand{\blank}[1]{\underline{\hspace*{#1}}}
+
+\newcommand{\dotp}{\,{\boldsymbol{\cdot}\hspace*{.01in}}}
+
+%%%%%%%%%%
+%Custom Theorem Environments
+%%%%%%%%%%
+\theoremstyle{definition}
+\newtheorem{exercise}{Exercise}
+\newtheorem{question}[exercise]{Question}
+\newtheorem*{defn}{Definition}
+\newtheorem*{exa}{Example}
+\newtheorem*{disc}{Group Discussion}
+\newtheorem*{nb}{Note}
+\newtheorem*{recall}{Recall}
+\renewcommand{\emph}[1]{{\color{blue}\texttt{#1}}}
+
+\definecolor{Gold}{RGB}{237, 172, 26}
+%Statement block
+\newenvironment{statementblock}[1]{%
+	\setbeamercolor{block body}{bg=Gold!20}
+	\setbeamercolor{block title}{bg=Gold}
+	\begin{block}{\textbf{#1.}}}{\end{block}}
+
+
+
+
+
+\begin{document}
+	\title{Math 324: Linear Algebra}
+	\subtitle{Section 6.4: Similarity\\Section 7.2: Diagonalization}
+	\author{Mckenzie West}
+	\date{Last Updated: \today}
+\begin{frame}[fragile]
+\maketitle	
+\end{frame}
+
+\begin{frame}{\insertframenumber}
+	\begin{block}{\textbf{Last Time.}}
+	\begin{itemize}[label=--]
+		\item Eigenvalues of Triangular Matrices
+		\item Eigenvalues of Linear Transformations
+	\end{itemize}
+	\end{block}
+	\begin{block}{\textbf{Today.}}
+		\begin{itemize}[label=--]
+			\item Similar Matrices
+			\item Diagonalization
+			\item Diagonalizability
+		\end{itemize}
+	\end{block}
+\end{frame}
+\begin{frame}{\fn}
+	\begin{defn}
+		For square matrices $A$ and $B$ or order $n$, we say that $B$ is \emph{similar} to $A$ if there is an invertible matrix $P$ such that $B=P^{-1}AP$.
+	\end{defn}
+	\begin{exercise}\label{first}
+		Let $A=\begin{bmatrix} 1&0\\0&2\end{bmatrix}$, $B=\begin{bmatrix}-4&-15\\2&7\end{bmatrix}$, and $P=\begin{bmatrix}2&5\\1&3\end{bmatrix}$.
+		
+		Verify that $B=P^{-1}AP$.  Thus $B$ is similar to $A$.
+	\end{exercise}
+\end{frame}
+\begin{frame}{\fn}
+	\begin{statementblock}{Theorem 6.13}
+		Let $A$, $B$ and $C$ be square matrices of order $n$.  Then the following are true,
+			\begin{enumerate}[label=\textbf{\arabic*.}]
+				\item (\emph{reflexivity}) $A$ is similar to $A$
+				\item (\emph{commutativity}) If $A$ is similar to $B$ then $B$ is similar to $A$.
+				\item (\emph{transitivity}) If $A$ is similar to $B$ and $B$ is similar to $C$ then $A$ is similar to $C$.
+			\end{enumerate}
+		That is, similarity is an equivalence relation.
+	\end{statementblock}
+	\begin{exercise}
+		Prove Theorem 6.13,
+			\begin{enumerate}[label=\textbf{\arabic*.}]
+				\item What invertible matrix could we use so that $A=P^{-1}AP$?
+				\item If $A$ is similar to $B$, this means $A=P^{-1}BP$.  Solve for $B$.
+				\item If $A=P^{-1}BP$ and $B=Q^{-1}CQ$, write and equation that relates $A$ to $C$.
+			\end{enumerate}
+	\end{exercise}
+\end{frame}
+\begin{frame}{\fn}
+	\begin{statementblock}{Theorem 7.4}
+		If $A$ and $B$ are similar $n\times n$ matrices, then they have the same eigenvalues.
+	\end{statementblock}
+	\begin{exercise}
+		From Exercise \ref{first}, let $A=\begin{bmatrix} 1&0\\0&2\end{bmatrix}$ and $B=\begin{bmatrix}-4&-15\\2&7\end{bmatrix}$, which you showed were similar.
+		
+		Verify that they have the same eigenvalues.
+	\end{exercise}
+\end{frame}
+\begin{frame}{\fn}
+	\begin{defn}
+		A square matrix $A$ is \emph{diagonalizable} if it is similar to a diagonal matrix.
+		
+		That is, there is a diagonal matrix $D$ and and invertible matrix $P$ such that $D=P^{-1}AP$.
+	\end{defn}
+	\begin{exa}
+		From Exercise \ref{first}, let $A=\begin{bmatrix} 1&0\\0&2\end{bmatrix}$ and $B=\begin{bmatrix}-4&-15\\2&7\end{bmatrix}$, we know that $B$ is diagonalizable.
+	\end{exa}
+	\begin{exercise}
+		Is $\begin{bmatrix}
+		3&0\\0&2
+		\end{bmatrix}$ diagonalizable?
+	\end{exercise}
+\end{frame}
+\begin{frame}{\fn}
+	\begin{nb}
+		In general, it is hard to just look at a matrix and know if it is diagonalizable.  Fortunately, eigenvectors can help.
+	\end{nb}
+	\begin{statementblock}{Theorem 7.5}
+		An $n\times n$ matrix $A$ is diagonalizable if and only if it has $n$ linearly independent eigenvectors.
+		
+		Moreover if $P=\begin{bmatrix}\vec v_1&\vec v_2&\cdots&\vec v_n\end{bmatrix}$ is a matrix whose columns are these $n$ linearly independent eigenvectors, then $P^{-1}AP$ is diagonal.
+	\end{statementblock}
+	\begin{exercise}
+		Determine whether the matrix is diagonalizable. (Find all eigenspaces and add up their dimensions.)
+		\begin{multicols}{2}
+			\begin{enumerate}[label=(\alph*)]
+			\item $A=\begin{bmatrix}
+			4 & 0 & 1 \\
+			2 & -2 & 0 \\
+			0 & 0 & 5
+			\end{bmatrix}$
+			\item $A = \begin{bmatrix}1&1&1\\0&1&1\\0&0&1\end{bmatrix}$
+		\end{enumerate}
+		\end{multicols}
+	\end{exercise}
+	\begin{picture}(0,0)
+	\put(270,15){\includegraphics[width=.5in]{images/stop}}
+	\end{picture}
+\end{frame}
+\begin{frame}{\fn}
+	\begin{block}{\textbf{Brain Break.}}
+		What is your favorite candy?
+		\begin{center}
+			\includegraphics[width=.75\textwidth]{images/candy}
+			
+			\footnotesize The most popular Halloween candy, according to the \href{https://www.10news.com/news/national/most-popular-halloween-candy-every-state-has-a-favorite-study-says}{internet}.
+		\end{center}
+		At this very moment, my choice is probably Reese's.
+	\end{block}
+\end{frame}
+\begin{frame}{\fn}
+	\begin{statementblock}{Theorem 7.6}
+		If an $n\times n$ matrix $A$ has $n$ distinct eigenvalues, then the corresponding eigenvectors are linearly independent and $A$ is diagonalizable.
+	\end{statementblock}
+	\begin{exercise} 
+		Is $A$ diagonalizable?
+		$A=\begin{bmatrix}
+		0 & 2 & 0 & 2 \\
+		2 & 2 & 5 & 5 \\
+		1 & 1 & 4 & 0 \\
+		0 & 0 & 0 & 2
+	\end{bmatrix}$
+	\end{exercise}
+\end{frame}
+\begin{frame}{\fn}
+	\begin{nb}
+		One useful reason to diagonalize is that it makes it easy to find higher powers of a matrix.
+	\end{nb}
+	\begin{exercise}
+		Let $A=\begin{bmatrix}1&2\\3&4\end{bmatrix}$.
+		\begin{enumerate}[label=(\alph*)]
+			\item Show that $A$ is diagonalizable.
+			\item Find $P$ and $D$ such that $P^{-1}AP=D$.
+			\item Write $A=PDP^{-1}$ and show that $A^{27}=PD^{27}P^{-1}$.
+			\item Compute $D^{27}$, then use part (c) to compute $A^{27}$.
+		\end{enumerate}
+	\end{exercise}
+\end{frame}
+\begin{frame}{\fn}
+	\begin{exercise}
+		Let $A$ be diagonalizable with $n$ real eigenvalues. Prove that $\det(A)=\lambda_1\cdots\lambda_n$.
+		\begin{enumerate}[label=(\alph*)]
+			\item Let $A$ be diagonalizable with eigenvalues $\lambda_1,\dots,\lambda_n$.  Then $A=PDP^{-1}$ where
+				\[D=\begin{bmatrix}\lambda_1&0&0&\cdots&0\\0&\lambda_2&0&\cdots&0\\0&0&\lambda_3&\cdots&0\\\vdots&\vdots&\vdots&&\vdots\\0&0&0&\cdots&\lambda_n\end{bmatrix}.\]
+			\item What is $\det(D)$?
+			\item How can you use $\det(D)$ to compute $\det(A)$?
+		\end{enumerate}
+	\end{exercise}
+\end{frame}
+\begin{frame}{\fn}
+	\begin{exercise}
+		Are the matrices 
+			\[A=\begin{bmatrix}1&0&0\\0&4&0\\0&0&7\end{bmatrix}\text{ and }B=\begin{bmatrix}4&0&0\\0&7&0\\0&0&1\end{bmatrix}\]
+		similar?
+	\end{exercise}
+\end{frame}
+\end{document}
+

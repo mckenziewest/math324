@@ -1,0 +1,197 @@
+\documentclass{beamer}
+%\usepackage[margin=1in]{geometry}
+\usepackage{amsthm,amsmath,amsfonts,hyperref,graphicx,color,multicol}
+\usepackage{enumitem,tikz}
+
+%%%%%%%%%%
+%Beamer Template Customization
+%%%%%%%%%%
+\setbeamertemplate{navigation symbols}{}
+\setbeamertemplate{theorems}[ams style]
+\setbeamertemplate{blocks}[rounded]
+
+\definecolor{Blu}{RGB}{43,62,133} % UWEC Blue
+\setbeamercolor{structure}{fg=Blu} % Titles
+
+%Unnumbered footnotes:
+\newcommand{\blfootnote}[1]{%
+	\begingroup
+	\renewcommand\thefootnote{}\footnote{#1}%
+	\addtocounter{footnote}{-1}%
+	\endgroup
+}
+
+
+%%%%%%%%%%
+%Custom Commands
+%%%%%%%%%%
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\veca}{\vec{a}}
+\newcommand{\vecb}{\vec{b}}
+\newcommand{\vece}{\vec{e}}
+\newcommand{\vecu}{\vec{u}}
+\newcommand{\vecv}{\vec{v}}
+\newcommand{\vecw}{\vec{w}}
+\newcommand{\vecx}{\vec{x}}
+\newcommand{\zerovector}{\vec{0}}
+
+\newcommand{\ds}{\displaystyle}
+
+\newcommand{\fn}{\insertframenumber}
+
+\newcommand{\rank}{\operatorname{rank}}
+\newcommand{\adj}{\operatorname{adj}}
+
+\newcommand{\blank}[1]{\underline{\hspace*{#1}}}
+
+
+%%%%%%%%%%
+%Custom Theorem Environments
+%%%%%%%%%%
+\theoremstyle{definition}
+\newtheorem{exercise}{Exercise}
+\newtheorem{question}[exercise]{Question}
+\newtheorem*{defn}{Definition}
+\newtheorem*{exa}{Example}
+\newtheorem*{disc}{Group Discussion}
+\newtheorem*{nb}{Note}
+\newtheorem*{recall}{Recall}
+\renewcommand{\emph}[1]{{\color{blue}\texttt{#1}}}
+
+\definecolor{Gold}{RGB}{237, 172, 26}
+%Statement block
+\newenvironment{statementblock}[1]{%
+	\setbeamercolor{block body}{bg=Gold!20}
+	\setbeamercolor{block title}{bg=Gold}
+	\begin{block}{\textbf{#1.}}}{\end{block}}
+
+
+
+
+
+\begin{document}
+	\title{Math 324: Linear Algebra}
+	\subtitle{Section 4.5: Dimension}
+	\author{Mckenzie West}
+	\date{Last Updated: \today}
+\begin{frame}
+\maketitle
+\end{frame}
+
+\begin{frame}{\insertframenumber}
+	\begin{block}{\textbf{Last Time.}}
+	\begin{itemize}[label=--]
+		\item Basis
+	\end{itemize}
+	\end{block}
+	\begin{block}{\textbf{Today.}}
+		\begin{itemize}[label=--]
+			\item Dimension
+		\end{itemize}
+	\end{block}
+\end{frame}
+
+\begin{frame}{\fn}
+	\begin{statementblock}{Theorem 4.11}
+		If a vector space $V$ has a basis with $n$ vectors then every basis for $V$ has $n$ vectors.
+	\end{statementblock}
+	\begin{exercise}
+		Fill details into this terse proof of Theorem 4.11.
+		\begin{proof}
+			Let $S=\{\vec v_1,\vec v_2,\dots, \vec v_n\}$ be a basis for the vector space $V$.  Let $T=\{\vec u_1,\vec u_2,\dots,\vec u_m\}$ be another basis for $V$.
+			\begin{enumerate}[label=(\alph*)]
+				\item Since $S$ is a basis and $T$ is linearly independent, by Theorem 4.10 we must have $m\leq n$.
+				\item Similarly $n\leq m$.
+			\end{enumerate}
+			Therefore, $m=n$, as desired.
+		\end{proof}
+	\end{exercise}
+\end{frame}
+\begin{frame}{\fn}
+	\begin{exercise}
+		How many vectors must a basis for each of the following have?
+		\begin{enumerate}[label=(\alph*)]
+			\item $\R^2$
+			\item $\R^3$
+			\item $\R^n$
+			\item $P_2$
+			\item $P_n$
+			\item $M_{2,2}$
+			\item $M_{m,n}$
+		\end{enumerate}
+	\end{exercise}
+\end{frame}
+\begin{frame}{\fn}
+	\begin{defn}
+		If the vector space $V$ has a basis with $n$ elements, then we say that the \emph{dimension of V} is $n$, denoted $\dim(V)=n$.
+		
+		The vector space consisting of only the zero vector is said to have dimension 0.
+	\end{defn}
+\end{frame}
+\begin{frame}{\fn}
+	\begin{exercise}
+		What is the dimension of each of the following vector spaces?
+		\begin{enumerate}[label=(\alph*)]
+			\item $\R^2$
+			\item $\R^3$
+			\item $\R^n$
+			\item $P_2$
+			\item $P_n$
+			\item $M_{2,2}$
+			\item $M_{m,n}$
+		\end{enumerate}
+	\end{exercise}
+\end{frame}
+\begin{frame}{\fn}
+	\begin{exa}
+		Consider the subspace $W=\{(a+b,a-b,3*a):a,b\in\R\}$ of $\R^3$.  A basis for this space is $S=\{(1,1,3),(1,-1,0)\}$ because every vector in $W$ can be written as a combination of these two 
+			\[(a+b,a-b,3a)=a(1,1,3)+b(1,-1,0),\]
+		and the set $S$ is linearly independent. (How would you check independence?)
+		
+		Thus $W$ is 2-dimensional.
+	\end{exa}
+	\begin{exercise}
+		\begin{enumerate}[label=(\alph*)]
+			\item Find a basis for the subspace $W=\{(t,2t):t\in\R\}$ of $\R^2$. What is $\dim(W)$?
+			\item Find a basis for the subspace $W=\{(a,b,b,b):a,b\in\R\}$ of $\R^4$. What is $\dim(W)$?
+		\end{enumerate}
+	\end{exercise}
+\end{frame}
+\begin{frame}{\fn}
+	\begin{block}{\textbf{Brain Break.}}
+		If you have a tattoo, what does it mean to you? If you don’t, what tattoo would you get?
+		\begin{center}
+			\includegraphics[width=1in]{images/ole}
+			
+			\footnotesize
+			This lion is on my foot.  It is the mascot for St.~Olaf College, where I got my undergraduate degree.
+		\end{center}
+	\end{block}
+\end{frame}
+\begin{frame}{\fn}
+\begin{statementblock}{Theorem 4.12}
+	Let $V$ be a vector space of dimension $n$.
+	\begin{enumerate}[label=\textbf{\arabic*.}]
+		\item If $S=\{\vec v_1,\vec v_2,\dots,\vec v_n\}$ is a linearly independent set of $n$ vectors in $V$, then $S$ is a basis for $V$. 
+		\item  If $S=\{\vec v_1,\vec v_2,\dots,\vec v_n\}$ has $n$ vectors and spans $V$, then $S$ is a basis for $V$.
+	\end{enumerate}
+\end{statementblock}
+\begin{exercise}
+	Discuss this Theorem in the context of $V=\R^3$.  
+	
+	If $S=\{\vec v_1,\vec v_2,\vec v_3\}$ is a linearly independent set, why does $S$ also span $\R^3$?
+	
+	If $S=\{\vec v_1,\vec v_2,\vec v_3\}$ spans $\R^3$, why is it also linearly independent?
+\end{exercise}
+\end{frame}
+\begin{frame}{\fn}
+\begin{statementblock}{Theorem: Pruning}
+	Let $S=\{\vec v_1,\vec v_2,\dots,\vec v_k\}$ be a spanning set of a vector space $V$.  
+	Then there is a subset $T$ of $S$ that is a basis for $V$.
+\end{statementblock}
+\begin{exercise}
+	Consider the set $S=\{(1,2,4),(1,3,5),(2,5,9),(0,1,3),(0,2,6)\}$.  Find a subset of $S$ that is a basis for $\R^3$.
+\end{exercise}
+\end{frame}
+\end{document}
+

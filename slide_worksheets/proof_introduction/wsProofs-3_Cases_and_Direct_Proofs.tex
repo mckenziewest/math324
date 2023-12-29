@@ -1,0 +1,218 @@
+\documentclass[handout]{beamer}
+%\usepackage[margin=1in]{geometry}
+\usepackage{amsthm,amsmath,amsfonts,hyperref,graphicx,color,multicol}
+\usepackage{enumitem,tikz}
+
+%%%%%%%%%%
+%Beamer Template Customization
+%%%%%%%%%%
+\setbeamertemplate{navigation symbols}{}
+\setbeamertemplate{theorems}[ams style]
+\setbeamertemplate{blocks}[rounded]
+
+\definecolor{Blu}{RGB}{43,62,133} % UWEC Blue
+\setbeamercolor{structure}{fg=Blu} % Titles
+
+%Unnumbered footnotes:
+\newcommand{\blfootnote}[1]{%
+	\begingroup
+	\renewcommand\thefootnote{}\footnote{#1}%
+	\addtocounter{footnote}{-1}%
+	\endgroup
+}
+
+
+%%%%%%%%%%
+%Custom Commands
+%%%%%%%%%%
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\veca}{\vec{a}}
+\newcommand{\vecb}{\vec{b}}
+\newcommand{\vece}{\vec{e}}
+\newcommand{\vecu}{\vec{u}}
+\newcommand{\vecv}{\vec{v}}
+\newcommand{\vecw}{\vec{w}}
+\newcommand{\vecx}{\vec{x}}
+\newcommand{\zerovector}{\vec{0}}
+
+\newcommand{\ds}{\displaystyle}
+
+\newcommand{\fn}{\insertframenumber}
+
+\newcommand{\rank}{\operatorname{rank}}
+\newcommand{\adj}{\operatorname{adj}}
+
+\newcommand{\blank}[1]{\underline{\hspace*{#1}}}
+
+
+%%%%%%%%%%
+%Custom Theorem Environments
+%%%%%%%%%%
+\theoremstyle{definition}
+\newtheorem{exercise}{Exercise}
+\newtheorem{question}[exercise]{Question}
+\newtheorem*{defn}{Definition}
+\newtheorem*{exa}{Example}
+\newtheorem*{disc}{Group Discussion}
+\newtheorem*{nb}{Note}
+\newtheorem*{recall}{Recall}
+\renewcommand{\emph}[1]{{\color{blue}\texttt{#1}}}
+
+\definecolor{Gold}{RGB}{237, 172, 26}
+%Statement block
+\newenvironment{statementblock}[1]{%
+	\setbeamercolor{block body}{bg=Gold!20}
+	\setbeamercolor{block title}{bg=Gold}
+	\begin{block}{\textbf{#1.}}}{\end{block}}
+
+
+
+
+\begin{document}
+	\title{Math 324: Linear Algebra}
+	\subtitle{Direct Proofs and Cases}
+	\author{Mckenzie West}
+	\date{Last Updated: \today}
+\begin{frame}
+\maketitle
+\end{frame}
+
+\begin{frame}{\insertframenumber}
+	\begin{block}{\textbf{Last Time.}}
+	\begin{itemize}[label=--]
+		\item Proper Proof Techniques
+		\item Direct Proofs
+	\end{itemize}
+	\end{block}
+\begin{block}{\textbf{Today.}}
+	\begin{itemize}[label=--]
+		\item Proofs using Cases
+	\end{itemize}
+\end{block}
+\end{frame}
+\begin{frame}{\fn}
+	\begin{exercise}
+		Take time to read the proof from your classmates. 
+		
+		Indicate (a) 2 things their proof does well and (b) 1-2 things that could be improved.  Then return the commented version to Dr.~West.
+	\end{exercise}
+\end{frame}
+\begin{frame}{\fn}
+	\begin{exa}
+		Here is one possible proof the the statement from last time.
+	\begin{block}{{Claim.}}
+		If the product $AB$ is a square matrix, then the product $BA$ is defined.
+	\end{block}
+	\begin{proof} 
+		Let $A$ and $B$ be matrices such that $AB$ is defined and square of size $n\times n$.  By definition of matrix multiplication, this means that $A$ has $n$ rows and $B$ has $n$ columns.  Then the middle dimensions for the product $BA$ match and so the product is defined.
+	\end{proof}
+		Do you think this is sufficient or would you add more?
+	\end{exa}
+\end{frame}
+\begin{frame}{\fn}
+	\begin{defn}
+		You may have seen previously that if $A$ is a square matrix satisfying $A^2=A$, then we call $A$ \emph{idempotent}.
+	\end{defn}
+	\begin{exercise}[Exercise 5 from last time]
+		Follow the steps to prove that if $A$ and $B$ are idempotent matrices satisfying $AB=BA$, then $AB$ is also idempotent.
+		\begin{enumerate}[label=(\alph*)]
+			\item Start with some scratch work, you want to show $(AB)^2=AB$.  
+			What is $(AB)^2$? Where can you use the fact that $AB=BA$?
+			\item Write down your assumptions.
+			\item State what it means for $A$ and $B$ to be idempotent.
+			\item Write down a sentence stating what you want to show.
+			\item Go through the algebraic steps.  Note: You may want to display them as in guideline (9).
+			\item Write a concluding sentence as suggested in guideline (13).
+		\end{enumerate}
+	\end{exercise}
+\end{frame}
+
+\begin{frame}{\fn}
+	\begin{block}{\textbf{Brain Break.}}
+		When you wake up, what is the very first thing you do?
+		\begin{center}
+			\includegraphics[width=1.5in]{images/morning}
+		\end{center}
+	\end{block}
+\end{frame}
+
+\begin{frame}{\fn}
+\begin{statementblock}{Theorem 2.2 (3)}
+	Let $A$ be an $m\times n$ matrix and $c$ a scalar.
+	If $cA=O_{mn}$, then $c=0$ or $A=O_{m,n}$.
+\end{statementblock}
+\begin{exercise}
+	Before getting to the proof of this theorem, let's think about how it's going to go.
+	
+	Because we see the word `or', we're going to want to use cases.  What might be some reasonable cases to consider? Note: There is more than one option.
+\end{exercise}
+\end{frame}
+
+\begin{frame}{\fn}
+\begin{statementblock}{Theorem 2.2 (3)}
+	Let $A$ be an $m\times n$ matrix and $c$ a scalar.
+	If $cA=O_{mn}$, then $c=0$ or $A=O_{m,n}$.
+\end{statementblock}
+\begin{exercise}Do some scratch work for each collection of cases:
+			\begin{enumerate}[label=(\alph*)]
+				\item $c=0$ or $c\neq 0$
+				\item $A=O_{m,n}$ or $A\neq O_{m,n}$
+			\end{enumerate}			
+\end{exercise}
+	\begin{nb}
+		Keep in mind the fact that $A=O_{m,n}$ if every entry of $A$ is $0$.  On the other hand $A\neq O_{m,n}$ if there exists at least one entry of $A$ that is not $0$.
+	\end{nb}
+\end{frame}
+\begin{frame}{\fn}
+\begin{statementblock}{Theorem 2.2 (3)}
+	Let $A$ be an $m\times n$ matrix and $c$ a scalar.
+	If $cA=O_{m,n}$, then $c=0$ or $A=O_{m,n}$.
+\end{statementblock}
+\begin{exercise}
+	Add some explanation to the proof using the given cases.
+	\begin{quote}
+		Let $A$ be an $m\times n$ matrix and $c$ a scalar such that $cA=O_{m,n}$.  We consider two cases, \fbox{$c=0$ or $c\neq 0$}.
+		
+		\underline{Case 1:} Assume $c=0$.  Then the statement is true. (\textit{why})
+		
+		\underline{Case 2:} Assume $c\neq 0$. We want to show that $A=O_{m,n}$. (\textit{explain why every entry of $A$ must be 0 -- this may include saying something like $ca_{ij}=0$, so $a_{ij}=0$.})
+	\end{quote}
+	
+\end{exercise}
+\end{frame}
+\begin{frame}{\fn}
+	\begin{statementblock}{Theorem 2.2 (3)}
+		Let $A$ be an $m\times n$ matrix and $c$ a scalar.
+		If $cA=O_{m,n}$, then $c=0$ or $A=O_{m,n}$.
+	\end{statementblock}
+	\begin{exercise}
+		Let's start over and try the other set of cases.
+		\begin{quote}
+			Let $A$ be an $m\times n$ matrix and $c$ a scalar such that $cA=O_{m,n}$.  We consider two cases, \fbox{$A=O_{m,n}$ or $A\neq O_{m,n}$}.
+			
+			\underline{Case 1:} Assume $A=O_{m,n}$.  Then the statement is true. (\textit{why})
+			
+			\underline{Case 2:} Assume $A\neq O_{m,n}$. We want to show that $c=0$. (\textit{explain why $c$ must be 0 -- this may include saying something like there is an entry $a_{ij}\neq 0$ of $A$.....$ca_{ij}=0$, so $c=0$.})
+		\end{quote}
+		
+	\end{exercise}
+\end{frame}
+\begin{frame}{\fn}
+	\begin{exercise}
+		Which of these two cases do you prefer?  Keep in mind there is no right answer but it will be useful to discuss this with your group.
+	\end{exercise}
+\end{frame}
+\begin{frame}{\fn}
+	\begin{exercise}
+		Consider the following statement --- which we may have seen a few times previously.
+		\begin{statementblock}{Claim}
+			If $A^2=A$, then $A$ is singular or $A=I$.
+		\end{statementblock}
+		\begin{enumerate}[label=(\alph*)]
+			\item To prove this we use cases.  What might you consider as the cases?
+			\item Using the cases: $A$ is singular or $A$ is invertible, work out some scratch work.  Follow the foundation of the proofs in exercises 5 and 6 to prove the claim.
+		\end{enumerate}
+\end{exercise}
+\end{frame}
+\end{document}
+

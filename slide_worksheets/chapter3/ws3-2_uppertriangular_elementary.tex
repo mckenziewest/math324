@@ -1,0 +1,257 @@
+\documentclass{beamer}
+%\usepackage[margin=1in]{geometry}
+\usepackage{amsthm,amsmath,amsfonts,hyperref,graphicx,color,multicol}
+\usepackage{enumitem,tikz}
+
+%%%%%%%%%%
+%Beamer Template Customization
+%%%%%%%%%%
+\setbeamertemplate{navigation symbols}{}
+\setbeamertemplate{theorems}[ams style]
+\setbeamertemplate{blocks}[rounded]
+
+\definecolor{Blu}{RGB}{43,62,133} % UWEC Blue
+\setbeamercolor{structure}{fg=Blu} % Titles
+
+%Unnumbered footnotes:
+\newcommand{\blfootnote}[1]{%
+	\begingroup
+	\renewcommand\thefootnote{}\footnote{#1}%
+	\addtocounter{footnote}{-1}%
+	\endgroup
+}
+
+
+%%%%%%%%%%
+%Custom Commands
+%%%%%%%%%%
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\veca}{\vec a}
+\newcommand{\vecb}{\vec b}
+\newcommand{\vecu}{\vec{u}}
+\newcommand{\vecv}{\vec{v}}
+\newcommand{\vecw}{\vec{w}}
+\newcommand{\vecx}{\vec{x}}
+\newcommand{\zerovector}{\vec{0}}
+
+\newcommand{\ds}{\displaystyle}
+
+\newcommand{\fn}{\insertframenumber}
+
+\newcommand{\rank}{\operatorname{rank}}
+
+\newcommand{\blank}[1]{\underline{\hspace*{#1}}}
+
+
+%%%%%%%%%%
+%Custom Theorem Environments
+%%%%%%%%%%
+\theoremstyle{definition}
+\newtheorem{exercise}{Exercise}
+\newtheorem{question}[exercise]{Question}
+\newtheorem*{defn}{Definition}
+\newtheorem*{exa}{Example}
+\newtheorem*{disc}{Group Discussion}
+\newtheorem*{nb}{Note}
+\newtheorem*{recall}{Recall}
+\renewcommand{\emph}[1]{{\color{blue}\texttt{#1}}}
+
+\definecolor{Gold}{RGB}{237, 172, 26}
+%Statement block
+\newenvironment{statementblock}[1]{%
+	\setbeamercolor{block body}{bg=Gold!20}
+	\setbeamercolor{block title}{bg=Gold}
+	\begin{block}{\textbf{#1.}}}{\end{block}}
+
+
+
+
+
+\begin{document}
+	\title{Math 324: Linear Algebra}
+	\subtitle{Section 3.1: The Determinant of a Matrix\\Section 3.2: Determinants and Elementary Operations}
+	\author{Mckenzie West}
+	\date{Last Updated: \today}
+\begin{frame}
+\maketitle
+\end{frame}
+
+\begin{frame}{\insertframenumber}
+	\begin{block}{\textbf{Last Time.}}
+	\begin{itemize}[label=--]
+		\item The determinant of a $2\times 2$ matrix
+		\item Minors
+		\item Cofactors
+		\item The determinant of an $n\times n$ matrix.
+	\end{itemize}
+	\end{block}
+	\begin{block}{\textbf{Today.}}
+		\begin{itemize}[label=--]
+			\item Determinants of Triangular Matrices
+			\item How Elementary Row Operations Affect Determinants
+		\end{itemize}
+	\end{block}
+\end{frame}
+\begin{frame}{\fn}
+	\begin{defn}
+		An \emph{upper triangular matrix} is a square matrix for which every entry below the main diagonal is zero.  A \emph{lower triangular matrix} is a square matrix for which every entry above the main diagonal is zero.
+		
+		A \emph{diagonal matrix} is a matrix that is both upper triangular and lower triangular.
+	\end{defn}
+	\begin{exercise}
+		Compute the determinant of each of the following triangular matrices, using the appropriate cofactor expansion.
+		
+				 $\begin{bmatrix}
+					-3 & 0  \\
+					12 & 8 
+					\end{bmatrix}$
+				\hfill $\begin{bmatrix}
+					-6 & 15 & -4 \\
+					0 & -1 & 6 \\
+					0 & 0 & 0
+					\end{bmatrix}$
+				\hfill $\begin{bmatrix}
+					-3 & 0 & 0 &0 \\
+					0 & -7 &0 & 0 \\
+					0 & 0 & 2 & 0 \\
+					0 & 0 & 0 & 3
+					\end{bmatrix}$
+	\end{exercise}
+\end{frame}
+
+\begin{frame}{\fn}
+	\begin{statementblock}{Theorem 3.2}
+		If $A$ is a triangular matrix of order $n$, then its determinant is the product of the entries on the main diagonal.  That is,	\[\det(A)=|A|=a_{11}a_{22}a_{33}\cdots a_{nn}.\]
+	\end{statementblock}
+	
+	\begin{exercise}
+		Complete the proof of this Theorem on your worksheet.
+		
+		Note that due to the inductive definition of determinants, we often use induction to prove properties of determinants.
+	\end{exercise}
+\end{frame}
+
+\begin{frame}{\fn}
+	\begin{exercise}
+		Use Theorem 3.2 to compute:
+		\begin{enumerate}[label=(\alph*)]
+			\item $\det(I_n)$
+			\item $\det(O_n)$
+			\item $\det(4I_3)$
+		\end{enumerate}
+	\end{exercise}
+\end{frame}
+
+\begin{frame}{\fn}
+	\begin{block}{\textbf{Brain Break.}}
+		What fictional character would you like to meet?
+			\begin{center}
+				\includegraphics[width=2in]{images/meet}
+			\end{center}
+	\end{block}
+\end{frame}
+
+\begin{frame}{\fn}
+	\begin{exercise}
+		Each person at your table should claim one of these four matrices.
+		
+		\[\begin{bmatrix}5 & 4 \\0 & 1\end{bmatrix},\
+		\begin{bmatrix}2 & -3 \\1 & 5\end{bmatrix},\
+		\begin{bmatrix}1 & -3 \\-3 & 0\end{bmatrix},\text{ or }
+		\begin{bmatrix}-2 & 1 \\	2 & -3\end{bmatrix}\!.\]
+		
+		\begin{enumerate}[label=(\alph*)]
+			\item Compute the determinant of your matrix.
+			\item Compute the determinant of your matrix after performing the elementary row operation $R_1\leftrightarrow R_2$.
+			\item Reset your matrix, now compute the determinant after performing the elementary row operation $R_2-4R_1\rightarrow R_2$.
+			\item Reset your matrix again, now compute the determinant after performing the elementary row operation $3 R_1\rightarrow R_1$.
+		\end{enumerate}
+	\end{exercise}
+\end{frame}
+
+\begin{frame}{\fn}
+	\begin{exercise}
+		Using your answers from Exercise 4, fill in the blanks of Theorem 3.3 that describe how elementary row operations affect determinants.
+	\end{exercise}
+	\begin{statementblock}{Theorem 3.3}
+		Let $A$ and $B$ be square matrices.
+		\begin{enumerate}[label=\textbf{\arabic*.}]
+			\item When $B$ is obtained from $A$ by interchanging two rows of $A$, $\det(B) = \underline{\hspace*{.75in}}$.
+			\item When $B$ is obtained from $A$ by adding a multiple of a row of $A$ to another row of $A$, $\det(B)=\underline{\hspace*{.75in}}$.
+			\item When $B$ is obtained from $A$ by multiplying a row of $A$ by a nonzero constant $c$, $\det(B)=\underline{\hspace*{.75in}}$.
+		\end{enumerate}
+	\end{statementblock}
+\end{frame}
+
+\begin{frame}{\fn}
+	\begin{exa}
+		We now have another way to compute determinants, row reducing to upper triangular and keeping track of our path:
+		
+		\[
+		\begin{bmatrix}0 & 4 & -2 \\0 & 1 & 3 \\-3 & 2 & 0\end{bmatrix}
+		\xrightarrow{R_1\leftrightarrow R_3}
+		\begin{bmatrix}-3 & 2 & 0\\0 & 1 & 3 \\0 & 4 & -2 \end{bmatrix}
+		\xrightarrow{R_3-4R_2\rightarrow R_3}
+		\begin{bmatrix}-3 & 2 & 0\\0 & 1 & 3 \\0 & 0 & -14 \end{bmatrix}.
+		\]
+		
+		Therefore, the determinant of the starting matrix is
+		\[\begin{array}{rl}\begin{vmatrix}0 & 4 & -2 \\0 & 1 & 3 \\-3 & 2 & 0\end{vmatrix}
+		&=-
+		\begin{vmatrix}-3 & 2 & 0\\0 & 1 & 3 \\0 & 4 & -2 \end{vmatrix}
+		=-
+		\begin{vmatrix}-3 & 2 & 0\\0 & 1 & 3 \\0 & 0 & -14 \end{vmatrix}\\\\
+		&=
+		-(-3)(1)(-14)=-72.
+		\end{array}\]
+	\end{exa}
+\end{frame}
+\begin{frame}{\fn}
+	\begin{exercise}
+		Use elementary row operations to compute:
+			\[\begin{vmatrix}
+			4 & 2 & 6 \\
+			0 & 2 & 3 \\
+			2 & 5 & 5
+			\end{vmatrix}\]
+	\end{exercise}
+\end{frame}
+\begin{frame}{\fn}
+\begin{defn}
+	The following are \emph{elementary column operations}:
+	\begin{enumerate}[label=\textbf{\arabic*.}]
+		\item swap two columns, denoted $C_i\leftrightarrow C_j$,
+		\item add a multiple of one column to another, denoted $C_i+cC_j\rightarrow C_i$,
+		\item multiply a column of $B$ by a nonzero scalar $c$, denoted $cC_i\rightarrow C_i$.
+	\end{enumerate} 
+	We call two matrices \emph{column equivalent} if one of them can be obtained from the other by elementary column operations.
+\end{defn}
+\begin{nb}
+	Elementary \textbf{column} operations affect the determinant in the exact same way that their related elementary \textbf{row} operations do.
+\end{nb}
+\end{frame}
+\begin{frame}{\fn}
+\begin{exercise}
+	Make use of elementary column operations to compute the determinant:
+	\[\begin{vmatrix}
+	-2 & 1 & 4 \\
+	3 & 3 & -6 \\
+	4 & 0 & -8
+	\end{vmatrix}\]
+\end{exercise}
+\begin{exercise}
+	Make use of elementary row and/or column operations to compute each determinant:
+	\[\text{(a)}\ \begin{vmatrix}
+	6 & 5 & 4 \\
+	0 & 3 & 2 \\
+	3 & 5 & 4
+	\end{vmatrix}\hskip .5in \text{(b)}\ \begin{vmatrix}
+	2 & 0 & 0 & 5 \\
+	-2 & 3 & 3 & 4 \\
+	1 & 3 & -3 & 4 \\
+	-2 & 3 & -2 & 2
+	\end{vmatrix}\]
+\end{exercise}
+\end{frame}
+\end{document}
+

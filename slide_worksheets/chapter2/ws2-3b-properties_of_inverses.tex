@@ -1,0 +1,334 @@
+\documentclass[handout]{beamer}
+%\usepackage[margin=1in]{geometry}
+\usepackage{amsthm,amsmath,amsfonts,hyperref,graphicx,color,multicol}
+\usepackage{enumitem,tikz}
+
+%%%%%%%%%%
+%Beamer Template Customization
+%%%%%%%%%%
+\setbeamertemplate{navigation symbols}{}
+\setbeamertemplate{theorems}[ams style]
+\setbeamertemplate{blocks}[rounded]
+
+\definecolor{Blu}{RGB}{43,62,133} % UWEC Blue
+\setbeamercolor{structure}{fg=Blu} % Titles
+
+%Unnumbered footnotes:
+\newcommand{\blfootnote}[1]{%
+	\begingroup
+	\renewcommand\thefootnote{}\footnote{#1}%
+	\addtocounter{footnote}{-1}%
+	\endgroup
+}
+
+
+%%%%%%%%%%
+%Custom Commands
+%%%%%%%%%%
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\veca}{\vec{a}}
+\newcommand{\vecb}{\vec{b}}
+\newcommand{\vece}{\vec{e}}
+\newcommand{\vecu}{\vec{u}}
+\newcommand{\vecv}{\vec{v}}
+\newcommand{\vecw}{\vec{w}}
+\newcommand{\vecx}{\vec{x}}
+\newcommand{\zerovector}{\vec{0}}
+
+\newcommand{\ds}{\displaystyle}
+
+\newcommand{\fn}{\insertframenumber}
+
+\newcommand{\rank}{\operatorname{rank}}
+\newcommand{\adj}{\operatorname{adj}}
+
+\newcommand{\blank}[1]{\underline{\hspace*{#1}}}
+
+
+%%%%%%%%%%
+%Custom Theorem Environments
+%%%%%%%%%%
+\theoremstyle{definition}
+\newtheorem{exercise}{Exercise}
+\newtheorem{question}[exercise]{Question}
+\newtheorem*{defn}{Definition}
+\newtheorem*{exa}{Example}
+\newtheorem*{disc}{Group Discussion}
+\newtheorem*{nb}{Note}
+\newtheorem*{recall}{Recall}
+\renewcommand{\emph}[1]{{\color{blue}\texttt{#1}}}
+
+\definecolor{Gold}{RGB}{237, 172, 26}
+%Statement block
+\newenvironment{statementblock}[1]{%
+	\setbeamercolor{block body}{bg=Gold!20}
+	\setbeamercolor{block title}{bg=Gold}
+	\begin{block}{\textbf{#1.}}}{\end{block}}
+
+\begin{document}
+	\title{Math 324: Linear Algebra}
+	\subtitle{2.3: The Inverse of a Matrix}
+	\author{Mckenzie West}
+	\date{Last Updated: \today}
+\begin{frame}
+\maketitle
+\end{frame}
+
+\begin{frame}{\insertframenumber}
+	\begin{block}{\textbf{Last Time.}}
+	\begin{itemize}[label=--]
+		\item Inverses of Matrices
+		\item Gauss-Jordan Elimination
+		\item Inverses of $2\times2$ matrices
+	\end{itemize}
+	\end{block}
+\begin{block}{\textbf{Today.}}
+	\begin{itemize}[label=--]
+		\item Properties of Inverses
+		\item Using Inverses to Solve System of Equations
+	\end{itemize}
+\end{block}
+\end{frame}
+
+\begin{frame}{\fn}
+	\begin{recall}
+		For a $2\times 2$ matrix $A=\begin{bmatrix}
+		a&b\\c&d
+		\end{bmatrix}$, $A$ is invertible if and only if $ad-bc\neq 0$.  If $A$ is invertible, then
+			\[A^{-1}=\frac{1}{ad-bc}\begin{bmatrix}
+			d&-b\\-c&a
+			\end{bmatrix}.\]
+	\end{recall}
+	\begin{nb}
+		For the exercises today, compute the inverses of all $2\times 2 $ matrices by hand.
+		
+		You may use a calculator or Sage to compute the inverse of the larger matrices.  Recall the process of $[A|I]\rightarrow[I|A^{-1}]$.
+	\end{nb}
+\end{frame}
+\begin{frame}{\fn}
+	\begin{exercise}[Warm-up]
+		Compute the inverse of the matrix if it exists:
+			\begin{enumerate}[label=(\alph*)]
+				\item $\begin{bmatrix}-1&-3\\2&4\end{bmatrix}$
+				\item $\begin{bmatrix}4&-2\\1&1\end{bmatrix}$
+			\end{enumerate}
+	\end{exercise}
+	\begin{exercise}
+	Find all $x$ and $y$ that make the matrix singular
+	$\begin{bmatrix}
+	-x&2\\y&5
+	\end{bmatrix}$
+	Remember to parametrize your solutions.
+	\end{exercise}
+	\begin{exercise}
+		Find $x$ so that $A^{-1}=A^2$ for $A=\left[\begin{array}{rr}
+		-2 & -3 \\
+		x & 1
+		\end{array}\right]$
+		
+		(Hint: This means $A(A^2)=I$.)
+	\end{exercise}
+\end{frame}
+
+\begin{frame}{\fn}
+	\begin{statementblock}{Theorem 2.8}
+			If $A$ is an invertible matrix, $k$ is a positive integer, and $c$ is a nonzero scalar, then $A^{-1}$, $A^k$, $cA$, and $A^T$ are invertible and the following are true:
+			\begin{enumerate}[label=\arabic*.]
+				\item $(A^{-1})^{-1}=A$
+				\item $(A^k)^{-1}=(A^{-1})^k$
+				\item $(cA)^{-1}=\frac{1}{c}A^{-1}$
+				\item $(A^T)^{-1}=(A^{-1})^T$
+			\end{enumerate}
+	\end{statementblock}
+\end{frame}
+\begin{frame}{\fn}
+	\begin{exercise}
+		Verify property (1) of Theorem 2.8 by computing $A^{-1}$ and $(A^{-1})^{-1}$ for $A=\left[\begin{array}{rr}
+		1 & -9 \\
+		-3 & 5
+		\end{array}\right]$.
+	\end{exercise}
+	\begin{exercise}
+		Verify property (3) of Theorem 2.8 by computing $(2A)^{-1}$ and $\frac{1}{2}(A^{-1})$ for $A=\left[\begin{array}{rr}
+		1 & -5 \\
+		-3 & 10
+		\end{array}\right]$.
+	\end{exercise}
+\end{frame}
+\begin{frame}{\fn}
+	\begin{exercise}
+		Follow the steps to verify a simplified version of property (2) of Theorem 2.8.
+		
+		\begin{statementblock}{Claim}
+		If $A$ is an invertible matrix then $A^3$ is invertible and $(A^3)^{-1}=(A^{-1})^3$.
+		\end{statementblock}
+		\begin{enumerate}[label=(\alph*)]
+			\item Remind yourself of the definition of an inverse.
+			\item To verify the result, begin by computing $A^3B$ and $BA^3$ for $B=(A^{-1})^3$.  Carefully note the location of the exponents here.
+			\item If the two product equal $I$, then you can conclude that the inverse of $A^3$ is $(A^{-1})^3$.
+		\end{enumerate}
+	\end{exercise}
+\end{frame}
+
+\begin{frame}{\fn}
+	\begin{block}{\textbf{Brain Break.}}
+		What is your favorite zoo animal?\begin{center}
+			\includegraphics[width=2in]{images/zoo}
+		\end{center}
+	\end{block}
+\end{frame}
+\begin{frame}{\fn}
+	\begin{statementblock}{Theorem 2.9}
+		If $A$ and $B$ are invertible matrices of order $n$ then $AB$ is invertible and $(AB)^{-1}=B^{-1}A^{-1}$.
+	\end{statementblock}
+	\begin{nb}
+		ORDER IS INCREDIBLY IMPORTANT.
+	\end{nb}
+\end{frame}
+
+\begin{frame}{\fn}
+	\begin{exercise}
+	Let \[A=\left[\begin{array}{rrr}
+	-2 & 1 & -2 \\
+	-1 & 2 & -3 \\
+	1 & -1 & 2
+	\end{array}\right]\textup{ and }B=\left[\begin{array}{rrr}
+	1 & 0 & -2 \\
+	1 & 1 & 2 \\
+	-3 & -1 & 3
+	\end{array}\right].\]
+	
+	Use the \textit{Gauss-Jordan method} to compute $A^{-1}$ and $B^{-1}$.  
+	
+	Multiply these in the right order to compute $(AB)^{-1}$.
+	
+	*Use Sage to row reduce and verify that you actually did get $(AB)^{-1}$.
+	
+	**Recall the \textit{Gauss-Jordan method} from last time: if $A$ is invertible, $[A|I]$ row reduces to $[I|A^{-1}]$.
+\end{exercise}
+\end{frame}
+\begin{frame}{\fn}
+	\begin{statementblock}{Theorem 2.10}
+		If $C$ is an invertible matrix, then the following properties hold:	
+			\begin{enumerate}[label=\arabic*.]
+				\item If $AC=BC$, then $A=B$ \hfill\emph{Right cancellation}
+				\item If $CA=CB$, then $A=B$\hfill\emph{Left cancellation}
+			\end{enumerate}
+	\end{statementblock}
+	\begin{exercise}
+		Suppose $A$ is invertible and $A^2=A$, what must be true about $A$? (Hint: Write the equation as $AA=AI$.)
+		
+		Is the same true for invertible matrices with $A^3=A$?
+	\end{exercise}
+\end{frame}
+
+\begin{frame}{\fn}
+	
+	\begin{nb}
+		ORDER IS INCREDIBLY IMPORTANT.
+	\end{nb}
+	\begin{exercise}
+		Consider 
+		$A=\begin{bmatrix}
+		-6 & 3 \\
+		-4 & 3
+		\end{bmatrix}$, 
+		$B = \begin{bmatrix}
+		0 & -3 \\
+		-2 & -3
+		\end{bmatrix}$, and
+		$C=\begin{bmatrix}
+		-1 & 0 \\
+		-2 & 1
+		\end{bmatrix}$.
+		
+		Verify that although $A\neq B$, $AC=CB$.
+	\end{exercise}
+\end{frame}
+
+\begin{frame}{\fn}
+\begin{recall}
+	We can write a system of linear equations as the matrix product $A\vecx=\vecb$, where 
+	\begin{itemize}[label=--]
+		\item $A$ is the coefficient matrix;
+		\item $\vecx$ is the column vector consisting of the variables;
+		\item and $\vecb$ is the column vector consisting of the constant terms.
+	\end{itemize}
+\end{recall}
+\begin{statementblock}{Theorem 2.11}
+	If $A$ is an invertible matrix, then the system of linear equations $A\vecx=\vecb$ has a unique solution given by $\vecx=A^{-1}\vecb$.
+\end{statementblock}
+\end{frame}
+\begin{frame}{\fn}
+\begin{exercise}
+	Use an inverse matrix to solve each system of linear equations:
+	\begin{enumerate}[label=(\alph*)]
+		\item $\begin{array}{rcrcrcr}
+		x_1&+&2x_2&+&x_3&=&2\\
+		x_1&+&2x_2&-&x_3&=&4\\
+		x_1&-&2x_2&+&x_3&=&-2
+		\end{array}$
+		\item $\begin{array}{rcrcrcr}
+		x_1&+&2x_2&+&x_3&=&1\\
+		x_1&+&2x_2&-&x_3&=&3\\
+		x_1&-&2x_2&+&x_3&=&-3
+		\end{array}$
+	\end{enumerate}
+\end{exercise}
+\end{frame}
+
+\begin{frame}{\fn}
+	\begin{exercise}
+		Use a matrix inverse to solve the following.
+		
+		A group took a trip to the zoo on a bus, at \$3 per child and \$3.20 per adult for a total of \$118.40.
+		
+		They took the train back from the zoo at \$3.50 per child and \$3.60 per adult for a total of \$135.20.
+		
+		How many children, and how many adults?
+	\end{exercise}
+\end{frame}
+
+\begin{frame}{\fn}
+	\begin{exercise}
+		Compute the inverse of each of the following matrices, if it exists. (Use a calculator or Sage.)
+		\begin{multicols}{3}
+			\begin{enumerate}[label=(\alph*)]
+			\item $\begin{bmatrix}
+		4 & 0 & 2 \\
+		0 & -1 & -4 \\
+		0 & 0 & 1
+		\end{bmatrix}$
+			\item $\begin{bmatrix}
+			-5 & -2 & 0 \\
+			0 & 1 & 0 \\
+			0 & 0 & 4
+			\end{bmatrix}$
+			\item $\begin{bmatrix}
+			-3 & 4 & 3 \\
+			0 & 0 & 5 \\
+			0 & 0 & 1
+			\end{bmatrix}$
+		\end{enumerate}
+		\end{multicols}
+		We call a matrix of this form \emph{upper triangular} because the only non-zero entries are in the upper right-hand triangle.
+		
+		Make a conjecture about the shape of the inverses of upper triangular matrices -- and when they exist.
+	\end{exercise}
+\end{frame}
+%\begin{frame}{\fn}
+%	\begin{exercise}
+%		Let $A=\left[\begin{array}{rr}
+%		-3 & -2 \\
+%		3 & -1
+%		\end{array}\right]$.
+%		\begin{enumerate}[label=(\alph*)]
+%			\item Verify that $A^2+4A+9I=O$.
+%			\item Verify that $A^{-1}=\frac{-1}{9}(A+4I)$.
+%			\item Show that for any square matrix satisfying $A^2+4A+9I=O$, the inverse of $A$ is given by $A^{-1}=\frac{-1}{9}(A+4I)$.
+%		\end{enumerate}
+%	\end{exercise}
+%\end{frame}
+\end{document}
+
+ 

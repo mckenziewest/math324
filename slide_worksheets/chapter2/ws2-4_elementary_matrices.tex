@@ -1,0 +1,342 @@
+\documentclass[handout]{beamer}
+%\usepackage[margin=1in]{geometry}
+\usepackage{amsthm,amsmath,amsfonts,hyperref,graphicx,color,multicol}
+\usepackage{enumitem,tikz}
+
+%%%%%%%%%%
+%Beamer Template Customization
+%%%%%%%%%%
+\setbeamertemplate{navigation symbols}{}
+\setbeamertemplate{theorems}[ams style]
+\setbeamertemplate{blocks}[rounded]
+
+\definecolor{Blu}{RGB}{43,62,133} % UWEC Blue
+\setbeamercolor{structure}{fg=Blu} % Titles
+
+%Unnumbered footnotes:
+\newcommand{\blfootnote}[1]{%
+	\begingroup
+	\renewcommand\thefootnote{}\footnote{#1}%
+	\addtocounter{footnote}{-1}%
+	\endgroup
+}
+
+
+%%%%%%%%%%
+%Custom Commands
+%%%%%%%%%%
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\veca}{\vec{a}}
+\newcommand{\vecb}{\vec{b}}
+\newcommand{\vece}{\vec{e}}
+\newcommand{\vecu}{\vec{u}}
+\newcommand{\vecv}{\vec{v}}
+\newcommand{\vecw}{\vec{w}}
+\newcommand{\vecx}{\vec{x}}
+\newcommand{\zerovector}{\vec{0}}
+
+\newcommand{\ds}{\displaystyle}
+
+\newcommand{\fn}{\insertframenumber}
+
+\newcommand{\rank}{\operatorname{rank}}
+\newcommand{\adj}{\operatorname{adj}}
+
+\newcommand{\blank}[1]{\underline{\hspace*{#1}}}
+
+
+%%%%%%%%%%
+%Custom Theorem Environments
+%%%%%%%%%%
+\theoremstyle{definition}
+\newtheorem{exercise}{Exercise}
+\newtheorem{question}[exercise]{Question}
+\newtheorem*{defn}{Definition}
+\newtheorem*{exa}{Example}
+\newtheorem*{disc}{Group Discussion}
+\newtheorem*{nb}{Note}
+\newtheorem*{recall}{Recall}
+\renewcommand{\emph}[1]{{\color{blue}\texttt{#1}}}
+
+\definecolor{Gold}{RGB}{237, 172, 26}
+%Statement block
+\newenvironment{statementblock}[1]{%
+	\setbeamercolor{block body}{bg=Gold!20}
+	\setbeamercolor{block title}{bg=Gold}
+	\begin{block}{\textbf{#1.}}}{\end{block}}
+
+\begin{document}
+	\title{Math 324: Linear Algebra}
+	\subtitle{2.4: Elementary Matrices}
+	\author{Mckenzie West}
+	\date{Last Updated: \today}
+\begin{frame}
+\maketitle
+\end{frame}
+
+\begin{frame}{\insertframenumber}
+	\begin{block}{\textbf{Last Time.}}
+	\begin{itemize}[label=--]
+		\item Properties of Inverses
+		\item Using Inverses to Solve System of Equations
+	\end{itemize}
+	\end{block}
+\begin{block}{\textbf{Today.}}
+	\begin{itemize}[label=--]
+		\item Theorem 2.15
+		\item Elementary Matrices
+		\item Row Equivalence
+		\item Writing a Matrix as a Product of Elementary Matrices
+		\item Elementary Matrices and Inverses
+	\end{itemize}
+\end{block}
+\end{frame}
+
+
+\begin{frame}{\fn}
+	\begin{exercise}[Warm-up]
+		Let $A=\begin{bmatrix}
+		1&-2\\3&1
+		\end{bmatrix}$.
+		Use $A^{-1}$ to solve the system of equations \[A\begin{bmatrix}x\\y\end{bmatrix}=\begin{bmatrix}-3\\0\end{bmatrix}.\]
+	\end{exercise}
+\end{frame}
+\begin{frame}{\fn}
+	\begin{statementblock}{Theorem 2.15 (1-4)}
+		If $A$ is an $n\times n$ matrix, then the following statements are equivalent:
+		\begin{enumerate}[label=\arabic*.]
+			\item $A$ is invertible.
+			\item $A\vecx=\vecb$ has a unique solution for every $n\times 1$ column matrix $\vecb$.
+			\item $A\vecx=\zerovector$ has only the trivial solution.
+			\item $A$ is \emph{row-equivalent} to $I_n$, meaning there are elementary row operations that transform $A$ to $I_n$.
+		\end{enumerate}
+	\end{statementblock}
+	\begin{exercise}
+		What Theorem says (1) implies (2)?
+		
+		Why does (2) imply (3)?
+		
+		Why does (3) imply (4)?
+		
+		Why does (4) imply (1)? (Cite the method used here.)
+		
+		Given these, there is a loop of implications implying equivalence:\vskip -.15in
+		\[(1)\Rightarrow(2)\Rightarrow(3)\Rightarrow(4)\Rightarrow(1)\]
+	\end{exercise}
+\end{frame}
+\begin{frame}{\fn}
+	\begin{defn}
+		An $n\times n$ \emph{elementary matrix} is any matrix that can be obtained by performing a single elementary row operation on the identity matrix.
+	\end{defn}
+	\begin{exercise}
+		Which of the following matrices are elementary matrices?
+		\begin{multicols}{2}
+			\begin{enumerate}[label=(\alph*)]
+				\item $\begin{bmatrix}1&0&0\\0&3&0\\0&0&1\end{bmatrix}$
+				\item $\begin{bmatrix}1&0&0\\0&1&0\end{bmatrix}$
+				\item $\begin{bmatrix}1&0&0\\0&1&0\\0&0&0\end{bmatrix}$
+				\item $\begin{bmatrix}1&0&0\\0&0&1\\0&1&0\end{bmatrix}$
+				\item $\begin{bmatrix}1&0\\2&1\end{bmatrix}$
+				\item $\begin{bmatrix}1&0&0\\0&2&0\\0&0&-1\end{bmatrix}$
+			\end{enumerate}
+		\end{multicols}
+	\end{exercise}
+\end{frame}
+\begin{frame}{\fn}
+	\begin{exercise}
+		Compute each of the products
+		\begin{enumerate}[label=(\alph*)]
+			\item $\begin{bmatrix}1&0&0\\0&0&1\\0&1&0\end{bmatrix}\left[\begin{array}{rrr}
+			-1 & 1 & -1 \\
+			1 & -2 & 2 \\
+			-1 & -4 & -3
+			\end{array}\right]$
+			\item $\begin{bmatrix}1&0&0\\0&3&0\\0&0&1\end{bmatrix}\left[\begin{array}{rr}
+			4 & 4 \\
+			3 & -5 \\
+			0 & 3
+			\end{array}\right]$
+			\item $\begin{bmatrix}1&0\\2&1\end{bmatrix} \left[\begin{array}{rrrrr}
+			3 & -1 & -5 & -5 & 0 \\
+			1 & 5 & 4 & -3 & 5
+			\end{array}\right]$
+		\end{enumerate}
+		How can you read the products from the elementary matrix without actually having to go through the process of matrix multiplication?
+	\end{exercise}
+\end{frame}
+
+\begin{frame}{\fn}
+	\begin{statementblock}{Theorem 2.12}
+		Let $E$ be the elementary matrix obtained by performing an elementary row operation on $I_m$.  If that same elementary row operation is performed on an $m\times n$ matrix $A$, then the resulting matrix is given by the product $EA$.
+	\end{statementblock}
+	\begin{defn}
+		We say $A$ is \emph{row equivalent} to $B$ if there exist elementary matrices $E_1,\dots,E_k$ such that $E_k\cdots E_2E_1A=B$.
+	\end{defn}
+\end{frame}
+\begin{frame}{\fn}
+	\begin{exercise}
+		Let $A=\begin{bmatrix}
+		0 & -1 & 3 \\
+		5 & 4 & -2
+		\end{bmatrix}$
+		\begin{enumerate}[label=(\alph*)]
+			\item Manually, without technology, use elementary row operations to reduce $A$ to row-echelon form.
+			\item Encode each of those elementary row operations as an elementary matrix.
+			\item Multiply the elementary matrices you just found by $A$ in the correct order to verify that you got the right sequence.
+		\end{enumerate}
+	\end{exercise}
+\end{frame}
+
+\begin{frame}{\fn}
+	\begin{block}{\textbf{Brain Break.}}
+		$\sim$NAMES$\sim$
+		
+		What song always gets stuck in your head?
+		
+		\begin{center}
+			\includegraphics[width=2in]{images/song}
+		\end{center}
+	\end{block}
+\end{frame}
+\begin{frame}{\fn}
+	\begin{nb}
+		Elementary row operations can always be undone.
+	\end{nb}
+	\begin{exercise}
+		What would you do to undo the following ERO's?
+		\begin{multicols}{3}\begin{enumerate}[label=(\alph*)]
+			\item $R_2\leftrightarrow R_3$
+			\item $7R_3$
+			\item $R_1+5R_3\rightarrow R_1$
+		\end{enumerate}
+		\end{multicols}
+	\end{exercise}
+\begin{exercise}
+	What is the inverse of each of the following elementary matrices?
+	\begin{multicols}{3}
+		\begin{enumerate}[label=(\alph*)]
+		\item $\begin{bmatrix}1&0&0\\0&0&1\\0&1&0\end{bmatrix}$
+		\item $\begin{bmatrix}1&0&0\\0&1&0\\0&0&7\end{bmatrix}$
+		\item $\begin{bmatrix}1&0&5\\0&1&0\\0&0&1\end{bmatrix}$
+	\end{enumerate}
+\end{multicols}
+	\end{exercise}
+\end{frame}
+
+\begin{frame}{\fn}
+	\begin{statementblock}{Theorem 2.13}
+		If $E$ is an elementary matrix, then $E^{-1}$ exists and is also an elementary matrix.
+	\end{statementblock}
+	\begin{statementblock}{Theorem 2.14}
+		An $n\times n$ matrix $A$ is invertible if and only if it can be written as a product of elementary matrices.
+	\end{statementblock}
+\end{frame}
+\begin{frame}{\fn}
+\begin{exercise}\label{productOfElementary}
+	Let $A=\begin{bmatrix}
+	0 & 1  \\
+	5 & 4
+	\end{bmatrix}$
+	\begin{enumerate}[label=(\alph*)]
+		\item Manually, without technology, use elementary row operations to transform $A$ to reduced row-echelon form. (Note: $A$ is invertible so it can be reduced to $I_2$)
+		\item Encode each of those elementary row operations as an elementary matrix.
+		\item Multiply the elementary matrices you just found by $A$ in the correct order to verify that you got the right sequence.
+		\item Taking inverses of the ERO's in the correct order, solve for $A$.  Thus writing $A$ as a product of elementary matrices.
+	\end{enumerate}
+\end{exercise}
+\begin{question}
+	Using Exercise \ref{productOfElementary} as motivation, why is Theorem 2.14 true?
+\end{question}
+\end{frame}
+
+\begin{frame}{\fn}
+	\begin{statementblock}{Theorem 2.15}
+		If $A$ is an $n\times n$ matrix, then the following statements are equivalent:
+		\begin{enumerate}[label=\arabic*.]
+			\item $A$ is invertible.
+			\item $A\vecx=\vecb$ has a unique solution for every $n\times 1$ column matrix $\vecb$.
+			\item $A\vecx=\zerovector$ has only the trivial solution.
+			\item $A$ is row-equivalent to $I_n$.
+			\item $A$ can be written as a product of elementary matrices.
+		\end{enumerate}
+	\end{statementblock}
+\end{frame}
+
+\begin{frame}{\fn}
+	\begin{exercise}
+		We can also find inverses by multiplying elementary matrices using the same process as we did to write $A$ as a product of elementary matrices.
+		
+		Again, by hand, writing down each step, determine the reduced row-echelon form of $A$:
+			\[A=\begin{bmatrix}1&2&3\\2&5&6\\1&3&4\end{bmatrix}\]
+		Then write the product $(E_k\cdots E_2E_1)A=I_3$.
+		
+		What do you think $A^{-1}$ is?
+		
+		Multiply $A(E_k\cdots E_2E_1)$.  What did you get?
+	\end{exercise}
+\end{frame}
+
+\begin{frame}{\fn}
+\begin{exercise}
+	(Yes-this was part of the pre-class homework. Make sure you all agree on the answers.)
+	
+	Determine whether each statement is True or False.
+	
+	A statement is \emph{True} if it is always true no matter what.
+	
+	A statement is \emph{False} if you can write down some example where it fails.
+	
+	For every true statement, explain why it is true.
+	For every false statement, give an example of when it fails.
+	
+	\begin{enumerate}[label=(\alph*)]
+		\item The identity matrix is an elementary matrix.
+		\item If $E$ is an elementary matrix, then $2E$ is an elementary matrix.
+		\item The inverse of an elementary matrix is an elementary matrix.
+	\end{enumerate}
+\end{exercise}
+\end{frame}
+
+\begin{frame}{\fn}
+	\begin{question}
+		If $A$ is row equivalent to $B$ and $B$ is row equivalent to $C$, does this mean that $A$ is row equivalent to $C$? Why or why not?
+	\end{question}
+	\begin{question}
+		If $A$ is row equivalent to $B$ and $A$ is nonsingular, does this mean that $B$ is also nonsingular? Why or why not?
+	\end{question}
+\end{frame}
+
+\begin{frame}{\fn}
+	\begin{recall}
+		Last time we saw that if $A^2=A$ and $A$ is invertible then $A=I$.  
+		
+		In general if $A^2=A$, then we call $A$ \emph{idempotent}.
+	\end{recall}
+	\begin{exercise}
+		Which of the following matrices are idempotent?
+		\begin{multicols}{2}
+			\begin{enumerate}[label=(\alph*)]
+				\item $\begin{bmatrix}1&0\\0&0\end{bmatrix}$
+				\item $\begin{bmatrix}0&1\\1&0\end{bmatrix}$
+				\item $\begin{bmatrix}0&0&1\\0&1&0\\1&0&0\end{bmatrix}$
+				\item $\begin{bmatrix}0&1&0\\1&0&0\\0&0&1\end{bmatrix}$
+			\end{enumerate}
+		\end{multicols}
+	\end{exercise}
+\end{frame}
+
+\begin{frame}{\fn}
+\begin{exercise}
+	Determine $a$ and $b$ such that $A$ is idempotent.
+	\[A=\begin{bmatrix}1&0\\a&b\end{bmatrix}\]
+\end{exercise}
+\begin{question}
+	If $A$ is idempotent and invertible, is $A^{-1}$ also idempotent? Why or why not?
+\end{question}
+\begin{question}
+	If $A$ and $B$ are idempotent, is $AB$ also idempotent? Why or why not?
+\end{question}
+\end{frame}
+\end{document}
+
+ 

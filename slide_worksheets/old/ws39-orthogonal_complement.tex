@@ -1,0 +1,301 @@
+\documentclass{beamer}
+%\usepackage[margin=1in]{geometry}
+\usepackage{amsthm,amsmath,amsfonts,hyperref,graphicx,color,multicol}
+\usepackage{enumitem,tikz}
+
+%%%%%%%%%%
+%Beamer Template Customization
+%%%%%%%%%%
+\setbeamertemplate{navigation symbols}{}
+\setbeamertemplate{theorems}[ams style]
+\setbeamertemplate{blocks}[rounded]
+
+\definecolor{Blu}{RGB}{43,62,133} % UWEC Blue
+\setbeamercolor{structure}{fg=Blu} % Titles
+
+%Unnumbered footnotes:
+\newcommand{\blfootnote}[1]{%
+	\begingroup
+	\renewcommand\thefootnote{}\footnote{#1}%
+	\addtocounter{footnote}{-1}%
+	\endgroup
+}
+
+
+%%%%%%%%%%
+%Custom Commands
+%%%%%%%%%%
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\veca}{\vec{a}}
+\newcommand{\vecb}{\vec{b}}
+\newcommand{\vece}{\vec{e}}
+\newcommand{\vecu}{\vec{u}}
+\newcommand{\vecv}{\vec{v}}
+\newcommand{\vecw}{\vec{w}}
+\newcommand{\vecx}{\vec{x}}
+\newcommand{\zerovector}{\vec{0}}
+
+\newcommand{\ds}{\displaystyle}
+
+\newcommand{\fn}{\insertframenumber}
+
+\newcommand{\col}{\operatorname{col}}
+\newcommand{\row}{\operatorname{row}}
+\newcommand{\rank}{\operatorname{rank}}
+\newcommand{\nullity}{\operatorname{nullity}}
+\newcommand{\adj}{\operatorname{adj}}
+\newcommand{\proj}{\operatorname{proj}}
+\newcommand{\ip}[2]{\left\langle #1,#2\right\rangle}
+\newcommand{\san}{\operatorname{span}}
+\newcommand{\ns}{\operatorname{null}}
+
+\newcommand{\blank}[1]{\underline{\hspace*{#1}}}
+
+\newcommand{\dotp}{\,{\boldsymbol{\cdot}\hspace*{.01in}}}
+
+%%%%%%%%%%
+%Custom Theorem Environments
+%%%%%%%%%%
+\theoremstyle{definition}
+\newtheorem{exercise}{Exercise}
+\newtheorem{question}[exercise]{Question}
+\newtheorem*{defn}{Definition}
+\newtheorem*{exa}{Example}
+\newtheorem*{disc}{Group Discussion}
+\newtheorem*{nb}{Note}
+\newtheorem*{recall}{Recall}
+\renewcommand{\emph}[1]{{\color{blue}\texttt{#1}}}
+
+\definecolor{Gold}{RGB}{237, 172, 26}
+%Statement block
+\newenvironment{statementblock}[1]{%
+	\setbeamercolor{block body}{bg=Gold!20}
+	\setbeamercolor{block title}{bg=Gold}
+	\begin{block}{\textbf{#1.}}}{\end{block}}
+
+
+
+
+
+\begin{document}
+	\title{Math 324: Linear Algebra}
+	\subtitle{Section 5.4: Mathematical Models and Least Squares Analysis}
+	\author{Mckenzie West}
+	\date{Last Updated: \today}
+\begin{frame}
+\maketitle
+\end{frame}
+
+\begin{frame}{\insertframenumber}
+	\begin{block}{\textbf{Last Time.}}
+	\begin{itemize}[label=--]
+		\item Properties of Inner Products
+		\item Orthogonal Sets
+	\end{itemize}
+	\end{block}
+	\begin{block}{\textbf{Today.}}
+		\begin{itemize}[label=--]
+			\item Orthogonal Complements
+			\item Least Squares Analysis - Explained
+		\end{itemize}
+	\end{block}
+\end{frame}
+\begin{frame}{\fn}
+	\begin{recall}
+		For a set of points $(x_1,y_1),\ (x_2,y_2),\dots,\ (x_n,y_n)$, the \emph{least squares regression line} is given by the linear function $f(x)=a_0+a_1x$ that minimizes the sum of squared error:
+		\begin{multline*}
+		[f(x_1)-y_1]^2+[f(x_2)-y_2]^2+\cdots+[f(x_n)-y_n]^2\\=\|(f(x_1),f(x_2),\dots,f(x_n))-(y_1,y_2,\dots,y_n)\|^2.
+		\end{multline*}
+	\end{recall}
+	\begin{defn}
+	Given an $m\times n$ matrix $A$ and a vector $\vec b\in\R^m$, the \emph{least squares problem} is to find $\vec x\in\R^n$ such that $\|A\vec x-\vec b\|^2$ is minimized.
+	\end{defn}
+\begin{nb}
+	
+		Today, I want you to keep the idea of minimizing lengths through orthogonality in the back of your mind.  
+\end{nb}
+\end{frame}
+%\begin{frame}{\fn}
+%	\begin{block}{\textbf{Least Squares Problem in Terms of Matrices and Vectors.}}
+%		Let $f(x)=a_0+a_1 x$, \[A=\begin{bmatrix}
+%			1&x_1\\1&x_2\\\vdots&\vdots\\1&x_n
+%			\end{bmatrix},\ \vec b=\begin{bmatrix}y_1\\y_2\\\vdots\\y_n\end{bmatrix},\text{ and }\vec x=\begin{bmatrix}a_0\\a_1\end{bmatrix}.\]
+%			We are then considering the approximation,
+%			$A\vec x\approx \vec b.$
+%			
+%		Notice that $A\vec x=a_0\begin{bmatrix}1\\1\\\vdots\\1\end{bmatrix}+a_1\begin{bmatrix}x_1\\x_2\\\vdots\\x_n\end{bmatrix}.$  In particular, we are trying to find the closest point in $\col(A)$ to $\vec b$. **Orthogonal Projection onto a Subspace**
+%	\end{block}
+%\end{frame}
+\begin{frame}{\fn}
+	\begin{defn}
+		The subspace $W_1$ and $W_2$ of $\R^n$ are said to be \emph{orthogonal} when $\vec v_1\dotp\vec v_2=0$ for all $\vec v_1\in W_1$ and all $\vec v_2\in W_2$.
+	\end{defn}
+	\begin{exercise}
+		The sets $W_1=\san((1,2,3),(4,5,6))$ and $W_2=\san((1,-2,1))$ are orthogonal.  
+		
+		Generic elements of $W_1$ looks like
+			\[\vec v_1=s(1,2,3)+t(4,5,6),\]
+		and generic elements of $W_2$ look like $\vec v_2=a(1,-2,1)$.
+		
+		Compute $\vec v_1\dotp\vec v_2$.
+	\end{exercise}
+\end{frame}
+\begin{frame}{\fn}
+	\begin{nb}
+		For the last exercise, notice that the scalars did not matter.  It was sufficient to show that the basis vectors for $W_2$ were orthogonal to the basis vectors of $W_1$.
+	\end{nb}
+	\begin{statementblock}{Theorem}
+		If $W_1$ has basis $S_1$ and $W_2$ has basis $S_2$, then 
+		\begin{center}
+		\begin{minipage}{.4\textwidth}
+			\begin{center}
+			$W_1$ is orthogonal to $W_2$ 
+			\end{center}
+		\end{minipage}if and only if 
+		\begin{minipage}{.35\textwidth}
+			\begin{center}
+				every vector in $S_1$ is orthogonal to every vector in $S_2$.
+			\end{center}
+		\end{minipage}
+		\end{center}
+	\end{statementblock}
+\end{frame}
+\begin{frame}{\fn}
+	\begin{exercise}
+		Determine whether the subspaces of $\R^4$ are orthogonal,
+			\[W_1=\san\left\{\begin{bmatrix}
+			1\\1\\1\\1
+			\end{bmatrix}\right\}\text{ and }
+			W_2=\san\left\{\begin{bmatrix}
+			-1\\1\\-1\\1
+			\end{bmatrix},\begin{bmatrix}
+			0\\2\\-2\\0
+			\end{bmatrix}\right\}\]
+	\end{exercise}
+\end{frame}
+\begin{frame}{\fn}
+	\begin{defn}
+		If $W$ is a subspace of $\R^n$, then the \emph{orthogonal complement} of $W$ is the set	
+			\[W^\perp=\{\vec u\in\R^n:\vec v\dotp\vec u=0\text{ for all }\vec v\in W\}.\]
+	\end{defn}
+	\begin{exercise}
+		Let $A=\begin{bmatrix}1&2&3\\4&5&6\end{bmatrix}$.  Find the orthogonal complement of $\row(A)$.
+		\begin{enumerate}[label=(\alph*)]
+			\item Convince yourself that $\vec u=\begin{bmatrix}u_1\\u_2\\u_3\end{bmatrix}$ is orthogonal to $A$ exactly when $A\vec u=\begin{bmatrix}0\\0\end{bmatrix}$.
+			\item Compute $\ns(A)$, this is the orthogonal complement of $\row(A)$.
+		\end{enumerate}
+	\end{exercise}
+\end{frame}
+\begin{frame}{\fn}
+	\begin{statementblock}{Theorem 5.13}
+		Let $W$ be a subspace of $\R^n$.  Then the following are true.
+		\begin{enumerate}[label=\textbf{\arabic*.}]
+			\item $\dim(W)+\dim(W^\perp)=n$
+			\item[\textbf{3.}] $(W^\perp)^\perp=W$
+		\end{enumerate}
+	\end{statementblock}
+\end{frame}
+\begin{frame}{\fn}
+	\begin{question}
+		Now that we discussed how to find $(\row(A))^\perp$, how would you find $(\col(A))^\perp$?
+	\end{question}
+	\begin{exercise}
+	Let $A=\begin{bmatrix}1&2&3\\4&5&6\end{bmatrix}$.  Find the orthogonal complement of $\col(A)=\row(A^T)$.
+	\end{exercise}
+\end{frame}
+\begin{frame}{\fn}
+	\begin{defn}
+		The four \emph{fundamental subspaces} of a matrix $A$ are 
+			\begin{center}$\row(A)$, $\col(A)$, $\ns(A)$, and $\ns(A^T)$.\end{center}
+	\end{defn}
+	\begin{statementblock}{Theorem 5.16}
+		If $A$ is an $m\times n$ matrix, then
+			\begin{enumerate}[label=\textbf{\arabic*.}]
+				\item $(\row(A))^\perp=\ns(A)$ in $\R^n$
+				\item $(\col(A))^\perp=\ns(A^T)$ in $\R^m$
+				\item[\textbf{$\sim$3.}] $\dim(\row(A))+\dim(\ns(A))=\rank(A)+\nullity(A)=n$
+				\item[\textbf{$\sim$4.}] $\dim(\col(A))+\dim(\ns(A^T))=\rank(A)+\nullity(A^T)=m$
+			\end{enumerate}
+	\end{statementblock}
+	\begin{block}{\textbf{Warning.}}
+		The book denotes the column space of the matrix $A$ by $R(A)$. (Not confusing at all.)
+	\end{block}
+\end{frame}
+\begin{frame}{\fn}
+	\begin{exercise}
+		Find a basis for each of the four fundamental subspaces of \[A=\begin{bmatrix}
+		-2 & -3 & 3 & -2 \\
+		1 & 2 & 2 & 1 \\
+		0 & -3 & -2 & 0 \\
+		-1 & 5 & 0 & -1 \\
+		2 & -1 & 4 & 2
+		\end{bmatrix}\xrightarrow{\textsc{rref}}\begin{bmatrix}
+		1 & 0 & 0 & 1 \\
+		0 & 1 & 0 & 0 \\
+		0 & 0 & 1 & 0 \\
+		0 & 0 & 0 & 0 \\
+		0 & 0 & 0 & 0
+		\end{bmatrix}.\]
+		
+		Note: A reduction of $A^T$ is on the next slide.
+	\end{exercise}
+\end{frame}
+\begin{frame}{\fn}
+	\[A^T\xrightarrow{\textsc{rref}}\begin{bmatrix}
+	19 & 0 & 0 & -8 & 10 \\
+	0 & 19 & 0 & -35 & 58 \\
+	0 & 0 & 19 & -47 & 35 \\
+	0 & 0 & 0 & 0 & 0
+	\end{bmatrix}\]
+\end{frame}
+\begin{frame}{\fn}
+	Just like we had for individual vectors, one can compute the orthogonal projection of a vector $\vec v$ in $\R^n$ onto a subspace of $W$. 
+	\begin{defn}
+		The \emph{orthogonal projection} of the vector $\vec v$ in $\R^n$ onto the subspace $W$ of $\R^n$ is the vector $\proj_W \vec v$ in $W$ that is closest to $\vec v$.
+	\end{defn}
+	\begin{block}{\textbf{Proposition.}}
+		$\proj_W\vec v-\vec v$ is orthogonal to $W$
+	\end{block}
+\end{frame}
+\begin{frame}{\fn}
+	\begin{block}{\textbf{Solving Least Squares.}}
+		In solving the least squares problem with $m\times n$ matrix $A$ and vector $\vec b$ in $\R^m$, you are looking for the vectors in the column space of $A$ that is as close to possible as $\vec b$.
+		
+		That is, you want to find $\vec x$ such that $A\vec x=\proj_{\col(A)}\vec b$.  Notice though, that from the proposition on the last slide,
+			\[\proj_{\col(A)}\vec b-\vec b=A\vec x-\vec b\]
+		is orthogonal to $\col(A)$.
+	\end{block}
+	\begin{question}
+		What was the orthogonal complement of $\col(A)$?
+	\end{question}
+\end{frame}
+\begin{frame}{\fn}
+	\begin{block}{\textbf{Solving Least Squares.}}
+		Since $\ns(A^T)$ is the orthogonal complement of $\col(A)$, this means $A\vec x-\vec b$ is in the nullspace of $A^T$.  That is,
+			\[A^T(A\vec x-\vec b)=\vec 0.\]
+		Hence a solution to the least squares problem satisfies $A^TA\vec x=A^T\vec b$.
+	\end{block}
+	\begin{nb}
+		One important note here is that we do not actually have to compute the projection of $\vec b$ onto $\col(A)$.  Actually we don't even need to compute $\col(A)$ or $\ns(A^T)$. The only thing we need to compute is the unique solution to $A^TA\vec x=A^T\vec b$, which will exist as long as $\rank(A)=n$ (the columns of $A$ are linearly independent).
+	\end{nb}
+\end{frame}
+\begin{frame}{\fn}
+	\begin{exercise}
+		Solve the least squares problem for \[A=\begin{bmatrix}1&0&1\\1&1&1\\0&1&1\\1&1&0\end{bmatrix}\text{ and }\vec b=\begin{bmatrix}4\\-1\\0\\1\end{bmatrix}.\]
+	\end{exercise}
+\end{frame}
+\begin{frame}{\fn}
+	\begin{exercise}
+		The table shows the number of doctoral degrees $y$ (in thousands) awarded in the United States from 2005 through 2008.  Find the least squares regression line for the data.  Then use the model to predict the number of degrees awarded in 2015.  The $t$ represent the year with $t=5$ corresponding to 2005.
+			$$\begin{array}{l|cccc}
+			\hline
+			\text{Year}&2005&2006&2007&2008\\
+			\text{Doctoral Degrees }y&52.6&56.1&60.6&63.7\\
+			\hline
+			\end{array}$$
+		Recall that the least squares regression line is the line $y=a_0+a_1 x$, and we're trying to solve the least squares problem with
+			\[A=\begin{bmatrix}1&x_1\\1&x_2\\1&x_3\\1&x_4\end{bmatrix}\text{ and }\vec b=\begin{bmatrix}a_0\\a_1\end{bmatrix}.\]
+	\end{exercise}
+\end{frame}
+\end{document}
+

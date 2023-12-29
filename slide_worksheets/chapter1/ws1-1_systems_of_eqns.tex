@@ -1,0 +1,232 @@
+\documentclass{beamer}
+%\usepackage[margin=1in]{geometry}
+\usepackage{amsthm,amsmath,amsfonts,hyperref,graphicx,color,multicol}
+\usepackage{enumitem,tikz}
+
+%%%%%%%%%%
+%Beamer Template Customization
+%%%%%%%%%%
+\setbeamertemplate{navigation symbols}{}
+\setbeamertemplate{theorems}[ams style]
+\setbeamertemplate{blocks}[rounded]
+
+\definecolor{Blu}{RGB}{43,62,133} % UWEC Blue
+\setbeamercolor{structure}{fg=Blu} % Titles
+
+%Unnumbered footnotes:
+\newcommand{\blfootnote}[1]{%
+	\begingroup
+	\renewcommand\thefootnote{}\footnote{#1}%
+	\addtocounter{footnote}{-1}%
+	\endgroup
+}
+
+
+%%%%%%%%%%
+%Custom Commands
+%%%%%%%%%%
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\veca}{\vec{a}}
+\newcommand{\vecb}{\vec{b}}
+\newcommand{\vece}{\vec{e}}
+\newcommand{\vecu}{\vec{u}}
+\newcommand{\vecv}{\vec{v}}
+\newcommand{\vecw}{\vec{w}}
+\newcommand{\vecx}{\vec{x}}
+\newcommand{\zerovector}{\vec{0}}
+
+\newcommand{\ds}{\displaystyle}
+
+\newcommand{\fn}{\insertframenumber}
+
+\newcommand{\rank}{\operatorname{rank}}
+\newcommand{\adj}{\operatorname{adj}}
+
+\newcommand{\blank}[1]{\underline{\hspace*{#1}}}
+
+
+%%%%%%%%%%
+%Custom Theorem Environments
+%%%%%%%%%%
+\theoremstyle{definition}
+\newtheorem{exercise}{Exercise}
+\newtheorem{question}[exercise]{Question}
+\newtheorem*{defn}{Definition}
+\newtheorem*{exa}{Example}
+\newtheorem*{disc}{Group Discussion}
+\newtheorem*{nb}{Note}
+\newtheorem*{recall}{Recall}
+\renewcommand{\emph}[1]{{\color{blue}\texttt{#1}}}
+
+\definecolor{Gold}{RGB}{237, 172, 26}
+%Statement block
+\newenvironment{statementblock}[1]{%
+	\setbeamercolor{block body}{bg=Gold!20}
+	\setbeamercolor{block title}{bg=Gold}
+	\begin{block}{\textbf{#1.}}}{\end{block}}
+
+
+
+
+\begin{document}
+	\title{Math 324: Linear Algebra}
+	\subtitle{1.1: Introduction to Systems of Linear Equations}
+	\author{Mckenzie West}
+	\date{Last Updated: \today}
+\begin{frame}
+\maketitle
+\end{frame}
+\begin{frame}{\insertframenumber}
+	\begin{block}{\textbf{Today.}}
+		\begin{itemize}[label=--]
+			\item Linear Equations
+			\item Solving Linear Equations and Parametrization
+			\item Linear Systems of Equations
+			\item Solving Linear Systems of Equations
+			\item Consistent vs Inconsistent Systems
+		\end{itemize}
+	\end{block}
+\end{frame}
+
+\begin{frame}{\insertframenumber}
+\begin{defn}
+	A \emph{linear equation in $n$ variables} $x_1,x_2,\dots,x_n$ is an equation of the form
+	\[a_1x_1+a_2x_2+\cdots+a_nx_n=b\]
+where $a_1,a_2,\dots,a_n$ are real numbers called \emph{coefficients} and $b$ is a real number called the \emph{constant term}.\par
+We call $a_1$ the \emph{leading coefficient} and $x_1$ the \emph{leading variable}.
+\end{defn}
+\end{frame}
+
+\begin{frame}{\insertframenumber}
+\begin{exercise}
+	Which of the following equations are linear equations?  For the linear equations, identify the constant term, leading coefficient, and leading variable.
+	\begin{multicols}{2}
+	\begin{enumerate}[label=(\alph*)]
+		\item $x-2y=1$
+		\item $\sin x+\cos y=1$
+		\item $x-xy+y=3$
+		\item $5x_1=6+3x_2$
+		\item $3(x_1+5)=2(-6-x_2)-2x_3$
+		\item $\displaystyle\frac{2z}{z+3}=\frac{3}{z-10}+2$
+	\end{enumerate}
+	\end{multicols}
+\end{exercise}
+\end{frame}
+
+\begin{frame}{\insertframenumber}
+\begin{defn}
+	A \emph{solution} to a linear equation in $n$ variables is a sequence of $n$ real numbers $s_1,s_2,\dots,s_n$ arranged so that when you substitute the values $x_1=s_1,x_2=s_2,\dots,x_n=s_n$ the equation is satisfied.
+\end{defn}
+\pause
+\begin{exercise}
+	Find a solution to $x-2y=1$.  (Be creative here.)
+	
+	How many solutions does this equation have?  Can you describe them all?
+\end{exercise}
+\end{frame}
+
+\begin{frame}{\insertframenumber}
+\begin{defn}
+	The collection of all solutions of a linear equation is called a \emph{solution set}.  If you're asked to \emph{solve} a linear equation, you should find all of the solutions and describe them.
+\end{defn}
+\begin{exa}
+	The solutions to the linear equation $x+y=4$ are all of the form $x=4-y$.
+	We write these \emph{parametrically} as $y=t$, $x=4-t$. We call $y$ a \emph{free} variable because it is free to be whatever it wants to be.
+	
+	We call $t$ a \emph{parameter} and specific solutions can be found by assigning values to this parameter.
+\end{exa}
+\begin{block}{Note}
+	Typically, leading variables are not used as free variables.
+\end{block}
+\end{frame}
+
+\begin{frame}{\insertframenumber}
+\begin{exercise}
+	Write all solutions to $5x=6+3y$ in parametric form.
+\end{exercise}
+\begin{exercise}
+	Write all solutions to $6x-2y+3z=1$ in parametric form.  (Note: you may need more than one parameter.)
+\end{exercise}
+\end{frame}
+
+\begin{frame}{\insertframenumber}
+\begin{defn}
+	A \emph{system of $m$ linear equations in $n$ variables} is a set of $m$ equations each of which is linear in up to $n$ variables $x_1,\dots,x_n$.
+\end{defn}
+\begin{exa}
+	A system of 2 equations in 3 variables:	
+		\[\begin{array}{rcrcrcl}
+			3x&-&2y&+&3z&=&4\\
+			x&&&+&z&=&5\\
+		\end{array}\]
+\end{exa}
+\end{frame}
+
+\begin{frame}{\insertframenumber}
+\begin{defn}
+A \emph{solution} to a system of $m$ linear equations in $n$ variables is any sequence of $n$ real numbers that is a solution to every linear equation in the system. To \emph{solve} a linear system is to find all of the solutions to the system.\par
+	A system is called \emph{consistent} if it has at least one solution and \emph{inconsistent} if it has none.
+\end{defn}
+\end{frame}
+
+\begin{frame}{Slide \insertframenumber}
+\begin{exercise}
+	Find a solution to  the system
+		\[\begin{array}{rcrcrcl}
+		3x&-&2y&+&3z&=&4\\
+		x&&&+&z&=&5\\
+		\end{array}\]
+\end{exercise}
+\begin{exercise}
+	Come up with a linear system of 2 equations and 2 variables that is inconsistent.
+\end{exercise}
+\end{frame}
+
+\begin{frame}{\insertframenumber}
+\begin{exercise}
+For each of the following systems, graph the two lines in the $xy$-plane.  Where do they intersect? How many solutions does this system of linear equations have?
+		\begin{enumerate}[label=(\alph*)]
+			\item $\begin{array}{rcrcl}
+			3x&-&y&=&1\\
+			2x&-&y&=&0\\
+			\end{array}$
+			\vskip .3in
+			\item $\begin{array}{rcrcl}
+			3x&-&y&=&1\\
+			3x&-&y&=&0\\
+			\end{array}$
+			\vskip .3in
+			\item $\begin{array}{rcrcl}
+			3x&-&y&=&1\\
+			6x&-&2y&=&2\\
+			\end{array}$
+		\end{enumerate}
+\end{exercise}
+\end{frame}
+
+\begin{frame}{\insertframenumber}
+\begin{question}
+	Is it possible for a system of linear equations in two variables to have two solutions?
+\end{question}
+\end{frame}
+
+\begin{frame}{\insertframenumber}
+\begin{exercise}
+	Consider the system of equations:
+	$$\begin{array}{rcrcrcrcr}
+		-2x&-&2y&+&2z&-&w &=& 2\\
+		&&2y&-&2z&+&w&=&0\\
+		2x&&&&&&&=&2
+		\end{array}$$
+	Find all solutions to the system.
+\end{exercise}
+\end{frame}
+
+\begin{frame}{\insertframenumber}
+\begin{exercise}
+	In a chemical reaction, atoms reorganize in one or more substances.  For instance, when methane gas (CH$_4$) combines with oxygen (O$_2$) and burns, carbon dioxide (CO$_2$) and water (H$_2$O) form.  Chemists represent this process by a chemical equation of the form	
+		\[(x_1)\textup{CH}_4+(x_2)\textup{O}_2\rightarrow(x_3)\textup{CO}_2 + (x_4)\textup{H}_2\textup{O}.\]
+	Write a system of linear equations in the four variables $x_1,x_2,x_3,x_4$ corresponding to the fact that the amount of each element--carbon, hydrogen, and oxygen--must be equal before and after the reaction.
+\end{exercise}
+\end{frame}
+\end{document}

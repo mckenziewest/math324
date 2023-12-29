@@ -1,0 +1,335 @@
+\documentclass{beamer}
+%\usepackage[margin=1in]{geometry}
+\usepackage{amsthm,amsmath,amsfonts,hyperref,graphicx,color,multicol}
+\usepackage{enumitem,tikz}
+
+%%%%%%%%%%
+%Beamer Template Customization
+%%%%%%%%%%
+\setbeamertemplate{navigation symbols}{}
+\setbeamertemplate{theorems}[ams style]
+\setbeamertemplate{blocks}[rounded]
+
+\definecolor{Blu}{RGB}{43,62,133} % UWEC Blue
+\setbeamercolor{structure}{fg=Blu} % Titles
+
+%Unnumbered footnotes:
+\newcommand{\blfootnote}[1]{%
+	\begingroup
+	\renewcommand\thefootnote{}\footnote{#1}%
+	\addtocounter{footnote}{-1}%
+	\endgroup
+}
+
+
+%%%%%%%%%%
+%Custom Commands
+%%%%%%%%%%
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\veca}{\vec{a}}
+\newcommand{\vecb}{\vec{b}}
+\newcommand{\vece}{\vec{e}}
+\newcommand{\vecu}{\vec{u}}
+\newcommand{\vecv}{\vec{v}}
+\newcommand{\vecw}{\vec{w}}
+\newcommand{\vecx}{\vec{x}}
+\newcommand{\zerovector}{\vec{0}}
+
+\newcommand{\ds}{\displaystyle}
+
+\newcommand{\fn}{\insertframenumber}
+
+\newcommand{\rank}{\operatorname{rank}}
+\newcommand{\adj}{\operatorname{adj}}
+
+\newcommand{\blank}[1]{\underline{\hspace*{#1}}}
+
+
+%%%%%%%%%%
+%Custom Theorem Environments
+%%%%%%%%%%
+\theoremstyle{definition}
+\newtheorem{exercise}{Exercise}
+\newtheorem{question}[exercise]{Question}
+\newtheorem*{defn}{Definition}
+\newtheorem*{exa}{Example}
+\newtheorem*{disc}{Group Discussion}
+\newtheorem*{nb}{Note}
+\newtheorem*{recall}{Recall}
+\renewcommand{\emph}[1]{{\color{blue}\texttt{#1}}}
+
+\definecolor{Gold}{RGB}{237, 172, 26}
+%Statement block
+\newenvironment{statementblock}[1]{%
+	\setbeamercolor{block body}{bg=Gold!20}
+	\setbeamercolor{block title}{bg=Gold}
+	\begin{block}{\textbf{#1.}}}{\end{block}}
+
+
+
+\begin{document}
+	\title{Math 324: Linear Algebra}
+	\subtitle{1.2: Gaussian Elimination and Gauss-Jordan Elimination}
+	\author{Mckenzie West}
+	\date{Last Updated: \today}
+\begin{frame}
+\maketitle
+\end{frame}
+
+\begin{frame}{\insertframenumber}
+	\begin{block}{\textbf{Last Time.}}
+	\begin{itemize}[label=--]
+		\item $m\times n$ matrix
+		\item coefficient and augmented matrix
+		\item elementary row operations
+		\item row-echelon form and leading 1's
+		\item reduced row-echelon form
+	\end{itemize}
+	\end{block}
+\begin{block}{\textbf{Today.}}
+\begin{itemize}[label=--]
+	\item an algorithm for row reducing
+	\item Gauss--Jordan elimination
+	\item homogeneous equations
+\end{itemize}
+\end{block}
+\end{frame}
+
+\begin{frame}{\insertframenumber}
+\begin{exercise}
+	What are all of the possible $2\times 3$ reduced row-echelon matrices? (Use a $*$ to indicate a position that can have any value.) 
+	
+	For example, 
+		\[\begin{bmatrix}1&*&0\\0&0&1\end{bmatrix}.\]
+\end{exercise}
+\begin{exercise}
+	For each of the reduced row-echelon forms determine if the corresponding linear system with that augmented matrix would have: one solution, infinitely many solutions, or no solution.
+\end{exercise}
+\end{frame}
+
+\begin{frame}{\insertframenumber}
+	\begin{statementblock}{A generic row reducing algorithm - Gaussian Elimination}
+		Work column by column from left to right and top to bottom.
+		\begin{enumerate}[label=\arabic*]
+			\item Swap rows and/or scale a row so that there is a $1$ in the top left corner.
+			\item Add a multiple of row 1 to each of the rows below to zero-out the rest of the first column.
+			\item Repeat these steps, ignoring the first row and column. 
+		\end{enumerate}
+	\end{statementblock}
+\end{frame}
+\begin{frame}{\insertframenumber}
+	\begin{exa}
+		\begin{eqnarray*}
+			\left[\begin{array}{rrrr}
+			0 & -2 & 2 & 0 \\
+			1 & 0 & 0 & 1 \\
+			-2 & -1 & 2 & -3
+		\end{array}\right]\pause
+		& \xrightarrow{R_1\leftrightarrow R_2} & 
+		\left[\begin{array}{rrrr}
+			1 & 0 & 0 & 1 \\
+			0 & -2 & 2 & 0 \\
+			-2 & -1 & 2 & -3
+		\end{array}\right]\\\pause
+		&\xrightarrow{R_3+2R_1\rightarrow R_3}&
+		\left[\begin{array}{rrrr}
+		1 & 0 & 0 & 1 \\
+		0 & -2 & 2 & 0 \\
+		0 & -1 & 2 & -1
+		\end{array}\right]\\\pause
+		&\xrightarrow{-\frac{1}{2}R_2\rightarrow R_2}&
+		\left[\begin{array}{rrrr}
+		1 & 0 & 0 & 1 \\
+		0 & 1 & -1 & 0 \\
+		0 & -1 & 2 & -1
+		\end{array}\right]\\\pause
+		&\xrightarrow{R_3+R_2\rightarrow R_3}&
+		\left[\begin{array}{rrrr}
+		1 & 0 & 0 & 1 \\
+		0 & 1 & -1 & 0 \\
+		0 & 0 & 1 & -1
+		\end{array}\right]
+		\end{eqnarray*}
+	\end{exa}
+\end{frame}
+
+\begin{frame}{\insertframenumber}
+	\begin{exercise}
+		Use this algorithm to find the reduced row echelon form of the matrix:
+			$$\left[\begin{array}{rrrrr}
+			3 & -2 & -1 & 2 & 0 \\
+			-3 & 3 & -3 & 3 & 0 \\
+			2 & -3 & 2 & -3 & -3 \\
+			-1 & 2 & 3 & -2 & 0
+			\end{array}\right].$$
+%\begin{tabular}{rl|rl}
+%	1.& $\left[\begin{array}{rrrrr}
+%	-2 & -1 & 1 & 0 & -3 \\
+%	-1 & -2 & 2 & -3 & 2 \\
+%	-3 & -1 & -1 & 1 & 0 \\
+%	3 & 3 & 2 & 3 & -1
+%	\end{array}\right]$
+%	%	\left(\begin{array}{rrrrr}
+%	%		1 & 0 & 0 & -1 & 0 \\
+%	%		0 & 1 & 0 & 2 & 0 \\
+%	%		0 & 0 & 1 & 0 & 0 \\
+%	%		0 & 0 & 0 & 0 & 1
+%	%	\end{array}\right)
+%	&2.& 
+%	$\left[\begin{array}{rrrrr}
+%	-3 & 3 & 2 & -2 & -2 \\
+%	-2 & 3 & 0 & 2 & -2 \\
+%	-1 & 2 & -1 & 0 & 2 \\
+%	-3 & 3 & 0 & 3 & -3
+%	\end{array}\right]$
+%	%$\left[\begin{array}{rrrrr}
+%	%	1 & 0 & 0 & 0 & 0 \\
+%	%	0 & 1 & 0 & 0 & 0 \\
+%	%	0 & 0 & 1 & 0 & -2 \\
+%	%	0 & 0 & 0 & 1 & -1
+%	%\end{array}\right]$
+%	\\&&\\
+%	3.& 
+%	$\left[\begin{array}{rrrrr}
+%	3 & -2 & -1 & 2 & 0 \\
+%	-3 & 3 & -3 & 3 & 0 \\
+%	2 & -3 & 2 & -3 & -3 \\
+%	-1 & 2 & 3 & -2 & 0
+%	\end{array}\right]$
+%	%$\left[\begin{array}{rrrrr}
+%	%	1 & 0 & 0 & 1 & 0 \\
+%	%	0 & 1 & 0 & 1 & 0 \\
+%	%	0 & 0 & 1 & -1 & 0 \\
+%	%	0 & 0 & 0 & 0 & 1
+%	%\end{array}\right]$
+%	&4.& 
+%	$\left[\begin{array}{rrrrr}
+%	-2 & 0 & 2 & 2 & -3 \\
+%	-2 & 0 & 2 & 2 & -2 \\
+%	-1 & 2 & -1 & 1 & -1 \\
+%	-2 & 1 & 3 & 2 & -2
+%	\end{array}\right]$
+%	%$\left[\begin{array}{rrrrr}
+%	%	1 & 0 & 0 & -1 & 0 \\
+%	%	0 & 1 & 0 & 0 & 0 \\
+%	%	0 & 0 & 1 & 0 & 0 \\
+%	%	0 & 0 & 0 & 0 & 1
+%	%\end{array}\right]$
+%	\\&&\\
+%	5.&
+%	$\left[\begin{array}{rrrrr}
+%	-1 & 0 & 1 & 1 & -3 \\
+%	-1 & -3 & 1 & 1 & -3 \\
+%	0 & -1 & 0 & -2 & -1 \\
+%	-3 & 0 & 3 & 3 & 3
+%	\end{array}\right]$
+%	%$\left[\begin{array}{rrrrr}
+%	%	1 & 0 & -1 & 0 & 0 \\
+%	%	0 & 1 & 0 & 0 & 0 \\
+%	%	0 & 0 & 0 & 1 & 0 \\
+%	%	0 & 0 & 0 & 0 & 1
+%	%\end{array}\right]$
+%	&6.& 
+%	$\left[\begin{array}{rrrrr}
+%	3 & 3 & 2 & -2 & 1 \\
+%	-1 & -1 & 2 & -2 & 2 \\
+%	1 & 2 & 2 & 3 & -1 \\
+%	2 & 2 & -2 & 2 & 1
+%	\end{array}\right]$
+%	%$\left[\begin{array}{rrrrr}
+%	%1 & 0 & 0 & -5 & 0 \\
+%	%0 & 1 & 0 & 5 & 0 \\
+%	%0 & 0 & 1 & -1 & 0 \\
+%	%0 & 0 & 0 & 0 & 1
+%	%\end{array}\right]$
+%\end{tabular}
+	\end{exercise}
+\end{frame}
+
+\begin{frame}{\insertframenumber}
+	\begin{question}
+		Can a matrix be reduced to two different row-echelon forms?
+		
+		Can a matrix be reduced to two different reduced row-echelon forms?
+	\end{question}
+	\begin{question}
+		If a matrix is in row-echelon form, how would you go about reducing it to reduced row-echelon form?
+	\end{question}
+	\begin{block}{Facts}
+		\begin{enumerate}[label=(\alph*)]
+			\item Yes, every matrix can be reduced to a \textit{unique} reduced row echelon form.
+			\item The process of translating a RE matrix to a RRE matrix is called \emph{Gauss-Jordan elimination}.
+		\end{enumerate}
+	\end{block}
+\end{frame}
+
+\begin{frame}{\insertframenumber}
+	\begin{defn}
+		A \emph{homogeneous system of linear equations} is a linear system of equations in which every constant term is zero.
+		
+		Every homogeneous system has the \emph{trivial} solution, the one where every variable is zero.
+	\end{defn}
+\end{frame}
+
+\begin{frame}{\insertframenumber}
+	\begin{exercise}
+		Solve the homogeneous linear system with the given coefficient matrix:
+		\[
+		\left[\begin{array}{rrrr}
+		0 & 1 & 0 & 0 \\
+		1 & 1 & -1 & 1 \\
+		0 & 0 & 0 & -1
+		\end{array}\right]\]
+	\end{exercise}
+	\pause
+	\begin{question}
+		Why is it ok to just use the coefficient matrix to solve a homogeneous system but for other systems we use the augmented matrix?
+	\end{question}
+\end{frame}
+
+\begin{frame}{\insertframenumber}
+	\begin{exercise}
+		Assume the given matrix is the augmented matrix of a system of linear equations, and (a) determine the number of equations and the number of variables, and (b) find the values of $k$ such that the system is consistent.  
+	
+		Then assume the matrix is the coefficient matrix of a homogeneous system of linear equations and repeat (a) and (b).
+		
+		\[A=\begin{bmatrix} 1&k&2\\-3&4&1\end{bmatrix}\]
+	\end{exercise}
+\end{frame}
+
+\begin{frame}{\insertframenumber}
+	\begin{exercise}
+		Find the values of $a$, $b$ and $c$ (if possible) such that the system of linear equations has 	
+		\begin{enumerate}[label=(\alph*)]
+			\item a unique solution
+			\item no solutions
+			\item infinitely many solutions
+		\end{enumerate}
+		\[\begin{matrix}
+			x&+&y&&&=&2\\
+			&&y&+&z&=&2\\
+			x&&&+&z&=&2\\
+			ax&+&by&+&cz&=&0
+		\end{matrix}\]
+	\end{exercise}
+\end{frame}
+
+\begin{frame}[fragile]
+	\frametitle{\insertframenumber}
+	\begin{exercise}
+		Get more practice!
+		
+		Open \url{http://sagecell.sagemath.org} and use the following code to generate a random matrix:
+		
+		
+		\begin{verbatim}
+		matrix([[randint(0,3) for i in [1..5]] for j in [1..4]])
+		\end{verbatim}
+		
+		Do this a couple times until you have one with 3-6 zeros.
+		
+		Use elementary row operations to reduce this matrix to (reduced) row-echelon form.
+	\end{exercise}
+\end{frame}
+\end{document}
+
