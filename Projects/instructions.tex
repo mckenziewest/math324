@@ -1,0 +1,198 @@
+\documentclass{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{pdfpages}
+\usepackage{amsthm,amsmath,amsfonts,hyperref,enumitem,mathrsfs}
+
+%\usepackage{setspace}
+%\doublespacing
+% or:
+%\onehalfspacing
+
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\calB}{\mathcal{B}}
+\newcommand{\calC}{\mathcal{C}}
+\newcommand{\veca}{\mathbf{a}}
+\newcommand{\vecb}{\mathbf{b}}
+\newcommand{\vecr}{\mathbf{r}}
+\newcommand{\vecu}{\mathbf{u}}
+\newcommand{\vecv}{\mathbf{v}}
+\newcommand{\vecw}{\mathbf{w}}
+\newcommand{\vecx}{\mathbf{x}}
+\newcommand{\vecy}{\mathbf{y}}
+\newcommand{\zerovector}{\mathbf{0}}
+
+\renewcommand{\span}{\operatorname{span}}
+\newcommand{\row}{\operatorname{row}}
+\newcommand{\col}{\operatorname{col}}
+\renewcommand{\null}{\operatorname{null}}
+
+\newcommand{\blank}[1]{\underline{\hspace*{#1}}}
+\newcommand{\sol}[1]{
+	\fbox{\begin{minipage}{.9\textwidth}
+			\textbf{Solution.} #1
+		\end{minipage}
+}}
+
+
+
+\begin{document}
+\large
+\begin{center}
+		Project Instructions\\
+		Math 324: Linear Algebra
+\end{center}
+\noindent
+\textbf{Guidelines.}
+\begin{description}[font=\normalfont\itshape-\space]
+	\item[Dates] Below is a list of the important dates.
+		\begin{itemize}
+			\item Topics List (3 Topics of Interest per Group) \textbf{November 8} 
+			\item Abstract Due \textbf{November 15} 
+			\item Paper Draft Due \textbf{November 26} 5 pm, on Canvas
+			\item Presentations \textbf{December 9-12}
+			\item Paper Due \textbf{December 13}
+		\end{itemize}
+	\item[Groups] You will work in self-selected groups of 2-4 based off of desired topic area.
+	\item[Abstract] Your abstract will have the following information: 
+		\begin{itemize}
+			\item \hyperlink{topics}{topic choice};
+			\item group member names, alphabetical by last name;
+			\item presentation date;
+			\item a paragraph briefly describing the topic and why it is important.
+		\end{itemize}
+		A sample abstract is included \hyperlink{sampleabstract}{below}.  An Overleaf template will also be provided.
+	\item[Paper] Every group will submit a 3-5 page paper on their topic.  This paper must describe the topic, where the linear algebra is, and the motivation for studying it. Include at least 1 proof and at least 1 computational example. You must also include at least 2 references other than our textbook. It should be readable by everyone else in the class. Use full sentences everywhere.  
+	\item[Presentation] Every group will give a 15 minute presentation on their topic to the class.  This presentation can either be done via projector or on the chalkboard.\\
+	The presentation will be graded on Delivery, Content, Organization, Visual Aides, and Evidence of Learning.\\
+	I highly recommend you practice the presentation more than once before giving it.
+	\item[Reflections] You are required to attend every day of group presentations and provide a reflection on it.  Details will be given when we start presenting.
+	\item[Document Preparation] You must use \LaTeX/Overleaf to write your abstract and paper.  A template will be provided.
+	\item[Participation] All group members are expected to contribute.  It is the responsibility of individuals and groups to make sure this happens and determine an equitable distribution of labor.
+	
+	You will be asked to reflect on your participation at the end of the project.
+	\item[Computational Software] It is your choice whether or not you will be using any Mathematical Software for your project.  Make sure to reference it when you do and if you have any pertinent code it appears somewhere in the paper.
+\end{description}
+
+\noindent\hypertarget{topics}{\textbf{Possible Topics.}}
+
+You are welcome to pursue any topic you wish as long as it pertains to linear algebra.  Below is a list of topics, in no particular order, that is meant to inspire your search.
+
+Come to me if you have questions, are having a hard time of choosing a topic, or are having a hard time finding a group to work with.
+
+Our book has many Applications sprinkled throughout.  Additionally there are many topics we do not have time to cover in a ten week course.
+
+\begin{itemize}
+	\item Biology and Life Sciences
+		\begin{itemize}
+			\item Age Distribution of Animals 
+				\begin{quote}
+					Eigenvalues have a variety of applications to biological sciences, including the study of age distribution in a population.  For example, in the case of rabbits you may want to know what proportion are babies, adults, or seniors.
+				\end{quote}
+			\item Throughout the text there are paragraphs with information about ``linear algebra applied''.  Use these as inspiration for further research.
+		\end{itemize}
+	\item Business and Economics
+		\begin{itemize}
+			\item Further study of input-output models
+				\begin{quote}
+					Beyond the simple examples we have studies, large scale economic systems can be studied.  Moreover, the mathematics proving the usefulness of these models is fascinating.
+				\end{quote}
+		\end{itemize}
+	\item Engineering and Technology
+		\begin{itemize}
+			\item Cryptography
+				\begin{quote}
+					We only touched the surface of what one can do using linear algebra to encrypt messages.
+				\end{quote}
+			\item Coding Theory
+				\begin{quote}
+					Linear algebra is used to communicate with satellites and other objects sent into space.  Learn about how linear algebra is used to reduce and correct errors in communication.
+				\end{quote}
+			\item GPS, Triangulation, and Trilateration
+				\begin{quote}
+					The GPS in your phone uses data sent by several satellites to approximate your location. This done using linear algebra!
+				\end{quote}
+			\item 3D graphics
+				\begin{quote}
+					Our computers can only show us 2D objects so how are we able to make 3D images?
+				\end{quote}
+			\item Robotics
+				\begin{quote}
+					Robotic arms move based on rotations about a point in space.  But rotations are just matrices!
+				\end{quote}
+		\end{itemize}
+	\item Physical Sciences
+		\begin{itemize}
+			\item Eigenvalues and Stress Points of Bridges	
+				\begin{quote}
+					One can determine whether a suspended bridge will hold through a wind storm or earthquake using matrix translations and eigenvalues.
+				\end{quote}
+			\item Force and Hooke's Law
+				\begin{quote}
+					Model physical occurrences through matrices.
+				\end{quote}
+		\end{itemize}
+	\item Statistics and Probability
+		\begin{itemize}
+			\item Markov Chains
+				\begin{quote}
+					Use of matrices to predict future state values.
+				\end{quote}
+			\item Regression analysis
+				\begin{quote}
+					Extending the study of least squares regression to additional approximations.
+				\end{quote}
+		\end{itemize}
+	\item Mathematics
+		\begin{itemize} 
+		\item History of Gaussian Elimination
+			\begin{quote}
+				Gauss was not the first one to use the method of Gaussian Elimination.  For this project, dive into the history behind this method of solving a linear system.
+			\end{quote}
+		\item Graph Theory
+			\begin{quote}
+				A \emph{graph} is a finite collection of points and edges connecting them. We can encode a graph as a matrix and use the matrix to study the graph.
+			\end{quote}
+		\item Recurrences
+			\begin{quote}
+				We can use linear algebra to get a formula for things like the Fibonacci numbers!
+			\end{quote}
+		\item Quadratic Forms
+			\begin{quote}
+				Conics--parabolas, hyperbolas, ellipses, circles-- can be described using linear algebra!  Specifically we can look at $\textbf{x}^TA\textbf{x}$.
+			\end{quote}
+		\item Finite Fields
+			\begin{quote}
+				There are systems of numbers other than those we have studied so far.  In particular interest for us there are finite fields: $\mathbb{Z}_p=\{0,1,2,\dots,p-1\}$ where $p$ is prime.  Addition and multiplication in this set of numbers is given \emph{modulo $p$}, which you can think about this like a clock--$0$ is on the top and the numbers increase around.
+			\end{quote}
+		\item Lattices
+			\begin{quote}
+				All term we have been working over a field, specifically $\mathbb{R}$.  What happens when we decide to look at scalars only in $\mathbb{Z}$ what falls apart, what sticks around?
+			\end{quote}
+		\item Number Theory
+			\begin{quote}
+				We can look at the complex numbers, $\mathbb{C}$, as a two-dimensional vector space over $\mathbb{R}$.
+				Similarly, consider the rational numbers, $\mathbb{Q}$.  Vector spaces exist over $\mathbb{Q}$, for example $\mathbb{Q}[\sqrt{2}]=\{a+b\sqrt{2}\text{ s.t. }a,b\in\mathbb{Q}\}=\mathbb{Q}+\sqrt{2}\mathbb{Q}$.
+			\end{quote}
+	\end{itemize}
+\end{itemize}
+\newpage
+	% To center some text we tell the program where the centering starts and where it ends.
+\begin{center}
+	% The title should be much larger than the text.
+	\hypertarget{sampleabstract}{\Huge{Linear Algebra}}
+	\vskip .25in
+	% The authors and date just need to be Large.
+	\Large{Author 1, Author 2, ... and Author $n$}
+	\vskip .25in
+	\today
+	\vskip .5in
+\end{center}
+\par
+\textbf{\textit{Abstract.}} Linear Algebra is a field of mathematics with an exceptional number of applications both to other areas of mathematics and to sciences in general.  In math 324, we examine vectors, matrices, linear transformations, vector spaces, bases, and eigenvalues.  A large amount of what we study boils down to the equation:
+% Align equations neatly in the center using either the equation (numbered) environment or the equation* (unnumbered) environment.
+% I will illustrate lists of equations in the paper template.
+\begin{equation*}
+A\vec x=\vec b,
+\end{equation*}
+ where $A$ is a matrix and $\vec x$ and $\vec b$ are vectors. This simple equation encodes a variety of applications and mathematical topics.
+\end{document}
