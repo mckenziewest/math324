@@ -18,6 +18,6 @@ The content for the course is here:
 
 The project instructions and rubrics are [here](Projects/).
 
-Course websites are also included in this repo.
+Course websites with schedules, homework, and more are here.
 * [Fall 2019](https://people.uwec.edu/westmr/teaching/1920-1-324/)
 * [Spring 2020](https://people.uwec.edu/westmr/teaching/1920-2-324/)
