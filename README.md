@@ -9,7 +9,7 @@ The content for the course is here:
 
 * [Chapter 1](slide_worksheets/chapter1) - Systems of Linear Equations
 * [Chapter 2](slide_worksheets/chapter2) - Matrices
-* [Proof Introduction](slide_worksheets/proof_intro) - Introduction to Proofs
+* [Proof Introduction](slide_worksheets/proof_introduction) - Introduction to Proofs
 * [Chapter 3](slide_worksheets/chapter3) - Determinants
 * [Chapter 4](slide_worksheets/chapter4) - Vector Spaces
 * [Chapter 5](slide_worksheets/chapter5) - Inner Products
