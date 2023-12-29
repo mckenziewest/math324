@@ -15,3 +15,5 @@ The content for the course is here:
 * [Chapter 5](slide_worksheets/chapter5) - Inner Products
 * [Chapter 6](slide_worksheets/chapter6) - Linear Transformations
 * [Chapter 7](slide_worksheets/chapter7) - Eigenvalues and Eigenvectors
+
+The project instructions and rubrics are [here](Projects/).
